@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "thesis-adversarial-attacks",
+  "private_key_id": "b55bf8f23dde54c6376142274606909c9c3244b5",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDizjAVTeVXxiGJ\n+QliMkoRHLEHoRFtPlJ94NCEp+c8HUga4KqOpMBplKR5qrnKGPCD4KENn00/5aWa\n7xQfF3+kckyo2OSQ+XSWFD29Hh5uht1E3r+alhZ9MIAuck55gZtDhGYewKGiutgT\npmER+8ZMl3DPCJtGLzAj56RznlJeTTlBV3nqywt/ym5/qJRSbVg5Q8rR/Q/6Oi0V\nSEDZ1HTg+LGbfGLtmZ6HOg67XhKMVt9a/jQKD/6eG+N+QcjefgHsZDohVitAWZBl\n2jekvUXzza0a9CZs9hL7IE6WIWpiFPDrA9JdTQb3/EJGy4KArJv/wjRkgFx3ir4f\nORZ/mCUVAgMBAAECggEAMGOBtjXjkaW7p5pqklj83OhEa8aFN4u1oVYa3saMytJL\nfTKEKQFE7PGx4qRWVaQbAmPlMIkVe+W0vpi18Ak9KhpZuSdnIngaU9+3KVdY8kdT\nQ3uLoQFXBHgZzO8Fx54rgEzp1bNO+O9IpO6ZJLNVBCfGQWGKcT+lk297MlCrraMA\nx1YrXrug86Fp73qUzQ5VgmgsPPdV5WRd/hyw9pNUJuZgDobE/le4m1aU6HY+luN9\nCQzcQr7gjWMZhTpFcXfF3SQu2Q5PYa7Bgr3AzvmnjkRURFs95JaOANn0554X8Kj5\nGRQQANnDvSlnXGzLHgPJP77/KIEJAya5EcSVdKzr+QKBgQD6opxw+9sOYasiJ/06\n9RGhmg0NXpVIg9sBglCqbsiUQKDSx/JgnAKsVRZevXehRaKDzCrRsCC/Zvzal5Nc\n8SVexxzaG6OZlCQtFyEtWNwYVRsC/DypBpNPfwY1pELoWOsAamZ31R+CFP7hBCh3\n2lbfhTpBwaFFUF/LsvMV0Tw/aQKBgQDnqP+PubfPGkL0IcuFmw6O7/+mgKoOL4QW\nc1b1F+LwaLYItbU3vyahgeA7nWjJkYzMS196eKw3kjI6kmG2lPzr+ugRcx9dzI7S\n0EIawau3L3uA8cN7capA8/d2H0VQ7ApdlgdR0+Awj8qYWbU3jk+PscTnkFpeZOo2\nMrweXUCuzQKBgGJjeWRFCj5ACw0yg48ka1J0BhGsgo/f6xZRkNcG/EhugnOcOELC\nm64JDOoOGKs/iceRW3HLYV+hzzsEa739kDz/jwzz8qo0ZGsq/EQv8N7AcgUe/bUg\ntq1rYQWnwPgzB7W3DxiVmnPXSCMPHc/G73l5dGAh4ewy3Bg73H9BDxSZAoGAZHkf\nni5mUiSJtWiS5LeDcOsWbhiPqOdi2nnb1SEvBCXmDZEBr9Pv5Ux2/GQg9otyDYkD\nOBLuXovBzTV/u7iSmaaQ0ECl8gCuUTCR+xjUaPbnEd3JctixhspJIaoeXiKBvGU9\nd3f1XBqBO+JsflPyndf0Fpq9FwOdsTP/8wtu6mECgYEAuhszkF3M+7GMfQnVd/Ug\nzqbm0EbgHVjFK+SepO+LKeyS12KlzI7Oc0rOVm0vOO7x6lDKqnyWVN3tLrOxvDHu\nZlcxCVgtuigVT4WnDnSJ9jZ7pkv13Jc9pxCTP6dI1GNAlLjZFa7hg76cDd0tMq39\nfSfbd4jut1Q5TYeYWxhoLUE=\n-----END PRIVATE KEY-----\n",
+  "client_email": "takonoselidze@thesis-adversarial-attacks.iam.gserviceaccount.com",
+  "client_id": "104396802289110622263",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/takonoselidze%40thesis-adversarial-attacks.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}

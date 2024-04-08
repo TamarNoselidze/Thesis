@@ -1,0 +1,67 @@
+Cat, B&W 
+
+Label: Grey, Confidence: 0.840645432472229
+Label: Tints and shades, Confidence: 0.7682409286499023
+Label: Monochrome photography, Confidence: 0.6780695915222168
+Label: Darkness, Confidence: 0.6704617738723755
+Label: Monochrome, Confidence: 0.6530951857566833
+Label: Tree, Confidence: 0.6493885517120361
+Label: Human leg, Confidence: 0.6355416774749756
+Label: Pattern, Confidence: 0.6088883280754089
+Label: Foot, Confidence: 0.5795261263847351
+Label: Font, Confidence: 0.5759151577949524
+
+
+Ollie&I, B&W
+
+Label: Smile, Confidence: 0.9708461165428162
+Label: Arm, Confidence: 0.9430512189865112
+Label: Happy, Confidence: 0.8686448335647583
+Label: Comfort, Confidence: 0.861370325088501
+Label: Gesture, Confidence: 0.852604866027832
+Label: Shorts, Confidence: 0.8113383650779724
+Label: Black hair, Confidence: 0.7914395928382874
+Label: Thigh, Confidence: 0.7774614095687866
+Label: Fun, Confidence: 0.7614650130271912
+Label: T-shirt, Confidence: 0.7378418445587158
+
+
+Fabrika, Color
+
+Label: Wood, Confidence: 0.7872781157493591
+Label: Leisure, Confidence: 0.7747522592544556
+Label: Fun, Confidence: 0.7555760741233826
+Label: Event, Confidence: 0.7112993597984314
+Label: Art, Confidence: 0.6827100515365601
+Label: Child, Confidence: 0.6161987781524658
+Label: Toy, Confidence: 0.5935215950012207
+Label: Room, Confidence: 0.5885172486305237
+Label: Stairs, Confidence: 0.5636851191520691
+Label: Recreation, Confidence: 0.5614694952964783
+
+
+Shalva, B&W
+Label: Water, Confidence: 0.9040008187294006
+Label: Jaw, Confidence: 0.8771321177482605
+Label: Organism, Confidence: 0.8549937009811401
+Label: Gesture, Confidence: 0.852604866027832
+Label: Black-and-white, Confidence: 0.8490909934043884
+Label: Style, Confidence: 0.8392922878265381
+Label: Flash photography, Confidence: 0.8155518770217896
+Label: Monochrome photography, Confidence: 0.7440383434295654
+Label: Monochrome, Confidence: 0.7336675524711609
+Label: Snout, Confidence: 0.7329857349395752
+
+
+Bakuriani, Color
+
+Label: Gesture, Confidence: 0.852604866027832
+Label: Entertainment, Confidence: 0.7918291687965393
+Label: People, Confidence: 0.7850800156593323
+Label: Crowd, Confidence: 0.7556407451629639
+Label: Event, Confidence: 0.7426320910453796
+Label: Performing arts, Confidence: 0.7169541716575623
+Label: Fun, Confidence: 0.7149385213851929
+Label: Fire, Confidence: 0.663270115852356
+Label: Tree, Confidence: 0.6429914236068726
+Label: Performance art, Confidence: 0.6177454590797424
