@@ -1,0 +1,13 @@
+python clev.py --attack=FGSM --image_path='./horses.jpg' --model=ResNet50
+
+
+
+google colab
+metacentrum
+
+transferability attacks 
+
+voting ensemble (+paper)
+
+patch attack 
+CNN adn ViT transferability

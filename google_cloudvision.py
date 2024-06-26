@@ -38,25 +38,39 @@ def find_perturbed_files(directory_path):
 if __name__ == '__main__':
     # image_path = './khinkali.jpg'
 
-    directory_path = './TREMBA/dataset/Imagenet/Sample_10/'
-    jpeg_files = find_jpeg_files(directory_path)
-    output_path = './TREMBA/output/'
-    perturbed_files = find_perturbed_files(output_path)
+    # directory_path = './TREMBA/dataset/Imagenet/Sample_10/'
+    # jpeg_files = find_jpeg_files(directory_path)
+    # output_path = './TREMBA/output/'
+    # perturbed_files = find_perturbed_files(output_path)
 
 
-    # image_path = './film_bakur.jpeg'
-    # detect_labels(image_path)
+    image_path = './cats.jpg'
+    print("Original image labels:")
+    detect_labels(image_path)
+
+    adv_image_path = "./cats_adversarial.png"
+    print("-"*80 + "\nLabels for the perturbed image 1:")
+    detect_labels(adv_image_path)
+
+    adv_image_path = "./cats_adversarial1.png"
+    print("-"*80 + "\nLabels for the perturbed image 2:")
+    detect_labels(adv_image_path)
 
 
-    for i in range(len(jpeg_files)-1):
+    adv_image_path = "./cats_adversarial2.png"
+    print("-"*80 + "\nLabels for the perturbed image 3:")
+    detect_labels(adv_image_path)
 
-        image_path = jpeg_files[i]
 
-        perturbed_image_path = perturbed_files[i]
+    # for i in range(len(jpeg_files)-1):
 
-        print("labels for the original image:")
-        detect_labels(image_path)
-        print("\nlabels for the perturbed image:")
-        detect_labels(perturbed_image_path)
-        print("="*80)
+    #     image_path = jpeg_files[i]
+
+    #     perturbed_image_path = perturbed_files[i]
+
+    #     print("labels for the original image:")
+    #     detect_labels(image_path)
+    #     print("\nlabels for the perturbed image:")
+    #     detect_labels(perturbed_image_path)
+    #     print("="*80)
 
