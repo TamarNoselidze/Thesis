@@ -1,0 +1,5 @@
+The attack FGSM managed to fool the model `vit_b_32` 93 out of 100 times.
+-------------------------------------------------------------------------------------
+
+
+Average success rate of the attack on vit_b_32 model: 93.00%

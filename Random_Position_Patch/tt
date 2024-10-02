@@ -1,0 +1,8 @@
+metacentrum
+add image as an arg to optimize the generator
+cleverhans experiments 
+starship ? ? customize terminal 
+
+
+
+python main.py --attack=HOP-SKIP --image_folder_path=../imagenetv2-top-images/imagenetv2-top-images-format-val --models=vit_b_16 --epochs=0

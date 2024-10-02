@@ -5,7 +5,7 @@ class AdversarialLoss(nn.Module):
     def __init__(self, target_class):
         super(AdversarialLoss, self).__init__()
         self.target_class = target_class
-        self.loss_fn = nn.CrossEntropyLoss()
+        #self.loss_fn = nn.CrossEntropyLoss()
 
     def forward(self, predictions, target_class=None):
         # log softmax

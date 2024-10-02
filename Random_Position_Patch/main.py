@@ -9,7 +9,8 @@ from torchvision.models import vit_b_16, ViT_B_16_Weights
 
 torch.autograd.set_detect_anomaly(True)
 
-from generator import Generator
+# from generator import Generator
+from gen import Generator
 from deployer import Deployer
 from helper import save_image, save_patch
 from loss import AdversarialLoss
@@ -45,11 +46,11 @@ best_patch = None
 best_asr = 0  
 best_example_images = {}
 
-noise = torch.randn(batch_size, input_dim, 1, 1)  # Single noise vector to evolve
-adv_patch = generator(noise)  # Create the patch
-
-
 optimizer = optim.Adam(generator.parameters(), lr=0.0002, betas=(0.5, 0.999))   ## try different values
+
+# noise = torch.randn(batch_size, input_dim, 1, 1)  # Single noise vector to evolve
+# adv_patch = generator(noise)  # Create the patch
+
 
 # with open('results.txt', 'w') as f:
 
@@ -59,18 +60,47 @@ for epoch in range(num_epochs):
     best_epoch_patch = None 
 
     for batch in dataloader:
+        # print('aaaaaa')
         images, true_labels = batch
         batch_size = images.shape[0]
 
-        # noise = torch.randn(batch_size, input_dim, 1, 1)
-        # adv_patch = generator(noise)
+        noise = torch.randn(batch_size, input_dim, 1, 1)
+        # adv_patch = generator(noise)  # add an image
+
+        adv_patches = []  # Store generated patches for each image
 
         #deploying 
-        modified_images = torch.empty_like(images)
+        # modified_images = []
+        # torch.empty_like(images)
         for i in range(batch_size):
-            modified_images[i] = deployer.deploy(adv_patch[i], images[i])
-            epoch_images[images[i]] = modified_images[i]
+            # modified_images[i] = deployer.deploy(adv_patch[i], images[i])
+            print(F'------------------------------ noise shape: {noise[i].unsqueeze(0).shape}')
+            adv_patch = generator(noise[i].unsqueeze(0), images[i].unsqueeze(0))
+
+            # modified_images.append(deployer.deploy(adv_patch[i], images[i]))
+            # epoch_images[images[i]] = modified_images[i]
+            adv_patches.append(adv_patch)
             # save_image(images[i], modified_images[i], f"image_{i}_epoch_{epoch+1}")
+
+        adv_patches = torch.cat(adv_patches, dim=0)  # Stack generated patches
+        # print([t.shape for t in modified_images])
+        # modified_images = torch.stack(modified_images)
+
+
+
+
+        modified_images = []
+
+        for i in range(batch_size):
+            modified_image = deployer.deploy(adv_patches[i], images[i])
+            modified_images.append(modified_image)
+        
+        modified_images = torch.stack(modified_images)
+
+
+
+
+
 
         outputs = discriminator(modified_images)
         

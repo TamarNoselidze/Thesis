@@ -53,10 +53,10 @@ class Generator(nn.Module):
         x = self.relu4(x)
 
         x = self.layer5(x)
-        print(f"After layer 5 (ConvTranspose2d): {x.shape} | min: {x.min().item()} | max: {x.max().item()}")
+        # print(f"After layer 5 (ConvTranspose2d): {x.shape} | min: {x.min().item()} | max: {x.max().item()}")
 
         x = self.threshold(x)
-        print(f"After thresholding: {x.shape} | min: {x.min().item()} | max: {x.max().item()}")
+        # print(f"After thresholding: {x.shape} | min: {x.min().item()} | max: {x.max().item()}")
 
         return x
     
@@ -69,3 +69,4 @@ class Generator(nn.Module):
         if isinstance(m, nn.ConvTranspose2d):
             nn.init.xavier_uniform_(m.weight.data)
             if m.bias is not None: nn.init.constant_(m.bias.data, 0)
+

@@ -1,0 +1,5 @@
+The attack FGSM managed to fool the model `resnet50` 58 out of 100 times.
+-------------------------------------------------------------------------------------
+
+
+Average success rate of the attack on resnet50 model: 58.00%
