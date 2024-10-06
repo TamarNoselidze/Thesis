@@ -68,9 +68,12 @@ for epoch in range(num_epochs):
     for batch in dataloader:
         # print('aaaaaa')
         images, true_labels = batch
+        images = images.to(device)
+        true_labels = true_labels.to(device)
+
         batch_size = images.shape[0]
 
-        noise = torch.randn(batch_size, input_dim, 1, 1)
+        noise = torch.randn(batch_size, input_dim, 1, 1).to(device)
         # adv_patch = generator(noise)  # add an image
 
         adv_patches = []  # Store generated patches for each image
@@ -81,8 +84,8 @@ for epoch in range(num_epochs):
         for i in range(batch_size):
             # modified_images[i] = deployer.deploy(adv_patch[i], images[i])
             print(F'------------------------------ noise shape: {noise[i].unsqueeze(0).shape}')
-            adv_patch = generator(noise[i].unsqueeze(0), images[i].unsqueeze(0))
-
+#            adv_patch = generator(noise[i].unsqueeze(0), images[i].unsqueeze(0))
+            adv_patch = generator(noise[i].unsqueeze(0).to(device), images[i].unsqueeze(0).to(device))
             # modified_images.append(deployer.deploy(adv_patch[i], images[i]))
             # epoch_images[images[i]] = modified_images[i]
             adv_patches.append(adv_patch)
