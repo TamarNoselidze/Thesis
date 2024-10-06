@@ -26,7 +26,7 @@ k = 0.5
 generator = Generator(input_dim, output_dim, k).to(device)  # moving generator to the appropriate device (if gpu not available, cpu!!!)
 generator.train()
 
-deployer = Deployer().to(device)
+deployer = Deployer()
 
 # discriminator = vit_b_16(weights=ViT_B_16_Weights.DEFAULT)
 discriminator = vit_b_16(weights=ViT_B_16_Weights.DEFAULT).to(device)  # moving model to the appropriate device

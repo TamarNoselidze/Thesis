@@ -1,6 +1,0 @@
-=>> PBS: job killed: walltime 14421 exceeded limit 14400
-Terminated
-tar: Removing leading `/' from member names
-tar: /scratch.ssd/takonoselidze/job_4764078.pbs-m1.metacentrum.cz/results: Cannot stat: No such file or directory
-tar: /scratch.ssd/takonoselidze/job_4764078.pbs-m1.metacentrum.cz/logs: Cannot stat: No such file or directory
-tar: Exiting with failure status due to previous errors
