@@ -7,6 +7,10 @@ from torchvision import datasets, transforms
 from torch.utils.data import DataLoader
 from torchvision.models import vit_b_16, ViT_B_16_Weights
 
+
+device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+print(f'Using device: {device}')
+
 torch.autograd.set_detect_anomaly(True)
 
 # from generator import Generator
@@ -18,12 +22,13 @@ from loss import AdversarialLoss
 input_dim = 100  
 output_dim = 3      
 k = 0.5
-generator = Generator(input_dim, output_dim, k)
+generator = Generator(input_dim, output_dim, k).to(device)  # moving generator to the appropriate device (if gpu not available, cpu!!!)
 generator.train()
 
 deployer = Deployer()
 
-discriminator = vit_b_16(weights=ViT_B_16_Weights.DEFAULT)
+# discriminator = vit_b_16(weights=ViT_B_16_Weights.DEFAULT)
+discriminator = vit_b_16(weights=ViT_B_16_Weights.DEFAULT).to(device)  # moving model to the appropriate device
 discriminator.eval()
 
 

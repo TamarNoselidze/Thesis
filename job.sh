@@ -1,6 +1,6 @@
 #!/bin/bash
 #PBS -q gpu@pbs-m1.metacentrum.cz
-#PBS -l walltime=4:00:00
+#PBS -l walltime=6:00:00
 #PBS -l select=1:ncpus=1:ngpus=1:mem=30gb:scratch_local=100gb
 
 trap 'clean_scratch' TERM EXIT
