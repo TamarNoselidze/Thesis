@@ -22,10 +22,11 @@ from loss import AdversarialLoss
 input_dim = 100  
 output_dim = 3      
 k = 0.5
+
 generator = Generator(input_dim, output_dim, k).to(device)  # moving generator to the appropriate device (if gpu not available, cpu!!!)
 generator.train()
 
-deployer = Deployer()
+deployer = Deployer().to(device)
 
 # discriminator = vit_b_16(weights=ViT_B_16_Weights.DEFAULT)
 discriminator = vit_b_16(weights=ViT_B_16_Weights.DEFAULT).to(device)  # moving model to the appropriate device
@@ -66,7 +67,6 @@ for epoch in range(num_epochs):
     best_epoch_patch = None 
 
     for batch in dataloader:
-        # print('aaaaaa')
         images, true_labels = batch
         images = images.to(device)
         true_labels = true_labels.to(device)
@@ -91,7 +91,7 @@ for epoch in range(num_epochs):
             adv_patches.append(adv_patch)
             # save_image(images[i], modified_images[i], f"image_{i}_epoch_{epoch+1}")
 
-        adv_patches = torch.cat(adv_patches, dim=0)  # Stack generated patches
+        adv_patches = torch.cat(adv_patches, dim=0).to(device)  # Stack generated patches
         # print([t.shape for t in modified_images])
         # modified_images = torch.stack(modified_images)
 
@@ -104,24 +104,22 @@ for epoch in range(num_epochs):
             modified_image = deployer.deploy(adv_patches[i], images[i])
             modified_images.append(modified_image)
         
-        modified_images = torch.stack(modified_images)
-
-
-
+        modified_images = torch.stack(modified_images).to(device)
 
 
 
         outputs = discriminator(modified_images)
         
-        target_class_y_prime = torch.randint(0, num_classes, (batch_size,))
+        target_class_y_prime = torch.randint(0, num_classes, (batch_size,)).to(device)
         target_class_y_prime[target_class_y_prime == true_labels] = (target_class_y_prime[target_class_y_prime == true_labels] + 1) % num_classes
         
-        criterion = AdversarialLoss(target_class=target_class_y_prime)
+        criterion = AdversarialLoss(target_class=target_class_y_prime).to(device)
         loss = criterion(outputs)
         
         
         optimizer.zero_grad()
-        loss.backward(retain_graph=True)
+        # loss.backward(retain_graph=True)
+        loss.backward()
         optimizer.step()
 
 
