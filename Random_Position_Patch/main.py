@@ -33,7 +33,8 @@ transform = transforms.Compose([
 ])
 
 
-dataset = datasets.ImageFolder('../imagenetv2-top-images/imagenetv2-top-images-format-val', transform=transform)
+#dataset = datasets.ImageFolder('../imagenetv2-top-images/imagenetv2-top-images-format-val', transform=transform)
+dataset = datasets.ImageFolder('./imagenetv2-top-images/imagenetv2-top-images-format-val', transform=transform)
 dataloader = DataLoader(dataset, batch_size=32, shuffle=True)
 
 
@@ -115,6 +116,7 @@ for epoch in range(num_epochs):
         loss.backward(retain_graph=True)
         optimizer.step()
 
+
         _, predicted = torch.max(outputs.data, 1)
         
         correct = (predicted == true_labels).sum().item()
@@ -127,7 +129,8 @@ for epoch in range(num_epochs):
         if asr > best_asr:
             best_asr = asr
             best_patch = adv_patch.clone().detach()  # Save the best performing patch
-            
+
+        
 
     # with open('results.txt', 'w') as f:
     # f.write(f"Epoch [{epoch+1}/{num_epochs}], Loss: {loss.item()}")
