@@ -1,0 +1,711 @@
+/scratch.ssd/takonoselidze/job_4821885.pbs-m1.metacentrum.cz:
+__pycache__
+best_patches
+deployer.py
+gen.py
+generator.py
+helper.py
+imagenetv2-top-images
+loss.py
+main.py
+pics
+results.txt
+sing.sh
+tt
+
+/scratch.ssd/takonoselidze/job_4821885.pbs-m1.metacentrum.cz/__pycache__:
+deployer.cpython-312.pyc
+gen.cpython-312.pyc
+generator.cpython-312.pyc
+helper.cpython-312.pyc
+loss.cpython-312.pyc
+
+/scratch.ssd/takonoselidze/job_4821885.pbs-m1.metacentrum.cz/best_patches:
+best_patches.pt
+
+/scratch.ssd/takonoselidze/job_4821885.pbs-m1.metacentrum.cz/imagenetv2-top-images:
+imagenetv2-top-images-format-val
+
+/scratch.ssd/takonoselidze/job_4821885.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val:
+0
+1
+2
+3
+4
+5
+6
+7
+8
+9
+
+/scratch.ssd/takonoselidze/job_4821885.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/0:
+04dd056ffd339096d2f8986f4873c84d29e668eb.jpeg
+207df83484a716f079c18696817e2e75d648c98d.jpeg
+4cf6d229d22f5f42c6bf6f8363e4f8eab7715cca.jpeg
+9338bedfe9a5ceb5971fc07ae128104d6b817de0.jpeg
+a0d2d36a5e03cc57ec55dc1c4c113933e9dfaa60.jpeg
+ba78aae2f740c0be54de55d8f593c6104c77512c.jpeg
+c0dff9edc4cdd9065029b2a7f62784ef4c7ca2d3.jpeg
+c79124afd17cf15c2f385540da4c32c6689d769f.jpeg
+df4853173007ff4a927321b2b7ac7caccc7b8274.jpeg
+fb0b47e2c59bb7776d257527fe0dd16aa063ca40.jpeg
+
+/scratch.ssd/takonoselidze/job_4821885.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/1:
+08e169d0671408770e5b7521159aec5a783483a9.jpeg
+253efed8de81beaaa2ab904c63f3b7abe04ac0e5.jpeg
+2fb7561b81c4e57499123d88ca1b3dfb90c12b04.jpeg
+4bfc25951f1f2f8568aaed8be30920b187674d0a.jpeg
+6c8b66e303801b018d86b8ed7ca897d5ed563b75.jpeg
+90fde528a1b9f26757606207f35a79dc7b946f46.jpeg
+9ff1575e93c4fd785e1565e964bbe829712959e2.jpeg
+a55198d91eb85d0dc705db5d59ce2f867bfb466c.jpeg
+e2613afe9127bd7d70eb441a4ffd744b4c207cb6.jpeg
+e37048a894d380f264d7fa3c22f613dfba8ed1f1.jpeg
+
+/scratch.ssd/takonoselidze/job_4821885.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/2:
+807b3688188c55a32c9166a58b65a5143e69480b.jpeg
+8c95a9295b913dfa7c09249679de3e5e9bde8bd0.jpeg
+8dbe7fb5b7bcc94a69038a8197e28475f0336066.jpeg
+9be3bb036950ddd662f2caf63397209a850ad048.jpeg
+a125a10ca56dc19ae6a33b595920e219df4d4c20.jpeg
+a5e0a4920db284c943df7e2f85f9a2ff1cf9bbec.jpeg
+ed09f1d3750a6d0d59ae33c04be2c89ebc7c7f72.jpeg
+f2c217158597d0c6c2d8c10f67e67492996e55e0.jpeg
+f3f5459bc6eecdf01616a1a9c21d27075d31001b.jpeg
+f82eb5914602bb0bc538fc417ca3757949743eec.jpeg
+
+/scratch.ssd/takonoselidze/job_4821885.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/3:
+0cf73b97b86415673e59550d200d3479f5640d04.jpeg
+18c643aadc993b9e5614838d002b5d32b0483999.jpeg
+1a388b636b5b41315b482e6f4ad0274ef3ecbd2a.jpeg
+3212002cf6d1a3b6de68c336416e7e506433922e.jpeg
+3a65c3e3ce16e0a2206612a7f49331c43314404a.jpeg
+5245479db5ad906476e4be4870104c31a2fcb29e.jpeg
+a58b5008e1fd54d3e1b0cc03c081712c0c526726.jpeg
+d4bbd61a1a54b47db14b3762758a1c6cbf0de018.jpeg
+e9a3e1201ed6fc3ff60466201c19dea9a3f8c511.jpeg
+f976028e7ad0be62ca942d8a1cbb53dc29ec64c0.jpeg
+
+/scratch.ssd/takonoselidze/job_4821885.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/4:
+076067646a7168cc8fbc22e722073d10a779d587.jpeg
+10c406ff6220430c75040f3bd24b5f4f995552bc.jpeg
+15f869764cbb3c3c6948c604f9691f0f8fcf0c65.jpeg
+39a5611aa94e4dfeb5c79f39037b68a0fbef65f7.jpeg
+96311e58989f77bf80a5e0ffad495c0a68dd48e6.jpeg
+a304a7ee11a0cd2bd06dbb3c8d7006e6b1f99bdc.jpeg
+bab53e4d1a69c992664e84a90f5deb65cbca2a9d.jpeg
+be6dee1d0ae696dfe8f5be894bf2115dfa7805b4.jpeg
+f74b45796a4c05038dea5df3575825db3af6c176.jpeg
+fc303fd7d9b43cb62ff22eb0bb52dfe8244f87ec.jpeg
+
+/scratch.ssd/takonoselidze/job_4821885.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/5:
+100fc058b8d24a959bfb156dd4e7e2f7f887d20f.jpeg
+679c5741ea91890d671963d5db95cbffac3255ce.jpeg
+8c7d1879fcc6a50496b28e2b08603b517c42a2a2.jpeg
+97b7c40d192483b35b4f05652986c0b8eb15d079.jpeg
+9e38c40ec47499517cf6bdfd365b5e87d3586516.jpeg
+a63e3c5fec717d39a6cd1d997d19a2697dc4c61e.jpeg
+a6d806268d1bd2e939e76068a1443ac49113e0fd.jpeg
+ab95281e7795bafebf93b2c1b822b46d1ebd943e.jpeg
+b0cfc1974bbb0e1a5f94e9201fe664ef6ded508d.jpeg
+b8645851941740d0c4e8b4b31aa19c2f4b5eb57d.jpeg
+
+/scratch.ssd/takonoselidze/job_4821885.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/6:
+0a5f3a19015e6aacb2c2c95f5d4246c67b4e029b.jpeg
+190eefdc99b7f6e7b4dbdd2f0cd4a606698efed9.jpeg
+2c710be3a03aab7cfb018086f50768506a622675.jpeg
+32cc2c1b9f31a1f21fdd3913633291f4f461c2f8.jpeg
+7b820f7f658d38113912c63da7f0a41f47c8a6e2.jpeg
+9a2f776880903f0f00c061d8a81f9eca84e560e4.jpeg
+a93094d8cd98f17e56a1ba6744709598c5e6ca74.jpeg
+c22e983d28788e338e3c1aed67ef7bcde39787ac.jpeg
+e3f5c14496734e8233e285b659e4ad35d31e4b84.jpeg
+f655c56af601255a6566c5fe8ccfd2900751b2db.jpeg
+
+/scratch.ssd/takonoselidze/job_4821885.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/7:
+000ad60be25ce06569f4309f62a4f13d0803920d.jpeg
+08535231bc428fb562c164a09234ddf48ae4ed99.jpeg
+2688c8c7d3273d7276e84c60742081d594d4f55c.jpeg
+5626cb5e3e3bb130d56f9525332c82a9b348d564.jpeg
+621c7562b33e100e45411c44ba146f9ff6c1d5d0.jpeg
+a968f01df8a044434de30f0d601bd29e685403bf.jpeg
+ad71a33e2dd713357d9edf9f1a770645aeb2d591.jpeg
+bcf2f4b610c3e1690ec02fd7f41a9d94fc51537f.jpeg
+bf4504b135caa6f865591bd6c10f0fb7321b55f8.jpeg
+f1dbb6320f8459849f9d9918462b1c8a5ce27b1a.jpeg
+
+/scratch.ssd/takonoselidze/job_4821885.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/8:
+318b12f6012a01974a4d0b951254411ad02a3536.jpeg
+324d36f50cd7e236ed71d3086d3efa0fe09ac9e9.jpeg
+3db6c4212d56571fb5cadcfb2d8e8b935dfd024f.jpeg
+77648ab8b78402952afa53f494e45cf4b5962bdb.jpeg
+8856806dd0fa916a07213290b0b2487a4685dca7.jpeg
+9f13ce05ed8abc62d3aa566537975e38b1d539d8.jpeg
+9fda791068c3d2a9964dd49b2349b529b000a398.jpeg
+a6d991fc53f7c9eb8bb1ba82fd35df2ade1186a4.jpeg
+ca2a3439d6b56191a347c2f54c3d7930ea96fcdd.jpeg
+d9e598b2643a3ca7e28c5a8c879938b10f64a6d4.jpeg
+
+/scratch.ssd/takonoselidze/job_4821885.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/9:
+7ae53e434118ba4496ccec025b3e5ed9d80775a1.jpeg
+7da025044046b51391ae842b092e11a164628fcd.jpeg
+a294e18f9288d89683fa7c3fe8f1e8274381669a.jpeg
+b5271821ea279c9a60aec5069ce20bdbf74a55a5.jpeg
+c3913df91d5dea761373473b38c96f3a1c9711b6.jpeg
+cb40f781b5b7bf9bb55ce2a370ad44dc109ec32d.jpeg
+cf135f199d8c7a9d0dce9aa35acfb4c70c14e0aa.jpeg
+d23c1ce890eb59f903ccf125148ad83b512c8068.jpeg
+ed5ef147e3f3a2381de4740f9059639028b08b18.jpeg
+ef2452f5dcdcb4f8eb37bb23839dc2dd095e0b6a.jpeg
+
+/scratch.ssd/takonoselidze/job_4821885.pbs-m1.metacentrum.cz/pics:
+best_adversarial_patch.png
+res_0.png
+res_1.png
+res_10.png
+res_11.png
+res_12.png
+res_13.png
+res_14.png
+res_15.png
+res_16.png
+res_17.png
+res_18.png
+res_19.png
+res_2.png
+res_20.png
+res_21.png
+res_22.png
+res_23.png
+res_24.png
+res_25.png
+res_26.png
+res_27.png
+res_28.png
+res_29.png
+res_3.png
+res_30.png
+res_31.png
+res_32.png
+res_33.png
+res_34.png
+res_35.png
+res_36.png
+res_37.png
+res_38.png
+res_39.png
+res_4.png
+res_40.png
+res_41.png
+res_42.png
+res_43.png
+res_44.png
+res_45.png
+res_46.png
+res_47.png
+res_48.png
+res_49.png
+res_5.png
+res_50.png
+res_51.png
+res_52.png
+res_53.png
+res_54.png
+res_55.png
+res_56.png
+res_57.png
+res_58.png
+res_59.png
+res_6.png
+res_60.png
+res_61.png
+res_62.png
+res_63.png
+res_64.png
+res_65.png
+res_66.png
+res_67.png
+res_68.png
+res_69.png
+res_7.png
+res_70.png
+res_71.png
+res_72.png
+res_73.png
+res_74.png
+res_75.png
+res_76.png
+res_77.png
+res_78.png
+res_79.png
+res_8.png
+res_80.png
+res_81.png
+res_82.png
+res_83.png
+res_84.png
+res_85.png
+res_86.png
+res_87.png
+res_88.png
+res_89.png
+res_9.png
+res_90.png
+res_91.png
+res_92.png
+res_93.png
+res_94.png
+res_95.png
+res_96.png
+res_97.png
+res_98.png
+res_99.png
+Requirement already satisfied: torch in /usr/local/lib/python3.8/dist-packages (2.0.1)
+Requirement already satisfied: torchvision in /usr/local/lib/python3.8/dist-packages (0.15.2)
+Requirement already satisfied: matplotlib in /usr/local/lib/python3.8/dist-packages (3.7.5)
+Requirement already satisfied: numpy in /usr/local/lib/python3.8/dist-packages (1.24.4)
+Requirement already satisfied: Pillow in /usr/local/lib/python3.8/dist-packages (10.4.0)
+Requirement already satisfied: filelock in /usr/local/lib/python3.8/dist-packages (from torch) (3.16.1)
+Requirement already satisfied: typing-extensions in /usr/local/lib/python3.8/dist-packages (from torch) (4.12.2)
+Requirement already satisfied: sympy in /usr/local/lib/python3.8/dist-packages (from torch) (1.13.3)
+Requirement already satisfied: networkx in /usr/local/lib/python3.8/dist-packages (from torch) (3.1)
+Requirement already satisfied: jinja2 in /usr/local/lib/python3.8/dist-packages (from torch) (3.1.4)
+Requirement already satisfied: nvidia-cuda-nvrtc-cu11==11.7.99 in /usr/local/lib/python3.8/dist-packages (from torch) (11.7.99)
+Requirement already satisfied: nvidia-cuda-runtime-cu11==11.7.99 in /usr/local/lib/python3.8/dist-packages (from torch) (11.7.99)
+Requirement already satisfied: nvidia-cuda-cupti-cu11==11.7.101 in /usr/local/lib/python3.8/dist-packages (from torch) (11.7.101)
+Requirement already satisfied: nvidia-cudnn-cu11==8.5.0.96 in /usr/local/lib/python3.8/dist-packages (from torch) (8.5.0.96)
+Requirement already satisfied: nvidia-cublas-cu11==11.10.3.66 in /usr/local/lib/python3.8/dist-packages (from torch) (11.10.3.66)
+Requirement already satisfied: nvidia-cufft-cu11==10.9.0.58 in /usr/local/lib/python3.8/dist-packages (from torch) (10.9.0.58)
+Requirement already satisfied: nvidia-curand-cu11==10.2.10.91 in /usr/local/lib/python3.8/dist-packages (from torch) (10.2.10.91)
+Requirement already satisfied: nvidia-cusolver-cu11==11.4.0.1 in /usr/local/lib/python3.8/dist-packages (from torch) (11.4.0.1)
+Requirement already satisfied: nvidia-cusparse-cu11==11.7.4.91 in /usr/local/lib/python3.8/dist-packages (from torch) (11.7.4.91)
+Requirement already satisfied: nvidia-nccl-cu11==2.14.3 in /usr/local/lib/python3.8/dist-packages (from torch) (2.14.3)
+Requirement already satisfied: nvidia-nvtx-cu11==11.7.91 in /usr/local/lib/python3.8/dist-packages (from torch) (11.7.91)
+Requirement already satisfied: triton==2.0.0 in /usr/local/lib/python3.8/dist-packages (from torch) (2.0.0)
+Requirement already satisfied: setuptools in /usr/lib/python3/dist-packages (from nvidia-cublas-cu11==11.10.3.66->torch) (45.2.0)
+Requirement already satisfied: wheel in /usr/lib/python3/dist-packages (from nvidia-cublas-cu11==11.10.3.66->torch) (0.34.2)
+Requirement already satisfied: cmake in /usr/local/lib/python3.8/dist-packages (from triton==2.0.0->torch) (3.30.4)
+Requirement already satisfied: lit in /usr/local/lib/python3.8/dist-packages (from triton==2.0.0->torch) (18.1.8)
+Requirement already satisfied: requests in /usr/local/lib/python3.8/dist-packages (from torchvision) (2.32.3)
+Requirement already satisfied: contourpy>=1.0.1 in /usr/local/lib/python3.8/dist-packages (from matplotlib) (1.1.1)
+Requirement already satisfied: cycler>=0.10 in /usr/local/lib/python3.8/dist-packages (from matplotlib) (0.12.1)
+Requirement already satisfied: fonttools>=4.22.0 in /usr/local/lib/python3.8/dist-packages (from matplotlib) (4.54.1)
+Requirement already satisfied: kiwisolver>=1.0.1 in /usr/local/lib/python3.8/dist-packages (from matplotlib) (1.4.7)
+Requirement already satisfied: packaging>=20.0 in /usr/local/lib/python3.8/dist-packages (from matplotlib) (24.1)
+Requirement already satisfied: pyparsing>=2.3.1 in /usr/local/lib/python3.8/dist-packages (from matplotlib) (3.1.4)
+Requirement already satisfied: python-dateutil>=2.7 in /usr/local/lib/python3.8/dist-packages (from matplotlib) (2.9.0.post0)
+Requirement already satisfied: importlib-resources>=3.2.0 in /usr/local/lib/python3.8/dist-packages (from matplotlib) (6.4.5)
+Requirement already satisfied: zipp>=3.1.0 in /usr/local/lib/python3.8/dist-packages (from importlib-resources>=3.2.0->matplotlib) (3.20.2)
+Requirement already satisfied: six>=1.5 in /usr/local/lib/python3.8/dist-packages (from python-dateutil>=2.7->matplotlib) (1.16.0)
+Requirement already satisfied: MarkupSafe>=2.0 in /usr/local/lib/python3.8/dist-packages (from jinja2->torch) (2.1.5)
+Requirement already satisfied: charset-normalizer<4,>=2 in /usr/local/lib/python3.8/dist-packages (from requests->torchvision) (3.3.2)
+Requirement already satisfied: idna<4,>=2.5 in /usr/local/lib/python3.8/dist-packages (from requests->torchvision) (3.10)
+Requirement already satisfied: urllib3<3,>=1.21.1 in /usr/local/lib/python3.8/dist-packages (from requests->torchvision) (2.2.3)
+Requirement already satisfied: certifi>=2017.4.17 in /usr/local/lib/python3.8/dist-packages (from requests->torchvision) (2024.8.30)
+Requirement already satisfied: mpmath<1.4,>=1.1.0 in /usr/local/lib/python3.8/dist-packages (from sympy->torch) (1.3.0)
+Running Python script
+Using device: cuda
+
+--- Forward Pass ---
+Noise shape: torch.Size([1, 100, 1, 1]), Image shape: torch.Size([1, 3, 224, 224])
+Image embedding shape: torch.Size([1, 8192])
+
+--- Forward Pass ---
+Noise shape: torch.Size([1, 100, 1, 1]), Image shape: torch.Size([1, 3, 224, 224])
+Image embedding shape: torch.Size([1, 8192])
+
+--- Forward Pass ---
+Noise shape: torch.Size([1, 100, 1, 1]), Image shape: torch.Size([1, 3, 224, 224])
+Image embedding shape: torch.Size([1, 8192])
+
+--- Forward Pass ---
+Noise shape: torch.Size([1, 100, 1, 1]), Image shape: torch.Size([1, 3, 224, 224])
+Image embedding shape: torch.Size([1, 8192])
+
+--- Forward Pass ---
+Noise shape: torch.Size([1, 100, 1, 1]), Image shape: torch.Size([1, 3, 224, 224])
+Image embedding shape: torch.Size([1, 8192])
+
+--- Forward Pass ---
+Noise shape: torch.Size([1, 100, 1, 1]), Image shape: torch.Size([1, 3, 224, 224])
+Image embedding shape: torch.Size([1, 8192])
+
+--- Forward Pass ---
+Noise shape: torch.Size([1, 100, 1, 1]), Image shape: torch.Size([1, 3, 224, 224])
+Image embedding shape: torch.Size([1, 8192])
+
+--- Forward Pass ---
+Noise shape: torch.Size([1, 100, 1, 1]), Image shape: torch.Size([1, 3, 224, 224])
+Image embedding shape: torch.Size([1, 8192])
+
+--- Forward Pass ---
+Noise shape: torch.Size([1, 100, 1, 1]), Image shape: torch.Size([1, 3, 224, 224])
+Image embedding shape: torch.Size([1, 8192])
+
+--- Forward Pass ---
+Noise shape: torch.Size([1, 100, 1, 1]), Image shape: torch.Size([1, 3, 224, 224])
+Image embedding shape: torch.Size([1, 8192])
+
+--- Forward Pass ---
+Noise shape: torch.Size([1, 100, 1, 1]), Image shape: torch.Size([1, 3, 224, 224])
+Image embedding shape: torch.Size([1, 8192])
+
+--- Forward Pass ---
+Noise shape: torch.Size([1, 100, 1, 1]), Image shape: torch.Size([1, 3, 224, 224])
+Image embedding shape: torch.Size([1, 8192])
+
+--- Forward Pass ---
+Noise shape: torch.Size([1, 100, 1, 1]), Image shape: torch.Size([1, 3, 224, 224])
+Image embedding shape: torch.Size([1, 8192])
+
+--- Forward Pass ---
+Noise shape: torch.Size([1, 100, 1, 1]), Image shape: torch.Size([1, 3, 224, 224])
+Image embedding shape: torch.Size([1, 8192])
+
+--- Forward Pass ---
+Noise shape: torch.Size([1, 100, 1, 1]), Image shape: torch.Size([1, 3, 224, 224])
+Image embedding shape: torch.Size([1, 8192])
+
+--- Forward Pass ---
+Noise shape: torch.Size([1, 100, 1, 1]), Image shape: torch.Size([1, 3, 224, 224])
+Image embedding shape: torch.Size([1, 8192])
+
+--- Forward Pass ---
+Noise shape: torch.Size([1, 100, 1, 1]), Image shape: torch.Size([1, 3, 224, 224])
+Image embedding shape: torch.Size([1, 8192])
+
+--- Forward Pass ---
+Noise shape: torch.Size([1, 100, 1, 1]), Image shape: torch.Size([1, 3, 224, 224])
+Image embedding shape: torch.Size([1, 8192])
+
+--- Forward Pass ---
+Noise shape: torch.Size([1, 100, 1, 1]), Image shape: torch.Size([1, 3, 224, 224])
+Image embedding shape: torch.Size([1, 8192])
+
+--- Forward Pass ---
+Noise shape: torch.Size([1, 100, 1, 1]), Image shape: torch.Size([1, 3, 224, 224])
+Image embedding shape: torch.Size([1, 8192])
+
+--- Forward Pass ---
+Noise shape: torch.Size([1, 100, 1, 1]), Image shape: torch.Size([1, 3, 224, 224])
+Image embedding shape: torch.Size([1, 8192])
+
+--- Forward Pass ---
+Noise shape: torch.Size([1, 100, 1, 1]), Image shape: torch.Size([1, 3, 224, 224])
+Image embedding shape: torch.Size([1, 8192])
+
+--- Forward Pass ---
+Noise shape: torch.Size([1, 100, 1, 1]), Image shape: torch.Size([1, 3, 224, 224])
+Image embedding shape: torch.Size([1, 8192])
+
+--- Forward Pass ---
+Noise shape: torch.Size([1, 100, 1, 1]), Image shape: torch.Size([1, 3, 224, 224])
+Image embedding shape: torch.Size([1, 8192])
+
+--- Forward Pass ---
+Noise shape: torch.Size([1, 100, 1, 1]), Image shape: torch.Size([1, 3, 224, 224])
+Image embedding shape: torch.Size([1, 8192])
+
+--- Forward Pass ---
+Noise shape: torch.Size([1, 100, 1, 1]), Image shape: torch.Size([1, 3, 224, 224])
+Image embedding shape: torch.Size([1, 8192])
+
+--- Forward Pass ---
+Noise shape: torch.Size([1, 100, 1, 1]), Image shape: torch.Size([1, 3, 224, 224])
+Image embedding shape: torch.Size([1, 8192])
+
+--- Forward Pass ---
+Noise shape: torch.Size([1, 100, 1, 1]), Image shape: torch.Size([1, 3, 224, 224])
+Image embedding shape: torch.Size([1, 8192])
+
+--- Forward Pass ---
+Noise shape: torch.Size([1, 100, 1, 1]), Image shape: torch.Size([1, 3, 224, 224])
+Image embedding shape: torch.Size([1, 8192])
+
+--- Forward Pass ---
+Noise shape: torch.Size([1, 100, 1, 1]), Image shape: torch.Size([1, 3, 224, 224])
+Image embedding shape: torch.Size([1, 8192])
+
+--- Forward Pass ---
+Noise shape: torch.Size([1, 100, 1, 1]), Image shape: torch.Size([1, 3, 224, 224])
+Image embedding shape: torch.Size([1, 8192])
+
+--- Forward Pass ---
+Noise shape: torch.Size([1, 100, 1, 1]), Image shape: torch.Size([1, 3, 224, 224])
+Image embedding shape: torch.Size([1, 8192])
+
+--- Forward Pass ---
+Noise shape: torch.Size([1, 100, 1, 1]), Image shape: torch.Size([1, 3, 224, 224])
+Image embedding shape: torch.Size([1, 8192])
+
+--- Forward Pass ---
+Noise shape: torch.Size([1, 100, 1, 1]), Image shape: torch.Size([1, 3, 224, 224])
+Image embedding shape: torch.Size([1, 8192])
+
+--- Forward Pass ---
+Noise shape: torch.Size([1, 100, 1, 1]), Image shape: torch.Size([1, 3, 224, 224])
+Image embedding shape: torch.Size([1, 8192])
+
+--- Forward Pass ---
+Noise shape: torch.Size([1, 100, 1, 1]), Image shape: torch.Size([1, 3, 224, 224])
+Image embedding shape: torch.Size([1, 8192])
+
+--- Forward Pass ---
+Noise shape: torch.Size([1, 100, 1, 1]), Image shape: torch.Size([1, 3, 224, 224])
+Image embedding shape: torch.Size([1, 8192])
+
+--- Forward Pass ---
+Noise shape: torch.Size([1, 100, 1, 1]), Image shape: torch.Size([1, 3, 224, 224])
+Image embedding shape: torch.Size([1, 8192])
+
+--- Forward Pass ---
+Noise shape: torch.Size([1, 100, 1, 1]), Image shape: torch.Size([1, 3, 224, 224])
+Image embedding shape: torch.Size([1, 8192])
+
+--- Forward Pass ---
+Noise shape: torch.Size([1, 100, 1, 1]), Image shape: torch.Size([1, 3, 224, 224])
+Image embedding shape: torch.Size([1, 8192])
+
+--- Forward Pass ---
+Noise shape: torch.Size([1, 100, 1, 1]), Image shape: torch.Size([1, 3, 224, 224])
+Image embedding shape: torch.Size([1, 8192])
+
+--- Forward Pass ---
+Noise shape: torch.Size([1, 100, 1, 1]), Image shape: torch.Size([1, 3, 224, 224])
+Image embedding shape: torch.Size([1, 8192])
+
+--- Forward Pass ---
+Noise shape: torch.Size([1, 100, 1, 1]), Image shape: torch.Size([1, 3, 224, 224])
+Image embedding shape: torch.Size([1, 8192])
+
+--- Forward Pass ---
+Noise shape: torch.Size([1, 100, 1, 1]), Image shape: torch.Size([1, 3, 224, 224])
+Image embedding shape: torch.Size([1, 8192])
+
+--- Forward Pass ---
+Noise shape: torch.Size([1, 100, 1, 1]), Image shape: torch.Size([1, 3, 224, 224])
+Image embedding shape: torch.Size([1, 8192])
+
+--- Forward Pass ---
+Noise shape: torch.Size([1, 100, 1, 1]), Image shape: torch.Size([1, 3, 224, 224])
+Image embedding shape: torch.Size([1, 8192])
+
+--- Forward Pass ---
+Noise shape: torch.Size([1, 100, 1, 1]), Image shape: torch.Size([1, 3, 224, 224])
+Image embedding shape: torch.Size([1, 8192])
+
+--- Forward Pass ---
+Noise shape: torch.Size([1, 100, 1, 1]), Image shape: torch.Size([1, 3, 224, 224])
+Image embedding shape: torch.Size([1, 8192])
+
+--- Forward Pass ---
+Noise shape: torch.Size([1, 100, 1, 1]), Image shape: torch.Size([1, 3, 224, 224])
+Image embedding shape: torch.Size([1, 8192])
+
+--- Forward Pass ---
+Noise shape: torch.Size([1, 100, 1, 1]), Image shape: torch.Size([1, 3, 224, 224])
+Image embedding shape: torch.Size([1, 8192])
+
+--- Forward Pass ---
+Noise shape: torch.Size([1, 100, 1, 1]), Image shape: torch.Size([1, 3, 224, 224])
+Image embedding shape: torch.Size([1, 8192])
+
+--- Forward Pass ---
+Noise shape: torch.Size([1, 100, 1, 1]), Image shape: torch.Size([1, 3, 224, 224])
+Image embedding shape: torch.Size([1, 8192])
+
+--- Forward Pass ---
+Noise shape: torch.Size([1, 100, 1, 1]), Image shape: torch.Size([1, 3, 224, 224])
+Image embedding shape: torch.Size([1, 8192])
+
+--- Forward Pass ---
+Noise shape: torch.Size([1, 100, 1, 1]), Image shape: torch.Size([1, 3, 224, 224])
+Image embedding shape: torch.Size([1, 8192])
+
+--- Forward Pass ---
+Noise shape: torch.Size([1, 100, 1, 1]), Image shape: torch.Size([1, 3, 224, 224])
+Image embedding shape: torch.Size([1, 8192])
+
+--- Forward Pass ---
+Noise shape: torch.Size([1, 100, 1, 1]), Image shape: torch.Size([1, 3, 224, 224])
+Image embedding shape: torch.Size([1, 8192])
+
+--- Forward Pass ---
+Noise shape: torch.Size([1, 100, 1, 1]), Image shape: torch.Size([1, 3, 224, 224])
+Image embedding shape: torch.Size([1, 8192])
+
+--- Forward Pass ---
+Noise shape: torch.Size([1, 100, 1, 1]), Image shape: torch.Size([1, 3, 224, 224])
+Image embedding shape: torch.Size([1, 8192])
+
+--- Forward Pass ---
+Noise shape: torch.Size([1, 100, 1, 1]), Image shape: torch.Size([1, 3, 224, 224])
+Image embedding shape: torch.Size([1, 8192])
+
+--- Forward Pass ---
+Noise shape: torch.Size([1, 100, 1, 1]), Image shape: torch.Size([1, 3, 224, 224])
+Image embedding shape: torch.Size([1, 8192])
+
+--- Forward Pass ---
+Noise shape: torch.Size([1, 100, 1, 1]), Image shape: torch.Size([1, 3, 224, 224])
+Image embedding shape: torch.Size([1, 8192])
+
+--- Forward Pass ---
+Noise shape: torch.Size([1, 100, 1, 1]), Image shape: torch.Size([1, 3, 224, 224])
+Image embedding shape: torch.Size([1, 8192])
+
+--- Forward Pass ---
+Noise shape: torch.Size([1, 100, 1, 1]), Image shape: torch.Size([1, 3, 224, 224])
+Image embedding shape: torch.Size([1, 8192])
+
+--- Forward Pass ---
+Noise shape: torch.Size([1, 100, 1, 1]), Image shape: torch.Size([1, 3, 224, 224])
+Image embedding shape: torch.Size([1, 8192])
+
+--- Forward Pass ---
+Noise shape: torch.Size([1, 100, 1, 1]), Image shape: torch.Size([1, 3, 224, 224])
+Image embedding shape: torch.Size([1, 8192])
+
+--- Forward Pass ---
+Noise shape: torch.Size([1, 100, 1, 1]), Image shape: torch.Size([1, 3, 224, 224])
+Image embedding shape: torch.Size([1, 8192])
+
+--- Forward Pass ---
+Noise shape: torch.Size([1, 100, 1, 1]), Image shape: torch.Size([1, 3, 224, 224])
+Image embedding shape: torch.Size([1, 8192])
+
+--- Forward Pass ---
+Noise shape: torch.Size([1, 100, 1, 1]), Image shape: torch.Size([1, 3, 224, 224])
+Image embedding shape: torch.Size([1, 8192])
+
+--- Forward Pass ---
+Noise shape: torch.Size([1, 100, 1, 1]), Image shape: torch.Size([1, 3, 224, 224])
+Image embedding shape: torch.Size([1, 8192])
+
+--- Forward Pass ---
+Noise shape: torch.Size([1, 100, 1, 1]), Image shape: torch.Size([1, 3, 224, 224])
+Image embedding shape: torch.Size([1, 8192])
+
+--- Forward Pass ---
+Noise shape: torch.Size([1, 100, 1, 1]), Image shape: torch.Size([1, 3, 224, 224])
+Image embedding shape: torch.Size([1, 8192])
+
+--- Forward Pass ---
+Noise shape: torch.Size([1, 100, 1, 1]), Image shape: torch.Size([1, 3, 224, 224])
+Image embedding shape: torch.Size([1, 8192])
+
+--- Forward Pass ---
+Noise shape: torch.Size([1, 100, 1, 1]), Image shape: torch.Size([1, 3, 224, 224])
+Image embedding shape: torch.Size([1, 8192])
+
+--- Forward Pass ---
+Noise shape: torch.Size([1, 100, 1, 1]), Image shape: torch.Size([1, 3, 224, 224])
+Image embedding shape: torch.Size([1, 8192])
+
+--- Forward Pass ---
+Noise shape: torch.Size([1, 100, 1, 1]), Image shape: torch.Size([1, 3, 224, 224])
+Image embedding shape: torch.Size([1, 8192])
+
+--- Forward Pass ---
+Noise shape: torch.Size([1, 100, 1, 1]), Image shape: torch.Size([1, 3, 224, 224])
+Image embedding shape: torch.Size([1, 8192])
+
+--- Forward Pass ---
+Noise shape: torch.Size([1, 100, 1, 1]), Image shape: torch.Size([1, 3, 224, 224])
+Image embedding shape: torch.Size([1, 8192])
+
+--- Forward Pass ---
+Noise shape: torch.Size([1, 100, 1, 1]), Image shape: torch.Size([1, 3, 224, 224])
+Image embedding shape: torch.Size([1, 8192])
+
+--- Forward Pass ---
+Noise shape: torch.Size([1, 100, 1, 1]), Image shape: torch.Size([1, 3, 224, 224])
+Image embedding shape: torch.Size([1, 8192])
+
+--- Forward Pass ---
+Noise shape: torch.Size([1, 100, 1, 1]), Image shape: torch.Size([1, 3, 224, 224])
+Image embedding shape: torch.Size([1, 8192])
+
+--- Forward Pass ---
+Noise shape: torch.Size([1, 100, 1, 1]), Image shape: torch.Size([1, 3, 224, 224])
+Image embedding shape: torch.Size([1, 8192])
+
+--- Forward Pass ---
+Noise shape: torch.Size([1, 100, 1, 1]), Image shape: torch.Size([1, 3, 224, 224])
+Image embedding shape: torch.Size([1, 8192])
+
+--- Forward Pass ---
+Noise shape: torch.Size([1, 100, 1, 1]), Image shape: torch.Size([1, 3, 224, 224])
+Image embedding shape: torch.Size([1, 8192])
+
+--- Forward Pass ---
+Noise shape: torch.Size([1, 100, 1, 1]), Image shape: torch.Size([1, 3, 224, 224])
+Image embedding shape: torch.Size([1, 8192])
+
+--- Forward Pass ---
+Noise shape: torch.Size([1, 100, 1, 1]), Image shape: torch.Size([1, 3, 224, 224])
+Image embedding shape: torch.Size([1, 8192])
+
+--- Forward Pass ---
+Noise shape: torch.Size([1, 100, 1, 1]), Image shape: torch.Size([1, 3, 224, 224])
+Image embedding shape: torch.Size([1, 8192])
+
+--- Forward Pass ---
+Noise shape: torch.Size([1, 100, 1, 1]), Image shape: torch.Size([1, 3, 224, 224])
+Image embedding shape: torch.Size([1, 8192])
+
+--- Forward Pass ---
+Noise shape: torch.Size([1, 100, 1, 1]), Image shape: torch.Size([1, 3, 224, 224])
+Image embedding shape: torch.Size([1, 8192])
+
+--- Forward Pass ---
+Noise shape: torch.Size([1, 100, 1, 1]), Image shape: torch.Size([1, 3, 224, 224])
+Image embedding shape: torch.Size([1, 8192])
+
+--- Forward Pass ---
+Noise shape: torch.Size([1, 100, 1, 1]), Image shape: torch.Size([1, 3, 224, 224])
+Image embedding shape: torch.Size([1, 8192])
+
+--- Forward Pass ---
+Noise shape: torch.Size([1, 100, 1, 1]), Image shape: torch.Size([1, 3, 224, 224])
+Image embedding shape: torch.Size([1, 8192])
+
+--- Forward Pass ---
+Noise shape: torch.Size([1, 100, 1, 1]), Image shape: torch.Size([1, 3, 224, 224])
+Image embedding shape: torch.Size([1, 8192])
+
+--- Forward Pass ---
+Noise shape: torch.Size([1, 100, 1, 1]), Image shape: torch.Size([1, 3, 224, 224])
+Image embedding shape: torch.Size([1, 8192])
+
+--- Forward Pass ---
+Noise shape: torch.Size([1, 100, 1, 1]), Image shape: torch.Size([1, 3, 224, 224])
+Image embedding shape: torch.Size([1, 8192])
+
+--- Forward Pass ---
+Noise shape: torch.Size([1, 100, 1, 1]), Image shape: torch.Size([1, 3, 224, 224])
+Image embedding shape: torch.Size([1, 8192])
+
+--- Forward Pass ---
+Noise shape: torch.Size([1, 100, 1, 1]), Image shape: torch.Size([1, 3, 224, 224])
+Image embedding shape: torch.Size([1, 8192])
+
+--- Forward Pass ---
+Noise shape: torch.Size([1, 100, 1, 1]), Image shape: torch.Size([1, 3, 224, 224])
+Image embedding shape: torch.Size([1, 8192])
+
+--- Forward Pass ---
+Noise shape: torch.Size([1, 100, 1, 1]), Image shape: torch.Size([1, 3, 224, 224])
+Image embedding shape: torch.Size([1, 8192])
+
+--- Forward Pass ---
+Noise shape: torch.Size([1, 100, 1, 1]), Image shape: torch.Size([1, 3, 224, 224])
+Image embedding shape: torch.Size([1, 8192])
+
+--- Forward Pass ---
+Noise shape: torch.Size([1, 100, 1, 1]), Image shape: torch.Size([1, 3, 224, 224])
+Image embedding shape: torch.Size([1, 8192])
+
+**********************************************************************************************************
+
+The SCRATCHes have been SUCCESSFULLY cleaned...
