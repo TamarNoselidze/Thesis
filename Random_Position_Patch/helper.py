@@ -5,8 +5,27 @@ import torchvision.transforms as transforms
 from PIL import Image
 
 
-def save_image(original, patched, label):
+# def save_image(original, patched, label):
 
+#     to_pil = transforms.ToPILImage()
+#     original_img = to_pil(original)
+#     patched_img = to_pil(patched)
+
+#     fig, axs = plt.subplots(1, 2, figsize=(10, 5))
+#     axs[0].imshow(original_img)
+#     axs[0].set_title("Original Image")
+#     axs[0].axis('off')
+
+#     axs[1].imshow(patched_img)
+#     axs[1].set_title("Patched Image")
+#     axs[1].axis('off')
+
+#     plt.savefig(f'./pics/{label}')
+#     print(f"Image saved at ./pics/{label}")
+#     plt.close()
+
+
+def save_image(original, patched, label, save_dir):
     to_pil = transforms.ToPILImage()
     original_img = to_pil(original)
     patched_img = to_pil(patched)
@@ -20,8 +39,9 @@ def save_image(original, patched, label):
     axs[1].set_title("Patched Image")
     axs[1].axis('off')
 
-    plt.savefig(f'./pics/{label}')
-    print(f"Image saved at ./pics/{label}")
+    save_path = os.path.join(save_dir, f'{label}.png')
+    plt.savefig(save_path)
+    print(f"Image saved at {save_path}")
     plt.close()
 
 

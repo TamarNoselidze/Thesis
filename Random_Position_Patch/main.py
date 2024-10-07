@@ -142,9 +142,12 @@ for epoch in range(num_epochs):
 # save_patch(best_patch, './pics/best_adversarial_patch.png')
 
 
+pics_dir = os.path.join(os.getenv('SCRATCHDIR', '.'), 'pics')
+os.makedirs(pics_dir, exist_ok=True)
+
 i=0
 for original, modified in best_epoch_images.items():
-    save_image(original, modified, f"res_{i}")
+    save_image(original, modified, f"res_{i}", pics_dir)
     i+=1    
 
 print(f'\n\nResults saved.\nBest ASR achieved over {num_epochs} epochs: {best_epoch_asr * 100:.2f}%')
