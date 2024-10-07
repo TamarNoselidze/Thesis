@@ -25,6 +25,7 @@ cd $SCRATCHDIR || exit 1
 echo "Copying project and dataset to scratch..."
 cp -r "$PROJECT_DIR"/* "$SCRATCHDIR" || { echo "Project copy failed"; exit 1; }
 cp -r "$DATASET_DIR" "$SCRATCHDIR" || { echo "Dataset copy failed"; exit 1; }
+cp $HOME_DIR/Thesis/sing.sh $SCRATCHDIR
 
 
 echo "Files in scratch directory:"
