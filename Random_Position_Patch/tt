@@ -5,4 +5,10 @@ starship ? ? customize terminal
 
 
 
-python main.py --attack=HOP-SKIP --image_folder_path=../imagenetv2-top-images/imagenetv2-top-images-format-val --models=vit_b_16 --epochs=0
+python main.py --attack=HOP-SKIP --image_folder_path=../imagenetv2-top-images/imagenetv2-top-images-format-val --models=vit_b_16 --epochs=0\
+
+
+
+wandb.ai install
+
+save all the images

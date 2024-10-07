@@ -6,6 +6,9 @@
 trap 'clean_scratch' TERM EXIT
 
 # accepting command-line arguments
+## experiment name
+# EXPERIMENT_NAME=${1:-''}
+
 HOME_DIR=${1:-'/storage/brno2/home/takonoselidze'}
 PROJECT_DIR=${2:-"$HOME_DIR/Thesis/Random_Position_Patch"}
 DATASET_DIR=${3:-"$HOME_DIR/Thesis/imagenetv2-top-images"}
@@ -41,7 +44,7 @@ tar -czf "$RESULTS_TAR" "$SCRATCH_RESULTS" "$SCRATCH_LOGS" || { echo "Failed to 
 # copy results back to home directory
 echo "Copying results to home directory..."
 cp "$RESULTS_TAR" "$HOME_DIR/results" || { echo "Failed to copy results, keeping scratch"; export CLEAN_SCRATCH=false; exit 1; }
-cp -r $SCRATCHDIR/pics $HOME_DIR/results || export CLEAN_SCRATCH=false
+cp -r $SCRATCHDIR/pics $HOME_DIR/result_images/$PBS_JOBID || export CLEAN_SCRATCH=false
 
 echo "Job completed successfully!"
 
