@@ -12,3 +12,23 @@ python main.py --attack=HOP-SKIP --image_folder_path=../imagenetv2-top-images/im
 wandb.ai install
 
 save all the images
+
+
+cvmfs/ 
+(BOOKWORM)takonoselidze@skirit:~$ ls /cvmfs
+(BOOKWORM)takonoselidze@skirit:~$ ls /cvmfs/singularity.metacentrum.cz/NGC
+
+
+cleverhans script, image with existing pyt
+
+
+
+
+
+
+
+
+
+
+brightness restriction and color transfer in randm patch attack 
+save results for both gen approaches
