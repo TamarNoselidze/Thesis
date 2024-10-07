@@ -128,7 +128,7 @@ for epoch in range(num_epochs):
 
     if best_batch_asr > best_epoch_asr:   # if the best batch outperforms the best batch in prev epoch, update the best_epoch_images
         best_epoch_asr = best_batch_asr
-        best_epoch_images = best_batch_images.clone().detach()
+        best_epoch_images = best_batch_images
 
     avg_epoch_asr = epoch_total_asr / len(dataloader)
     print(f"Epoch [{epoch+1}/{num_epochs}], Loss: {loss.item()}, Avg ASR: {avg_epoch_asr * 100:.2f}%")
