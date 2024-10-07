@@ -28,7 +28,6 @@ generator.train()
 
 deployer = Deployer()
 
-# discriminator = vit_b_16(weights=ViT_B_16_Weights.DEFAULT)
 discriminator = vit_b_16(weights=ViT_B_16_Weights.DEFAULT).to(device)  # moving model to the appropriate device
 discriminator.eval()
 
@@ -39,19 +38,16 @@ transform = transforms.Compose([
 ])
 
 
-#dataset = datasets.ImageFolder('../imagenetv2-top-images/imagenetv2-top-images-format-val', transform=transform)
 dataset = datasets.ImageFolder('./imagenetv2-top-images/imagenetv2-top-images-format-val', transform=transform)
 dataloader = DataLoader(dataset, batch_size=32, shuffle=True)
-
 
 
 num_epochs = 40
 batch_size = 32
 num_classes = 1000  
 
-best_patch = None
-best_asr = 0  
-best_example_images = {}
+# best_patch = None
+# best_asr = 0  
 
 optimizer = optim.Adam(generator.parameters(), lr=0.0002, betas=(0.5, 0.999))   ## try different values
 
@@ -61,52 +57,44 @@ optimizer = optim.Adam(generator.parameters(), lr=0.0002, betas=(0.5, 0.999))   
 
 # with open('results.txt', 'w') as f:
 
+best_epoch_asr = 0  
+best_epoch_images = {}
+
 for epoch in range(num_epochs):
 
-    epoch_images = {}
+    epoch_total_asr = 0
     best_epoch_patch = None 
+    best_batch_asr = 0
+    best_batch_images = {}
 
     for batch in dataloader:
         images, true_labels = batch
         images = images.to(device)
         true_labels = true_labels.to(device)
 
-        batch_size = images.shape[0]
+        batch_size = images.shape[0]   # might change for the last batch
 
         noise = torch.randn(batch_size, input_dim, 1, 1).to(device)
-        # adv_patch = generator(noise)  # add an image
 
-        adv_patches = []  # Store generated patches for each image
+        # generating patches for each image
+        adv_patches = []  # we need to store generated patch for each image
 
-        #deploying 
-        # modified_images = []
-        # torch.empty_like(images)
         for i in range(batch_size):
-            # modified_images[i] = deployer.deploy(adv_patch[i], images[i])
-            print(F'------------------------------ noise shape: {noise[i].unsqueeze(0).shape}')
-#            adv_patch = generator(noise[i].unsqueeze(0), images[i].unsqueeze(0))
             adv_patch = generator(noise[i].unsqueeze(0).to(device), images[i].unsqueeze(0).to(device))
-            # modified_images.append(deployer.deploy(adv_patch[i], images[i]))
-            # epoch_images[images[i]] = modified_images[i]
             adv_patches.append(adv_patch)
-            # save_image(images[i], modified_images[i], f"image_{i}_epoch_{epoch+1}")
 
         adv_patches = torch.cat(adv_patches, dim=0).to(device)  # Stack generated patches
-        # print([t.shape for t in modified_images])
-        # modified_images = torch.stack(modified_images)
 
-
-
-
+        # deploying 
         modified_images = []
-
         for i in range(batch_size):
             modified_image = deployer.deploy(adv_patches[i], images[i])
             modified_images.append(modified_image)
+            # epoch_images[images[i]] = modified_image
+            # epoch_images.update({images[i] : modified_image})
+
         
         modified_images = torch.stack(modified_images).to(device)
-
-
 
         outputs = discriminator(modified_images)
         
@@ -116,40 +104,50 @@ for epoch in range(num_epochs):
         criterion = AdversarialLoss(target_class=target_class_y_prime).to(device)
         loss = criterion(outputs)
         
-        
         optimizer.zero_grad()
-        # loss.backward(retain_graph=True)
         loss.backward()
         optimizer.step()
-
 
         _, predicted = torch.max(outputs.data, 1)
         
         correct = (predicted == true_labels).sum().item()
-        asr = (batch_size - correct) / batch_size
+        batch_asr = (batch_size - correct) / batch_size
 
-        # if asr > best_epoch_asr:
-        #     best_epoch_asr = asr
-        #     best_epoch_patch = adv_patch
+        epoch_total_asr += batch_asr
 
-        if asr > best_asr:
-            best_asr = asr
-            best_patch = adv_patch.clone().detach()  # Save the best performing patch
+        if batch_asr > best_batch_asr:
+            best_batch_asr = batch_asr
+            # best_patch = adv_patch.clone().detach()  # Save the best performing patch
 
-        
+            # best_epoch_patches = adv_patches.clone
 
-    # with open('results.txt', 'w') as f:
-    # f.write(f"Epoch [{epoch+1}/{num_epochs}], Loss: {loss.item()}")
-    # f.write(f'The best ASR for the epoch: {asr * 100:.2f}%')
+            # Save the original and modified images for the best batch
+            best_batch_images = {}
+            for i in range(batch_size):
+                best_batch_images[images[i].cpu()] = modified_images[i].cpu()  
+
+    if best_batch_asr > best_epoch_asr:   # if the best batch outperforms the best batch in prev epoch, update the best_epoch_images
+        best_epoch_asr = best_batch_asr
+        best_epoch_images = best_batch_images.clone().detach()
+
+    avg_epoch_asr = epoch_total_asr / len(dataloader)
+    print(f"Epoch [{epoch+1}/{num_epochs}], Loss: {loss.item()}, Avg ASR: {avg_epoch_asr * 100:.2f}%")
+    print(f'|___ ASR of the best performing batch: {best_batch_asr}')
+
+
+    # save_patch(best_epoch_patch, f'./pics/best_patch_epoch_{epoch+1}.png')
+    
 
 # saving the best results
-save_patch(best_patch, './pics/best_adversarial_patch.png')
+# save_patch(best_patch, './pics/best_adversarial_patch.png')
+
 
 i=0
-for original, modified in best_example_images.items():
+for original, modified in best_epoch_images.items():
     save_image(original, modified, f"res_{i}")
     i+=1    
 
-print(f'\n\n Results saved.\nBest ASR achieved over {num_epochs} epochs: {best_asr * 100:.2f}%')
+print(f'\n\nResults saved.\nBest ASR achieved over {num_epochs} epochs: {best_epoch_asr * 100:.2f}%')
 
 # f.write(f'\n\nBest ASR achieved over {num_epochs} epochs: {best_asr * 100:.2f}%')
+    
