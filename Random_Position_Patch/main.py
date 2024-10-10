@@ -5,17 +5,14 @@ import torch.nn as nn
 import torch.optim as optim
 from torchvision import datasets, transforms
 from torch.utils.data import DataLoader
-
-
 torch.autograd.set_detect_anomaly(True)
 
-# from generator import Generator
-# from gen import Generator
 from deployer import Deployer
 from helper import save_image, save_patch
 from loss import AdversarialLoss
 
-def start(device, generator, deployer, discriminator, dataloader, num_of_epochs=40, input_dim=100):
+
+def start(device, generator, deployer, discriminator, attack_type, dataloader, num_of_epochs=40, input_dim=100):
 
     num_classes = 200  
     best_epoch_asr = 0  
@@ -26,11 +23,12 @@ def start(device, generator, deployer, discriminator, dataloader, num_of_epochs=
     for epoch in range(num_of_epochs):
 
         epoch_total_asr = 0
-        best_epoch_patch = None 
+        # best_epoch_patch = None   
         best_batch_asr = 0
         best_batch_images = {}
 
         for batch in dataloader:
+            print(type(batch))
             images, true_labels = batch
             images = images.to(device)
             true_labels = true_labels.to(device)
@@ -38,18 +36,21 @@ def start(device, generator, deployer, discriminator, dataloader, num_of_epochs=
             batch_size = images.shape[0]   # might change for the last batch
 
             noise = torch.randn(batch_size, input_dim, 1, 1).to(device)
+            modified_images = []
 
-            # generating patches for each image
-            adv_patches = []  # we need to store generated patch for each image
+            if attack_type == '0':
+                adv_patch = generator()
+            else:
+                # generating patches for each image
+                adv_patches = []  # we need to store generated patch for each image
 
-            for i in range(batch_size):
-                adv_patch = generator(noise[i].unsqueeze(0).to(device), images[i].unsqueeze(0).to(device))
-                adv_patches.append(adv_patch)
+                for i in range(batch_size):
+                    adv_patch = generator(noise[i].unsqueeze(0).to(device), images[i].unsqueeze(0).to(device))
+                    adv_patches.append(adv_patch)
 
             adv_patches = torch.cat(adv_patches, dim=0).to(device)  # Stack generated patches
 
             # deploying 
-            modified_images = []
             for i in range(batch_size):
                 modified_image = deployer.deploy(adv_patches[i], images[i])
                 modified_images.append(modified_image)
@@ -112,6 +113,9 @@ def start(device, generator, deployer, discriminator, dataloader, num_of_epochs=
 
         
 
+def save_results():
+    pass
+
 
 
 if __name__ == "__main__":
@@ -127,10 +131,11 @@ if __name__ == "__main__":
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     print(f'Using device: {device}')
 
-    if args.attack_type == '0':            # without image 
+    attack_type = args.attack_type
+    if attack_type == '0':            # without image 
         from generator import Generator
         # generator = Generator
-    elif args.attack_type == '1':
+    elif attack_type == '1':
         from gen import Generator
     else:
         pass
@@ -164,6 +169,9 @@ if __name__ == "__main__":
 
     dataset = datasets.ImageFolder(args.image_folder_path, transform=transform)
     dataloader = DataLoader(dataset, batch_size=32, shuffle=True)
-    num_epochs = args.epochs if args.epochs else 40
+    print(type(dataloader))
+    num_epochs = int(args.epochs) if args.epochs else 40
 
-    start(device, generator, deployer, dataloader, num_epochs)
+    
+
+    start(device, generator, deployer, discriminator, attack_type, dataloader, num_epochs)

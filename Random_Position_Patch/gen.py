@@ -45,10 +45,9 @@ class Generator(nn.Module):
 
         self.apply(self.weights_init)
         
-    def forward(self, noise, image):
-        # print("\n--- Forward Pass ---")
-        # print(f"Noise shape: {noise.shape}, Image shape: {image.shape}")
         
+    def forward(self, noise, image):
+
         # embed the image
         image_features = self.image_embedding(image)
         image_features = image_features.view(image_features.size(0), -1)  # Flatten the feature map

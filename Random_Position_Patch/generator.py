@@ -29,26 +29,23 @@ class Generator(nn.Module):
         self.apply(self.weights_init)
         
     def forward(self, x):
-        print("\n--- Forward Pass ---")
-        print(f"Input shape: {x.shape}")
-
         x = self.layer1(x)
-        print(f"After layer 1 (ConvTranspose2d): {x.shape} | min: {x.min().item()} | max: {x.max().item()}")
+        # print(f"After layer 1 (ConvTranspose2d): {x.shape} | min: {x.min().item()} | max: {x.max().item()}")
         x = self.bn1(x)
         x = self.relu1(x)
 
         x = self.layer2(x)
-        print(f"After layer 2 (ConvTranspose2d): {x.shape} | min: {x.min().item()} | max: {x.max().item()}")
+        # print(f"After layer 2 (ConvTranspose2d): {x.shape} | min: {x.min().item()} | max: {x.max().item()}")
         x = self.bn2(x)
         x = self.relu2(x)
 
         x = self.layer3(x)
-        print(f"After layer 3 (ConvTranspose2d): {x.shape} | min: {x.min().item()} | max: {x.max().item()}")
+        # print(f"After layer 3 (ConvTranspose2d): {x.shape} | min: {x.min().item()} | max: {x.max().item()}")
         x = self.bn3(x)
         x = self.relu3(x)
 
         x = self.layer4(x)
-        print(f"After layer 4 (ConvTranspose2d): {x.shape} | min: {x.min().item()} | max: {x.max().item()}")
+        # print(f"After layer 4 (ConvTranspose2d): {x.shape} | min: {x.min().item()} | max: {x.max().item()}")
         x = self.bn4(x)
         x = self.relu4(x)
 
