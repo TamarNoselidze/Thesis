@@ -1,10 +1,9 @@
 #!/bin/bash
 
-#apt-get update
-#apt-get install -y python3-pip
-
-#pip3 install torch torchvision matplotlib numpy Pillow
-# pip3 install --user torch torchvision matplotlib numpy Pillow
 
 echo "Running Python script"
-python3 main.py
+python3 main.py \
+    --attack_type "$1" \
+    --image_folder_path "$2" \
+    --model "$3" \
+    --epochs "$4"

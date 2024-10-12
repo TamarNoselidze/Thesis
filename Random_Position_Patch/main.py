@@ -138,7 +138,7 @@ if __name__ == "__main__":
     elif attack_type == '1':
         from gen import Generator
     else:
-        pass
+        raise ValueError('Invalid attack type')
 
     input_dim = 100  
     output_dim = 3      
