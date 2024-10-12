@@ -14,9 +14,9 @@ PROJECT_DIR=${2:-"$HOME_DIR/Thesis/Random_Position_Patch"}
 DATASET_DIR=${3:-"$HOME_DIR/Thesis/imagenetv2-top-images"}
 CONTAINER_PATH=${4:-"$HOME_DIR/containers/pytorch_container.sif"}
 
-EPOCHS=${5:-40}  # Number of epochs
-ATTACK_TYPE=${6:-0}  # Default attack type
-MODEL=${7:-'vit_b_16'}  # Default model
+ATTACK_TYPE=${5:-0}  # Default attack type
+MODEL=${6:-'vit_b_16'}  # Default model
+EPOCHS=${7:-40}  # Number of epochs
 
 SCRATCH_RESULTS="$SCRATCHDIR/results"
 SCRATCH_LOGS="$SCRATCHDIR/logs"
