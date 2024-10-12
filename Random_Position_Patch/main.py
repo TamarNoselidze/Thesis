@@ -13,6 +13,7 @@ from loss import AdversarialLoss
 
 
 def start(device, generator, deployer, discriminator, attack_type, dataloader, num_of_epochs=40, input_dim=100):
+    print(f'-------------- Attack type: {attack_type}')
 
     num_classes = 200  
     best_epoch_asr = 0  
@@ -134,11 +135,25 @@ if __name__ == "__main__":
     attack_type = args.attack_type
     if attack_type == '0':            # without image 
         from generator import Generator
-        # generator = Generator
     elif attack_type == '1':
         from gen import Generator
     else:
-        raise ValueError('Invalid attack type')
+        raise ValueError('Invalid attack type. \nOptions: 0, 1.')
+
+
+    if args.model == 'vit_b_16':
+        from torchvision.models import vit_b_16, ViT_B_16_Weights
+        model = vit_b_16
+        weights = ViT_B_16_Weights.DEFAULT
+
+    elif args.model == 'vit_b_32':
+        from torchvision.models import vit_b_32, ViT_B_32_Weights
+        model = vit_b_32
+        weights = ViT_B_32_Weights.DEFAULT
+
+    else:
+        raise ValueError('Invalid model type.\nOptions: vit_b_16, vit_b_32')
+
 
     input_dim = 100  
     output_dim = 3      
@@ -146,14 +161,6 @@ if __name__ == "__main__":
     
     generator = Generator(input_dim, output_dim, k).to(device)
     generator.train()
-
-
-    if args.model == 'vit_b_16':
-        from torchvision.models import vit_b_16, ViT_B_16_Weights
-        model = vit_b_16
-        weights = ViT_B_16_Weights.DEFAULT
-    # else: 
-    #     exit
 
     discriminator = model(weights).to(device)  # moving model to the appropriate device
     discriminator.eval()
@@ -172,6 +179,5 @@ if __name__ == "__main__":
     print(type(dataloader))
     num_epochs = int(args.epochs) if args.epochs else 40
 
-    
-
+    print(f'-------------- Attack type: {attack_type}')
     start(device, generator, deployer, discriminator, attack_type, dataloader, num_epochs)
