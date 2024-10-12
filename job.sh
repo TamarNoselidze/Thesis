@@ -10,13 +10,14 @@ trap 'clean_scratch' TERM EXIT
 # EXPERIMENT_NAME=${1:-''}
 
 HOME_DIR=${1:-'/storage/brno2/home/takonoselidze'}
-PROJECT_DIR=${2:-"$HOME_DIR/Thesis/Random_Position_Patch"}
-DATASET_DIR=${3:-"$HOME_DIR/Thesis/imagenetv2-top-images"}
-CONTAINER_PATH=${4:-"$HOME_DIR/containers/pytorch_container.sif"}
+PROJECT_DIR="$HOME_DIR/Thesis/Random_Position_Patch"
+DATASET_DIR="$HOME_DIR/Thesis/imagenetv2-top-images"
+CONTAINER_PATH="$HOME_DIR/containers/pytorch_container.sif"
 
-ATTACK_TYPE=${5:-0}  # Default attack type
-MODEL=${6:-'vit_b_16'}  # Default model
-EPOCHS=${7:-40}  # Number of epochs
+# Use environment variables from qsub -v
+ATTACK_TYPE=${ATTACK_TYPE:-0}  # Default attack type
+MODEL=${MODEL:-'vit_b_16'}     # Default model
+EPOCHS=${EPOCHS:-40}           # Number of epochs
 
 SCRATCH_RESULTS="$SCRATCHDIR/results"
 SCRATCH_LOGS="$SCRATCHDIR/logs"
