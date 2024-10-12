@@ -41,10 +41,10 @@ mkdir -p "$SCRATCH_RESULTS" "$SCRATCH_LOGS" || { echo "Failed to create result/l
 # run the singularity container
 echo "Running singularity container..."
 singularity exec --nv "$CONTAINER_PATH" bash sing.sh \
-  --attack_type "$ATTACK_TYPE" \
-  --image_folder_path "$SCRATCHDIR/imagenetv2-top-images/imagenetv2-top-images-format-val" \
-  --model "$MODEL" \
-  --epochs "$EPOCHS" || { echo "Singularity execution failed"; exit 1; }
+	"$ATTACK_TYPE" \
+	"$SCRATCHDIR/imagenetv2-top-images/imagenetv2-top-images-format-val" \
+	"$MODEL" \
+	"$EPOCHS" || { echo "Singularity execution failed"; exit 1; }
 
 # archive the results
 echo "Archiving results..."

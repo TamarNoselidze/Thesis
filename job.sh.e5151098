@@ -1,0 +1,4 @@
+usage: main.py [-h] [--attack_type {0,1}]
+               [--image_folder_path IMAGE_FOLDER_PATH]
+               [--model {vit_b_16,vit_tb_32}] [--epochs EPOCHS]
+main.py: error: argument --attack_type: expected one argument
