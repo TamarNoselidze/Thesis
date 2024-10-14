@@ -1,0 +1,21 @@
+  WARNING: The scripts wandb and wb are installed in '/storage/praha1/home/takonoselidze/.local/bin' which is not on PATH.
+  Consider adding this directory to PATH or, if you prefer to suppress this warning, use --no-warn-script-location.
+/usr/local/lib/python3.8/dist-packages/torchvision/models/_utils.py:135: UserWarning: Using 'weights' as positional parameter(s) is deprecated since 0.13 and may be removed in the future. Please use keyword parameter(s) instead.
+  warnings.warn(
+wandb: Using wandb-core as the SDK backend. Please refer to https://wandb.me/wandb-core for more information.
+wandb: Currently logged in as: takonoselidze. Use `wandb login --relogin` to force relogin
+wandb: ERROR failed to upsert bucket: returned error 403 Forbidden: {"errors":[{"message":"permission denied","path":["upsertBucket"],"extensions":{"code":"PERMISSION_ERROR"}}],"data":{"upsertBucket":null}}
+Traceback (most recent call last):
+  File "main.py", line 221, in <module>
+    start(device, generator, deployer, discriminator, attack_type, dataloader, num_epochs)
+  File "main.py", line 20, in start
+    wandb.init(project='Random Position Patch Attacks', entity='takonoselidze', config={
+  File "/storage/praha1/home/takonoselidze/.local/lib/python3.8/site-packages/wandb/sdk/wandb_init.py", line 1266, in init
+    wandb._sentry.reraise(e)
+  File "/storage/praha1/home/takonoselidze/.local/lib/python3.8/site-packages/wandb/analytics/sentry.py", line 155, in reraise
+    raise exc.with_traceback(sys.exc_info()[2])
+  File "/storage/praha1/home/takonoselidze/.local/lib/python3.8/site-packages/wandb/sdk/wandb_init.py", line 1252, in init
+    return wi.init()
+  File "/storage/praha1/home/takonoselidze/.local/lib/python3.8/site-packages/wandb/sdk/wandb_init.py", line 844, in init
+    raise error
+wandb.errors.errors.CommError: failed to upsert bucket: returned error 403 Forbidden: {"errors":[{"message":"permission denied","path":["upsertBucket"],"extensions":{"code":"PERMISSION_ERROR"}}],"data":{"upsertBucket":null}}

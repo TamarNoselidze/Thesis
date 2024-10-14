@@ -9,14 +9,19 @@ trap 'clean_scratch' TERM EXIT
 ## experiment name
 # EXPERIMENT_NAME=${1:-''}
 # Load environment variables from the .env file
-set -o allexport; source .env; set +o allexport
+#set -o allexport; source .env; set +o allexport
 
 HOME_DIR=${1:-'/storage/brno2/home/takonoselidze'}
 PROJECT_DIR="$HOME_DIR/Thesis/Random_Position_Patch"
 DATASET_DIR="$HOME_DIR/Thesis/imagenetv2-top-images"
 CONTAINER_PATH="$HOME_DIR/containers/pytorch_container.sif"
 
+set -o allexport; source "$HOME_DIR/Thesis/.env"; set +o allexport
+
+# Add local bin to PATH
+export PATH="$PATH:/storage/plzen1/home/takonoselidze/.local/bin"
 # Use environment variables from qsub -v
+#
 ATTACK_TYPE=${ATTACK_TYPE:-0}  # Default attack type
 MODEL=${MODEL:-'vit_b_16'}     # Default model
 EPOCHS=${EPOCHS:-40}           # Number of epochs
