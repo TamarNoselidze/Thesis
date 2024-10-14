@@ -8,6 +8,8 @@ trap 'clean_scratch' TERM EXIT
 # accepting command-line arguments
 ## experiment name
 # EXPERIMENT_NAME=${1:-''}
+# Load environment variables from the .env file
+set -o allexport; source .env; set +o allexport
 
 HOME_DIR=${1:-'/storage/brno2/home/takonoselidze'}
 PROJECT_DIR="$HOME_DIR/Thesis/Random_Position_Patch"
