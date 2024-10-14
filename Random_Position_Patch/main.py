@@ -13,7 +13,7 @@ from loss import AdversarialLoss
 
 
 def start(device, generator, deployer, discriminator, attack_type, dataloader, num_of_epochs=40, input_dim=100):
-    print(f'-------------- Attack type: {attack_type}')
+    # print(f'-------------- Attack type: {attack_type}')
 
     num_classes = 200  
     best_epoch_asr = 0  
@@ -23,13 +23,16 @@ def start(device, generator, deployer, discriminator, attack_type, dataloader, n
 
     for epoch in range(num_of_epochs):
 
+        print(f'@@ Processing epoch {epoch+1}')
+
         epoch_total_asr = 0
         # best_epoch_patch = None   
         best_batch_asr = 0
         best_batch_images = {}
 
+        temp_count=1
         for batch in dataloader:
-            print(type(batch))
+            # print(type(batch))
             images, true_labels = batch
             images = images.to(device)
             true_labels = true_labels.to(device)
@@ -38,9 +41,10 @@ def start(device, generator, deployer, discriminator, attack_type, dataloader, n
 
             noise = torch.randn(batch_size, input_dim, 1, 1).to(device)
             modified_images = []
+            adv_patches = None
 
             if attack_type == '0':
-                adv_patch = generator()
+                adv_patches = generator(noise)
             else:
                 # generating patches for each image
                 adv_patches = []  # we need to store generated patch for each image
@@ -49,12 +53,13 @@ def start(device, generator, deployer, discriminator, attack_type, dataloader, n
                     adv_patch = generator(noise[i].unsqueeze(0).to(device), images[i].unsqueeze(0).to(device))
                     adv_patches.append(adv_patch)
 
-            adv_patches = torch.cat(adv_patches, dim=0).to(device)  # Stack generated patches
+                adv_patches = torch.cat(adv_patches, dim=0).to(device)  # Stack generated patches
 
             # deploying 
             for i in range(batch_size):
                 modified_image = deployer.deploy(adv_patches[i], images[i])
                 modified_images.append(modified_image)
+
                 # epoch_images[images[i]] = modified_image
                 # epoch_images.update({images[i] : modified_image})
 
@@ -77,11 +82,15 @@ def start(device, generator, deployer, discriminator, attack_type, dataloader, n
             
             correct = (predicted == true_labels).sum().item()
             batch_asr = (batch_size - correct) / batch_size
+            print(f'@@@@ batch {temp_count} has ASR: {batch_asr}')
+            print(f'@@@@ best_batch_asr so far: {best_batch_asr}')
+            temp_count+=1
 
             epoch_total_asr += batch_asr
 
             if batch_asr > best_batch_asr:
                 best_batch_asr = batch_asr
+                print(f'@@@@@@ current batch asr is better than best_batch_asr ({best_batch_asr}) so we are updating its value.')
                 # best_patch = adv_patch.clone().detach()  # Save the best performing patch
                 # best_epoch_patches = adv_patches.clone
 
@@ -90,8 +99,12 @@ def start(device, generator, deployer, discriminator, attack_type, dataloader, n
                 for i in range(batch_size):
                     best_batch_images[images[i].cpu()] = modified_images[i].cpu()  
 
+        print(f'@@ best batch ASR in this epoch is: {best_batch_asr}')
+        print(f'   best batch ASR in the previous epoch was: {best_epoch_asr}')
+
         if best_batch_asr > best_epoch_asr:   # if the best batch outperforms the best batch in prev epoch, update the best_epoch_images
             best_epoch_asr = best_batch_asr
+            print(f'   we changed best_epoch_asr value to: {best_batch_asr}')
             best_epoch_images = best_batch_images
 
         avg_epoch_asr = epoch_total_asr / len(dataloader)
@@ -124,7 +137,7 @@ if __name__ == "__main__":
 
     parser.add_argument('--attack_type', choices=['0', '1'], help='0 for the normal patch generation, 1 to include image embedding into the patch training')
     parser.add_argument('--image_folder_path', help='Image dataset to perturb', default='../imagenetv2-top-images/imagenetv2-top-images-format-val')
-    parser.add_argument('--model', choices=['vit_b_16', 'vit_tb_32'], help='Model to attack')
+    parser.add_argument('--model', choices=['vit_b_16', 'vit_b_32'], help='Model to attack')
     parser.add_argument('--epochs', help='Number of epochs')
     # parser.add_argument('--brightness', help='Brightness value, between 0 (black image) and 2')
     args = parser.parse_args()
@@ -176,8 +189,7 @@ if __name__ == "__main__":
 
     dataset = datasets.ImageFolder(args.image_folder_path, transform=transform)
     dataloader = DataLoader(dataset, batch_size=32, shuffle=True)
-    print(type(dataloader))
     num_epochs = int(args.epochs) if args.epochs else 40
 
-    print(f'-------------- Attack type: {attack_type}')
+    # print(f'-------------- Attack type: {attack_type}')
     start(device, generator, deployer, discriminator, attack_type, dataloader, num_epochs)

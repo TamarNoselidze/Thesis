@@ -1,6 +1,0 @@
-Traceback (most recent call last):
-  File "main.py", line 150, in <module>
-    save_image(original, modified, f"res_{i}", pics_dir)
-  File "/scratch.ssd/takonoselidze/job_4829234.pbs-m1.metacentrum.cz/helper.py", line 42, in save_image
-    save_path = os.path.join(save_dir, f'{label}.png')
-NameError: name 'os' is not defined
