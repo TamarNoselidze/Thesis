@@ -23,7 +23,7 @@ def start(device, generator, deployer, discriminator, attack_type, dataloader, n
         'input_dim': input_dim
     })
 
-    num_classes = 200  
+    num_classes = 2000  
     best_epoch_asr = 0  
     best_epoch_images = {}
     total_asr = 0
@@ -152,7 +152,7 @@ def start(device, generator, deployer, discriminator, attack_type, dataloader, n
         
     wandb.finish()
 
-    
+
 def save_results():
     pass
 
@@ -201,21 +201,22 @@ if __name__ == "__main__":
     generator = Generator(input_dim, output_dim, k).to(device)
     generator.train()
 
+    deployer = Deployer()
+
     discriminator = model(weights).to(device)  # moving model to the appropriate device
     discriminator.eval()
 
-    deployer = Deployer()
     transform = transforms.Compose([
         transforms.Resize((224, 224)),
         transforms.ToTensor(),
     ])
 
-    optimizer = optim.Adam(generator.parameters(), lr=0.0002, betas=(0.5, 0.999))   ## try different values
 
 
     dataset = datasets.ImageFolder(args.image_folder_path, transform=transform)
     dataloader = DataLoader(dataset, batch_size=32, shuffle=True)
     num_epochs = int(args.epochs) if args.epochs else 40
 
+    optimizer = optim.Adam(generator.parameters(), lr=0.0002, betas=(0.5, 0.999))   ## try different values
     # print(f'-------------- Attack type: {attack_type}')
     start(device, generator, deployer, discriminator, attack_type, dataloader, num_epochs)

@@ -19,7 +19,7 @@ CONTAINER_PATH="$HOME_DIR/containers/pytorch_container.sif"
 set -o allexport; source "$HOME_DIR/Thesis/.env"; set +o allexport
 
 # Add local bin to PATH
-export PATH="$PATH:/storage/plzen1/home/takonoselidze/.local/bin"
+export PATH="$PATH:/storage/brno2/home/takonoselidze/.local/bin"
 # Use environment variables from qsub -v
 #
 ATTACK_TYPE=${ATTACK_TYPE:-0}  # Default attack type
