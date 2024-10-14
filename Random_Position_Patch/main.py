@@ -14,6 +14,14 @@ from loss import AdversarialLoss
 
 def start(device, generator, deployer, discriminator, attack_type, dataloader, num_of_epochs=40, input_dim=100):
     # print(f'-------------- Attack type: {attack_type}')
+    import wandb
+
+    # Initialize W&B
+    wandb.init(project='Random Position Patch Attacks', entity='takonoselidze', config={
+        'epochs': num_of_epochs,
+        'attack_type': 'Including the image embeddings' if attack_type=='0' else 'Without the image embeddings',
+        'input_dim': input_dim
+    })
 
     num_classes = 200  
     best_epoch_asr = 0  
@@ -86,6 +94,14 @@ def start(device, generator, deployer, discriminator, attack_type, dataloader, n
             print(f'@@@@ best_batch_asr so far: {best_batch_asr}')
             temp_count+=1
 
+
+            # Log batch metrics to W&B
+            wandb.log({
+                'batch_loss': loss.item(),
+                'batch_asr': batch_asr,
+                'epoch': epoch + 1
+            })
+
             epoch_total_asr += batch_asr
 
             if batch_asr > best_batch_asr:
@@ -109,6 +125,14 @@ def start(device, generator, deployer, discriminator, attack_type, dataloader, n
 
         avg_epoch_asr = epoch_total_asr / len(dataloader)
         total_asr += avg_epoch_asr
+
+        # Log epoch-level metrics to W&B
+        wandb.log({
+            'epoch_avg_asr': avg_epoch_asr,
+            'epoch_best_batch_asr': best_batch_asr,
+            'epoch': epoch + 1
+        })
+
         print(f"Epoch [{epoch+1}/{num_epochs}], Loss: {loss.item()}, Avg ASR: {avg_epoch_asr * 100:.2f}%")
         print(f'|___ ASR of the best performing batch: {best_batch_asr * 100:.2f}%')
 
@@ -126,7 +150,9 @@ def start(device, generator, deployer, discriminator, attack_type, dataloader, n
     print(f'\n\nResults saved.\nBest ASR achieved over {num_epochs} epochs: {best_epoch_asr * 100:.2f}%')
 
         
+    wandb.finish()
 
+    
 def save_results():
     pass
 
