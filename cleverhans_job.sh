@@ -12,7 +12,7 @@ PROJECT_DIR="$HOME_DIR/Thesis/CleverHans"
 
 RESULT_DIR="/storage/brno2/home/takonoselidze/Thesis/results"
 CONTAINER_PATH="$HOME_DIR/containers/pytorch_container_cleverhans.sif"
-PROJECT_DIR="/storage/brno2/home/takonoselidze/Thesis"
+PROJECT_DIR="/storage/brno2/home/takonoselidze/Thesis/CleverHans"
 DATASET_DIR="/storage/brno2/home/takonoselidze/Thesis/imagenetv2-top-images"
 
 set -o allexport; source "$HOME_DIR/Thesis/.env"; set +o allexport
@@ -57,6 +57,7 @@ singularity exec --nv "$CONTAINER_PATH" bash clev_sing.sh \
 #     --models resnet50 vit_b_16 --epochs 5 --brightness 1.5
 
 echo "Copying results to home directory..."
+mkdir -p "$PROJECT_DIR/results" || { echo "Failed to create results directory"; exit 1; }
 tar -czf "$RESULTS_TAR" "$SCRATCH_RESULTS" "$SCRATCH_LOGS" || { echo "Failed to create results archive"; exit 1; }
 
 cp "$RESULTS_TAR" "$PROJECT_DIR/results/$PBS_JOBID_results" || { echo "Failed to copy results, keeping scratch"; export CLEAN_SCRATCH=false; exit 1; }

@@ -1,0 +1,21 @@
+wandb: Using wandb-core as the SDK backend. Please refer to https://wandb.me/wandb-core for more information.
+wandb: Currently logged in as: takonoselidze (takonoselidze-charles-university). Use `wandb login --relogin` to force relogin
+wandb: - Waiting for wandb.init()...wandb: \ Waiting for wandb.init()...wandb: | Waiting for wandb.init()...wandb: Tracking run with wandb version 0.18.3
+wandb: Run data is saved locally in /scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/wandb/run-20241015_223134-cii62ipm
+wandb: Run `wandb offline` to turn off syncing.
+wandb: Syncing run breezy-capybara-2
+wandb: ⭐️ View project at https://wandb.ai/takonoselidze-charles-university/cleverhans-attack
+wandb: 🚀 View run at https://wandb.ai/takonoselidze-charles-university/cleverhans-attack/runs/cii62ipm
+wandb: - 0.003 MB of 0.003 MB uploadedwandb:                                                                                
+wandb: 
+wandb: Run history:
+wandb: vit_b_16_success_rate ▁
+wandb: 
+wandb: Run summary:
+wandb: vit_b_16_success_rate 0
+wandb: 
+wandb: 🚀 View run breezy-capybara-2 at: https://wandb.ai/takonoselidze-charles-university/cleverhans-attack/runs/cii62ipm
+wandb: ⭐️ View project at: https://wandb.ai/takonoselidze-charles-university/cleverhans-attack
+wandb: Synced 5 W&B file(s), 0 media file(s), 0 artifact file(s) and 0 other file(s)
+wandb: Find logs at: ./wandb/run-20241015_223134-cii62ipm/logs
+tar: Removing leading `/' from member names

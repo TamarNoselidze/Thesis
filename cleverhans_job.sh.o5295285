@@ -1,34 +1,45 @@
 Copying project and dataset to scratch...
 Files in scratch directory:
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz:
-__pycache__
-best_patches
-deployer.py
-gen.py
-generator.py
-helper.py
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz:
+Processed_Adversarial
+clev_sing.sh
 imagenetv2-top-images
-loss.py
 main.py
-pics
-results.txt
-sing.sh
-tt
+resultsCWl2-VS-resnet50&vit_b_16.txt
+resultsFGSM-VS-resnet50&vit_b_16.txt
+resultsFGSM-VS-resnet50.txt
+resultsFGSM-VS-vit_b_32.txt
+resultsHOP-SKIP-VS-vit_b_16.txt
+resultsPGD-VS-resnet50&vit_b_16.txt
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/__pycache__:
-deployer.cpython-312.pyc
-gen.cpython-312.pyc
-generator.cpython-312.pyc
-helper.cpython-312.pyc
-loss.cpython-312.pyc
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/Processed_Adversarial:
+CWl2
+FGSM
+PGD
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/best_patches:
-best_patches.pt
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/Processed_Adversarial/CWl2:
+horses_processed.jpg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/Processed_Adversarial/FGSM:
+horses.jpg_adversarial.jpg
+horses.jpg_processed.jpg
+horses_adversarial.jpg
+horses_drawing_adversarial.jpg
+horses_drawing_processed.jpg
+horses_processed.jpg
+pancakes_adversarial.jpg
+pancakes_processed.jpg
+shark_adversarial.jpg
+shark_processed.jpg
+
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/Processed_Adversarial/PGD:
+shark_adversarial.jpg
+shark_processed.jpg
+
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images:
 imagenetv2-top-images-format-val
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val:
 0
 1
 10
@@ -230,7 +241,7 @@ imagenetv2-top-images-format-val
 98
 99
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/0:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/0:
 04dd056ffd339096d2f8986f4873c84d29e668eb.jpeg
 207df83484a716f079c18696817e2e75d648c98d.jpeg
 4cf6d229d22f5f42c6bf6f8363e4f8eab7715cca.jpeg
@@ -242,7 +253,7 @@ c79124afd17cf15c2f385540da4c32c6689d769f.jpeg
 df4853173007ff4a927321b2b7ac7caccc7b8274.jpeg
 fb0b47e2c59bb7776d257527fe0dd16aa063ca40.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/1:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/1:
 08e169d0671408770e5b7521159aec5a783483a9.jpeg
 253efed8de81beaaa2ab904c63f3b7abe04ac0e5.jpeg
 2fb7561b81c4e57499123d88ca1b3dfb90c12b04.jpeg
@@ -254,7 +265,7 @@ a55198d91eb85d0dc705db5d59ce2f867bfb466c.jpeg
 e2613afe9127bd7d70eb441a4ffd744b4c207cb6.jpeg
 e37048a894d380f264d7fa3c22f613dfba8ed1f1.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/10:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/10:
 8537744d2a682bec13666af6b7f4bc0db3a7db8f.jpeg
 baf63a4468a083545b89c63060ee055050238079.jpeg
 bc43a92fd8926e6ae768d06d1e925b6e8193c489.jpeg
@@ -266,7 +277,7 @@ e804e9a0fc7a7cb9d9bf1a5cf46f4d064ab9d0fd.jpeg
 e8cf1343fae35c7d2f8ffb5c33498e9b9c5a7d45.jpeg
 f0a6abe1a19613292092e0b79219a1a08c69eac5.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/100:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/100:
 3467993d89b392b42f8ebc5fe550444a5c153d88.jpeg
 6012078dc1f6302fbc92c63627f81bc2dc636453.jpeg
 71df04a9df55b57ff61086805d26c958ecf6c757.jpeg
@@ -278,7 +289,7 @@ ed94b84166d4fe4f1ce5a026f1da6624ca3600a8.jpeg
 f187add805853ed5da0b5d7b749690cf9a6198a6.jpeg
 f5ddc9ec45546418579ffdab7b2ec372e426c804.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/101:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/101:
 4c82634d904b424039b2b5ef39c26576b3c9aee8.jpeg
 507f6ee13f6f09fd4c67b825a92f09d1288207e7.jpeg
 8daefd63f2bdba30df5dc73a70425b03e6234720.jpeg
@@ -290,7 +301,7 @@ d3911449b9a7446e6a76ff6d07384ee650843a02.jpeg
 d458b97eb84d4a8ec5e8e44c15e03cfd2d421ac0.jpeg
 d99d2c3025afd0e8e5a6361f2f724a7d243e387d.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/102:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/102:
 84d00f902c4c1119addc1ad179e2e9ff2b02c7c2.jpeg
 8f5421de909f9b01bdd0f31961096bed0f689638.jpeg
 a6488cd99789fa462c7c93726c8a674dc0d273e6.jpeg
@@ -302,7 +313,7 @@ e496bd19552fb8f40954a8882519d69fce2afae9.jpeg
 e8ece4f53b65f865e4a55a09b81f162c4ddd2461.jpeg
 e90d228cd6ef8b3f3ca8948097e61ddb52827515.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/103:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/103:
 18e16df23c987b13e7926624a32078116d7f3709.jpeg
 1b0ed2178146cc8e1bd77eb4ad318356c78751da.jpeg
 21da7640652edda9c48c86279693cc90fe358d85.jpeg
@@ -314,7 +325,7 @@ b5c0295642e711f980a2363658aed85574c11e0a.jpeg
 b6507cd0846b4b30c027f3c5593a7d546e209e58.jpeg
 e766d4d777e81cf2cb8f754ae92d869b37189e8f.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/104:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/104:
 052d7668f3c9560d46ef06716cbf0cd57715e076.jpeg
 0a591968e59f8517b2ee9992936f8991c22983a7.jpeg
 125de72b04bc84bfc59b2225ae714c15826d9cc5.jpeg
@@ -326,7 +337,7 @@ e766d4d777e81cf2cb8f754ae92d869b37189e8f.jpeg
 b0372c501cda553b6a20aac458d82ed73c58e19f.jpeg
 e91af3a8f5c3327f24890ced9c2a40a83339f6fa.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/105:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/105:
 092d1de5481eb60ed2430cac2c825b1623415bdf.jpeg
 381ee2ca3c7993332f546e3dc407b33772724a3a.jpeg
 3e95603da47ef51206618f0493d016b0c1900ade.jpeg
@@ -338,7 +349,7 @@ a6a8519422dc3ee299293a4bac8fdfcf42f1389c.jpeg
 c5e82a82fd18dc94a1d6c7a2e467f74a9407d240.jpeg
 c6ed958d7d59cc65b0d078674f891879c0f7b4d5.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/106:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/106:
 103a3b26f2112a0034cef1b606a3baaa7d6a78a5.jpeg
 4b11c77bd502aba3a746c917c083da54ac066bc4.jpeg
 63a4ec4ee979278d1002c1136abd3e9c13108657.jpeg
@@ -350,7 +361,7 @@ d111dbce26f0a88626abd32ba77e6e240a8ddbca.jpeg
 e0a4d0526582c1f9d64fe77374320a0e0fcf0560.jpeg
 f7de22e2dba818a05378f73f5e2509c8a9469682.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/107:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/107:
 0f0a1ab9c53cd9b65c93afeeaaca171a816b2417.jpeg
 5de34ae6e2d853fc2d98be126e1f37563c5d263a.jpeg
 6964f2f20e7c7931585961964372e6b68cc75d5a.jpeg
@@ -362,7 +373,7 @@ f07e6a87d690e314d2a5dbba89055929d77fdffd.jpeg
 f4da51f0d69d45bb647d2e0dca3c0cf4395806de.jpeg
 fd0bd98b6a88de185ae117a702ad350854dab39d.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/108:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/108:
 486f4aeb4002fc2215582ee073253e0487b7df26.jpeg
 a6ff5cd3320d054d8f5efe313d7ae8362164a747.jpeg
 b0888cd4f4257a2807bfb57a734331b728e593a9.jpeg
@@ -374,7 +385,7 @@ d2e8c619ec904ef6b68706ba372d62ed936b9663.jpeg
 d92538dd709ac7bc0305f8e829d7f7219b5c0499.jpeg
 f587cd591668438a3941d415644b4271a5337eb4.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/109:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/109:
 250a1295cedac0de471fdde4763ac4ba9a7648db.jpeg
 455edfc6fc012262db00fb76a7b24bb53b34a87d.jpeg
 60438300bea3f174bda99f08e7010a79caacdedc.jpeg
@@ -386,7 +397,7 @@ aa142b06ad5c658ed667878012dee348861d9bc1.jpeg
 de0d81ea94a5d2ec68afb5cd7d65793e143f1b83.jpeg
 f62d41ec2a82373125dd66c056d1c04a42827e4c.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/11:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/11:
 46151485a1ef5e8c8168951cad767beb1a129b0c.jpeg
 4824f860170dcfe9f87cd4368bdb244c1fdc9912.jpeg
 4c4d91f4b212a661f591f9d8082ca1978c46bdf2.jpeg
@@ -398,7 +409,7 @@ eff2afdda893477ae5cb3075efd79c40fb68dde2.jpeg
 f38eb120f77c339613bf5b914e40242a45c99e0d.jpeg
 f9cb22b4525f3d19baebf99bd5710474bc9783dc.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/110:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/110:
 0322f576b93dc717eb2bcfe247e4c824cb7b0748.jpeg
 1abab0c9ae38eb4ff56451b63ff3714d9d60f342.jpeg
 22157b27fb8b059758c8c165274365de027ad97c.jpeg
@@ -410,7 +421,7 @@ dd8eb371d5d7c2459e64034d969dc17b2b1ba466.jpeg
 de8d482c5b57d1aeba424a88ac367af56d3f8056.jpeg
 fb440edebd8d3b8df01ea03f4fd4d1c1f1f996fd.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/111:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/111:
 00e3adeee2c70aa7c81f2d93bea8c656f265045b.jpeg
 7203532889fe1e15ffee233dec21898b62b56420.jpeg
 78d4fcde58e8e2b6b23a35c539db9450a94d3f99.jpeg
@@ -422,7 +433,7 @@ e270481e47b0b2b01d4d6bdf0691e58f3e075b6a.jpeg
 ea060616e9208cc55ac1e2bfd8dfd53dc59d1413.jpeg
 f22473224ec254568bc64e7ad1278e31f6b01c95.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/112:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/112:
 13960e19a59dc9526c07f932c8af2a415339b4d7.jpeg
 70cda0bfc56de04ad841540f86d20559c5c9d4c3.jpeg
 742a53a2d87c3ba2e679b5984d5cf3962f11dbd0.jpeg
@@ -434,7 +445,7 @@ cf189cab67840a94123825fe67408d6b1d980905.jpeg
 d622fa4ce203808016ee19c9ebab4ac51e9b5662.jpeg
 d98a0ae57f39748e700375001442a86012b86ff7.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/113:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/113:
 047596b1dd219f72e86ce981521b1fea79155fbb.jpeg
 6db2a6312cde4a92e3386317d18ea2b75daf32d6.jpeg
 7d2fe3376136eec33373b5a9e460a12c5934375c.jpeg
@@ -446,7 +457,7 @@ d46419373cf95c27fb940bb3e0f8bf943b0a6885.jpeg
 dbcf3b60decb3a942a75e6e7e27daa3814c41e8d.jpeg
 de15dc1b104fdf59ca75431b6d35bd4522ae0877.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/114:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/114:
 2b9ae85cb44285cf05ffd4dc7e54eac27c8dbb95.jpeg
 32984a7e9f326e832d64085fe1a6dc51e18d293a.jpeg
 4bcdc6725577a8b2d0d262de31a191f133957da6.jpeg
@@ -458,7 +469,7 @@ e1cd26dfcc2d5365bdc2c515a4c5f237f818fec5.jpeg
 eb877e04226c10145350fc5b680aefaaee7d6948.jpeg
 ef6cd4c0b230ac03712b9b5369ffb9050b4debb4.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/115:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/115:
 2ed64bdcb5af18bda161b6de593e6d697ef35eaa.jpeg
 4790f82e43a92ca29482a651774a9627b4301deb.jpeg
 64691f6b00e6de3ee82723998c1e34282fb6d40d.jpeg
@@ -470,7 +481,7 @@ ef6cd4c0b230ac03712b9b5369ffb9050b4debb4.jpeg
 bc2e88aa4cd7a1b067f677392aa060d4fee0a815.jpeg
 f210259761217d20519913b0d58abc93ae907c67.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/116:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/116:
 05ff5d85424f3d22007f1bd55f411b7d8ba6138b.jpeg
 0be1b9a87130e7e624670cb7f2720aa357b65ebe.jpeg
 1b5b2765df79a19df581f69e8dbea56d9ba5ee31.jpeg
@@ -482,7 +493,7 @@ d5538e3c9227a4f34c322a201bf34aff94d60107.jpeg
 ddd23699cd8372121d052f3618e89f05d5ee267f.jpeg
 e2911823391653bb7bae1183408f7d6e3e1f1a2c.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/117:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/117:
 3148c7f51f2770c7ef040efbb1cb00859c4ae9b8.jpeg
 67f66413f57e2e8847da5dc0fc828b5678cdfa06.jpeg
 694d3fcf80af66b75634ce5036b4b34a557bd1d6.jpeg
@@ -494,7 +505,7 @@ c06891226bc5ef2166a494f8f474c5b1708f12bc.jpeg
 ce31cbab2f0a4f13eb58da4cea5cb46a2fe4097c.jpeg
 fe0a466f3a8e2df3f32ce30aba884fb76447114a.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/118:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/118:
 133f8811dc99bd9e22176d9f9e8d91ea3a1a1609.jpeg
 24e327a98f9050dea495992bcda36fb4a4c9f58b.jpeg
 4d5c77a81ab70dcf094a564f1c87f165d0aabfa2.jpeg
@@ -506,7 +517,7 @@ eb2b90aabdbf1e5f8186ff68d18c94662bc76737.jpeg
 eed01a4c56909af6a4731cded9fe735c07664b3c.jpeg
 f12af2c45c7a3f5d65bb26bfbe2f50dbe2f868b6.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/119:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/119:
 1f6bd5590d8d5b4a4a8559ddd4d99a5cef4161b9.jpeg
 323ee67726aa56418a938f09b88b9afd2077da5e.jpeg
 3d7e0dc8151ca7ead9c05d21c9a664c23d461348.jpeg
@@ -518,7 +529,7 @@ f12af2c45c7a3f5d65bb26bfbe2f50dbe2f868b6.jpeg
 a3f6c98f95093b4c11145187ddcfbf7d6f913aa1.jpeg
 c38192b6eca8e6f7d2b26004f4affa6f4b0119c0.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/12:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/12:
 4d6b1089a9fe6e16ea9968ca76370d913b32842a.jpeg
 8cbdabc79f51458b1690d9fb88808079b3c92052.jpeg
 8ed56ac16ed3544156ef9ae0868f3070469c42c9.jpeg
@@ -530,7 +541,7 @@ cdefef2630b0f8000309b6c10c8125eea67a46aa.jpeg
 e0adac345e9013babe4856ba9b3ca5f427b8dde8.jpeg
 e336cb436379c3b31dfca0bc00be0d2c48d9755e.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/120:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/120:
 28d130c322ab67b0f19c08522b81fd51c99d8b31.jpeg
 4965d6624c9677b88517ba0b5feef1b9c073493f.jpeg
 5e8d635d69ad13a4b2433df21676e3dcb603de46.jpeg
@@ -542,7 +553,7 @@ e4383efab4f6a38147728bdeee1aeadeeccff740.jpeg
 e82894e6587f1915cde389847a89c27a9f4e5e58.jpeg
 fb9dbe89933e2d86095c75db0adf5c767f997b1e.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/121:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/121:
 0b1c085b17461e2cc8bebf1fbdd2166509b442f0.jpeg
 0d6e30c65be7d01bb33e4f055a0e9c2e78685de0.jpeg
 1b3e85a0bdf876e714c80ee79b43e9c18bf60a61.jpeg
@@ -554,7 +565,7 @@ d04491476b6f16e7833627fa09547679a3e391b9.jpeg
 d12a61786c7dc7448751148ef9ec845641c084bd.jpeg
 e592b50b55e40249d35acc02412388062d5c679b.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/122:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/122:
 068cbba6530eff37b124aae60f5f66f47d628d21.jpeg
 0bd104bcf0cc41689d5bf2d36d67760604d6d92d.jpeg
 1f0c26b6c4bdfb46571b20c80682956e05d8ea69.jpeg
@@ -566,7 +577,7 @@ c8fe6b99a2fd3bac1fe71ae5ffa59cc00db4e8e3.jpeg
 d2edbcc71f5898df4155afc4e8488c1ae00721f6.jpeg
 f203348ea3de594c3e72167147e3e64b3c96945e.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/123:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/123:
 0951c42395a24ba70d481b0de9162d070867078f.jpeg
 302866889604f1694b24a4c4209d885c017f9efe.jpeg
 32389914b85749a4dc75a3f21ace1f0508de7e91.jpeg
@@ -578,7 +589,7 @@ f203348ea3de594c3e72167147e3e64b3c96945e.jpeg
 b7d44e51a97d907c95ab8ad842c4a77606234006.jpeg
 d8d652e2561f3fba8ee8d735ccaafa217b33a8d1.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/124:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/124:
 171e26ec9faaf19e2323658799f82425a0238c05.jpeg
 5fb9b66db73508f29e26e5bf1168e331ea21f215.jpeg
 662e95843a15ae9f70670f373fb535b2af51770f.jpeg
@@ -590,7 +601,7 @@ c7a693674b90ec547f97ce8a558bbec1b52ecd0c.jpeg
 ca49b4045e91f648e74d62721c80f7fa7cd60264.jpeg
 ee85c318bc2b74893abedab470a9320309d91134.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/125:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/125:
 0202f407513684dd960b7e718a98d2fbfa5e0093.jpeg
 1f49cd4a4f25e500ee9ea740f803cb3075af6e9b.jpeg
 2774f3d84befc93edcf89779203a3ccf3a33b433.jpeg
@@ -602,7 +613,7 @@ ee85c318bc2b74893abedab470a9320309d91134.jpeg
 bcf0a7ca9840b86b2f834b9eb2346a9b2d79dd63.jpeg
 cc385f85c6fe357fd0a955052ae384321c04113f.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/126:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/126:
 0962c9029b3b4dd3f995244119511647784e58f2.jpeg
 1f93c964576ecdbd82a12143c847c0928060de27.jpeg
 225f6e91dec577aaa9ea92af6eebd9a75ba6330a.jpeg
@@ -614,7 +625,7 @@ cc385f85c6fe357fd0a955052ae384321c04113f.jpeg
 ad4dbafc1ad3e1be4b7fd3465b8302b60e2d36cd.jpeg
 b0fe1a20d4c1279ebd8bc34a811a6b0b60291143.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/127:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/127:
 5f3b1756a2729d99d53b8643bfe9559163c76466.jpeg
 6e19f18b09bd0624c3aa71aa7cd820e397a90223.jpeg
 8c6498a9f7a3dcafad3c90e49e94fc2adccb2ca0.jpeg
@@ -626,7 +637,7 @@ e62a074103d79f7edf5cdceda1704760d6717ad0.jpeg
 f0fc14403292848d3d8a37a5b50babda10adf37f.jpeg
 f9e93c528aae7b66fa65c3b026e412ea807bf6d1.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/128:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/128:
 14bc5df1f99295b53e734c8aa651819fba1aa130.jpeg
 5ce99be7d4dbd1bb33898247d0f32c9e1c1c6ada.jpeg
 6acc68108f0739a2536563e6c48bf299c16f76c5.jpeg
@@ -638,7 +649,7 @@ cbe81bfea40115722b9736720fc06e74280c5ee3.jpeg
 ec94e002d6e3d6e93b88d4d549de4ff654fb082a.jpeg
 f643c7b71354deaf126bc4674794b139b68bcfaa.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/129:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/129:
 0a54f1b9ac87387c09eb707644338f78c929e861.jpeg
 47bf9b0c15ab9bcaeff2a176b79e11132b08ca77.jpeg
 4b66f396efd60e0db9e4f988bab2267eec4207b2.jpeg
@@ -650,7 +661,7 @@ a768f958a14d22e116901b86a89aa2ebe90e0f2e.jpeg
 c0b93c134a3368a0af4c179fa4c4eede4b907eac.jpeg
 d47cb9dad8e48f028b552bc675e568da40696e6f.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/13:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/13:
 1c423e39de8c269e75bd2691ad3f3a1253f2f023.jpeg
 3dbdc97aa690e09724e41b821f29101fb8289914.jpeg
 4761ac1cd21fda551855e5a2e903dbe42ba602a1.jpeg
@@ -662,7 +673,7 @@ b0a00bc3a3a0c3f719784a30fc4e27f04a82b50b.jpeg
 b9298222593c5e1e0295303b158689d0bb181b4b.jpeg
 c7d45fe03baecaecd3584ec06bf090621d565e42.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/130:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/130:
 17bddacc113b05cebef9604dea61fee3c5c25336.jpeg
 1d30d8aa29c1a921cede144812e47e28a3526d45.jpeg
 1fb15f2740cbde9308ff392cc75970e68a3c24e4.jpeg
@@ -674,7 +685,7 @@ e7bc45d68f13819a3178edfca0b9b21745719ce5.jpeg
 faa5a86e173d4363e6596f070f699e6553ce9402.jpeg
 fea7e0fafa2d39bf88cc067794654c95b58c296f.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/131:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/131:
 0b3ad6eac12ae22d65d41ad4f0dddae466d4e4ad.jpeg
 274d0aa77e810f745f7cc2d7c0863125b169f626.jpeg
 3e7aa78f1babf58bc6137baa8f957435ff940327.jpeg
@@ -686,7 +697,7 @@ dadfd90e30a76fffc65e2186fb549d94cc149dbd.jpeg
 ddb2b0ecd56138f8dab6657d3e7b1c457313fa74.jpeg
 fb2de8691a065a99eac56d2def390d0dcd5a6744.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/132:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/132:
 26963348ec344b0feb05509bc8e7f4fd9c6d0358.jpeg
 4bf902ef70d34c9a0440c34c88ceb39a7bc8f4a6.jpeg
 6cf1f9e5de5ce63c85b92b0747d6a4bbd1926379.jpeg
@@ -698,7 +709,7 @@ dc24de6cc4db0a4e302f3489b2331b85dec8be37.jpeg
 ef0f4eee867f90fe2a55084d3c220deaf7b6f66a.jpeg
 ff416f4833135404573c1412d522a4a3a444e5e7.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/133:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/133:
 24a8ed0b6fd39b7a311dab2edaa792231d7f7b1a.jpeg
 4c7416dcb0daa7bff1d591fe2d10ea5452f8efdd.jpeg
 5b90a2f0d027eb5cf80a79867c309716975a13e1.jpeg
@@ -710,7 +721,7 @@ d2fd0fdb2ac70647517ab07bceb31744955b32f3.jpeg
 e966f7c09169ae8ad04af8be4e2176c3739d7e53.jpeg
 fd6acb0a00d378725d7adc95f3efeca7d4ddd5bb.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/134:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/134:
 02d08243318f4ada48d43f3c035ab59755ad0c56.jpeg
 532dabd86a2fb33e9ddb66d4c77ace2275d117fd.jpeg
 624610fde20fa07e7afe822464df9ae8495e98e1.jpeg
@@ -722,7 +733,7 @@ bf1bf18d238c564ade191532a5549203f3a5daca.jpeg
 cb0d1fb6a11be5158464a7e89e5e1ba6f3dbbd5d.jpeg
 d33f35b79ed2d98266ad59f6fe1cf45d093ec31c.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/135:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/135:
 28985aaf12203edd8639267d845ea4edcad7a51a.jpeg
 29efc317b14c6fd53b291c2adafb9dc71089afcd.jpeg
 581e2ecc81f263e5b0d90174eef79c7cca11882c.jpeg
@@ -734,7 +745,7 @@ aeb1922adf9509b43fc5354f553546955b5cb182.jpeg
 b9a8bb075072bbda78977c22e6cd22b61d6bbaa3.jpeg
 b9f9896c85b3eed287ab7e980c458de2856b7de6.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/136:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/136:
 30d2b813e15433a9e5c00645d09923ee7db34f57.jpeg
 54402c5df4c9722adf29c7f642958da88a3e7aaf.jpeg
 67e9cbc4cb79fd9ffe4fc2dbb2fddebfea78533b.jpeg
@@ -746,7 +757,7 @@ a978bd389b63af7b96180382b6c2c341dd1f00d5.jpeg
 bf9c8a8dad546108c24059ba715b87c5875f270e.jpeg
 f0889474e325803484fa0c3abb405dc797500484.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/137:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/137:
 0a49d4144075a6cb84e1178a0c36c66b93c90ee6.jpeg
 0af6ff96804c795262d9fc8e6b39dc18999f4c5e.jpeg
 0df9d9311b94eb6dc61506eab722949285c1b435.jpeg
@@ -758,7 +769,7 @@ a59af0b49e4c2db27de93e13105495db6ef0e8fe.jpeg
 ef9c606109025f10788397f4da1d9b2c7fa10ac1.jpeg
 f27ff9c148fc62658e4ba9f74dbe79eb30b1895a.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/138:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/138:
 14802b91f1f54512f171542441e4f55f91ce1bdd.jpeg
 4598e64280737073cae91462859db3585b68651c.jpeg
 725b2639cc1353034ac196234859fbf9d32e26e9.jpeg
@@ -770,7 +781,7 @@ b3c3fc10b81f0dcd144e17cbfb8729b183a3bbb6.jpeg
 e55109d114508663ae5ef46e9ac5a4cebe1390b6.jpeg
 fa2c902492439dee409f2a7fdf93b42d2929f347.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/139:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/139:
 05dee8506bfd37a4a8e800f3b773f845e5e353df.jpeg
 156a394c6af448ff40168fb57e6cff676770a0b1.jpeg
 34577ba02d6d0f0f426ab491c19c9d32ccfaf9af.jpeg
@@ -782,7 +793,7 @@ c1a94a8ae5148498d22f12c37e0e4956ccf099dc.jpeg
 ecf364b13373fcaf0a156fd559eb2971e65ee96e.jpeg
 ee2381e0c2bed38bd240d4492182bff87b911655.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/14:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/14:
 2b90ceaf5b98e0290fe8636c9b1c2310e02fcc2a.jpeg
 3784bb3282e83c40425eac9c711a59307360f77c.jpeg
 76a2366f10f8cb932952824501514748f96bcbfa.jpeg
@@ -794,7 +805,7 @@ c50857c14d5298ed028911f207896adb437e21df.jpeg
 c5f0dbc5dcd749ceb83fb2873db263b1831e9963.jpeg
 e11ccbe408683e44c56322cccf382cb3837c9865.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/140:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/140:
 5dc1f3586390cdb5b6f35165e6133b098f5a5db7.jpeg
 6f6b7a505532798e6854dcb7a4af04c00eb851c8.jpeg
 8a2e3117c0ef20c9088932881cd6c3a9a0ff5270.jpeg
@@ -806,7 +817,7 @@ f2cc773a2601f8f0cc6a9c73da0fbc2dc79595a8.jpeg
 f8ec54d11e0566cf4a8046bd9e9c71343c3f4631.jpeg
 fab272acb91c99344d114045667be836897181fa.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/141:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/141:
 7c6926cbff9931643df0f5b539111e040bb35145.jpeg
 80c64cc5c3858baffc2a5c68adfb20ac38723cb6.jpeg
 a2f96949a021a7d5a680b6585b2f3cace7504ab8.jpeg
@@ -818,7 +829,7 @@ e000d850aadc29e3d44448766c539cf443c29ca1.jpeg
 e9017f5c522b31e311716140ce8487da8dfae010.jpeg
 eaf63b306b3c4fcb595aff78503aadc75812caa8.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/142:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/142:
 73fd4baee7acb09f0e1a3ed29ccf93bba8bfade0.jpeg
 7b2497b7bcca9503785ac93fec808cdb3db990cf.jpeg
 80e24f786130e0ee6ad2a3eb797314504a303188.jpeg
@@ -830,7 +841,7 @@ f3b28a94250a345d59d54aa305ae5a9d93f20592.jpeg
 f9e40e557916974ca00338359605323c036b7b6d.jpeg
 ffb01e23c50f98804ea2745c75669fff4810baaf.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/143:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/143:
 2c07ba398ee17233312fb0309530ff3294772770.jpeg
 35ebe46c4c43ad61e6cb39197ba9190e290bc87b.jpeg
 4bda803c99e74edc04ec1738a0e7f62c6858244b.jpeg
@@ -842,7 +853,7 @@ de3fb8b5c5245ba84146ab54e84a247c97ea1c43.jpeg
 e22dac0eacf626dc7f135559b50e4a7cf6e27ee1.jpeg
 fcee7c66afb93198c215da356a3d1a77ad07200e.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/144:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/144:
 4360fbd784b2628695a36b37f9b1985fb20e5c64.jpeg
 781a6e6bcc87ee64c036969b05329a4c8835d344.jpeg
 a3632c5596046dd7350dd3bcc2407c17bfc3b722.jpeg
@@ -854,7 +865,7 @@ dcf4bdef15f5d0e1ef64d84af53cf3404c419cea.jpeg
 e1492d13ab510185731c17c7a918b23e81d45952.jpeg
 e2719bf882dbf512b422295cc5ad7df7aeaae636.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/145:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/145:
 0426f6d7c3bed2ef2f2fe1e6a428cb17dd6f76b6.jpeg
 10bbcb6adfcde76ec44d7e6d751fec53a5d95118.jpeg
 1126d88701772ef7c2d2562eb9dec082b487e14a.jpeg
@@ -866,7 +877,7 @@ ae09cd916afffae9684a6ebbd9b4b6293dcb08e6.jpeg
 c8db3f222400d69a9d5420184be6b9d1b084f550.jpeg
 f675d6cb6b71e62d0a65440e3322fdd0b3f1c322.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/146:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/146:
 132c47bb3ebe64caed555c414874309435b45cfc.jpeg
 284018d7284caf3414281b0ecded5158f1a1f3fa.jpeg
 3dbde76f2b137b2e56ff0db6fb38b97f974bd529.jpeg
@@ -878,7 +889,7 @@ f0e311bdb3e1c9180ecc0c597526d8dbc90e09dd.jpeg
 f0f3b5c2859acc9e057f490367a52509bacfd323.jpeg
 f6d36ec43a929c0d049fc7c3cda425571a7e0b87.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/147:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/147:
 0d02e7d4c10a5f0fa87aca3764d893e47d24cafd.jpeg
 12f8c4212233db51ae2941dc84f9e9cea17476d7.jpeg
 2aad46fd2567584e254674523822584dd2367040.jpeg
@@ -890,7 +901,7 @@ e9f87efa94177d023d2f700a60d94f7bad760312.jpeg
 eeace72cfc4896b584f344c57bd9f71457ba4118.jpeg
 f7b0dd4c1bee86922ea4111d2026980030814d5f.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/148:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/148:
 1aee052e0fe76a2bdbaf5ad9fad2fe4362bd6851.jpeg
 af37bcc81e1ab047d89d545eae286c9e551ee085.jpeg
 bdc7bda7277f13071c063425e6beee709bcd2f66.jpeg
@@ -902,7 +913,7 @@ e079cad904d004f1a306dd07e0aa61ed65a3b19f.jpeg
 ebcbe9b0929eea885889c0ee47e633d8e5151b36.jpeg
 f17982fcc4813a394ec5e785a10a150e13194300.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/149:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/149:
 30cef4b693f13205561c7b1e0a3e90b64a202d2d.jpeg
 52de6d72ee72771c98bd3ff84a7e63eb90bc966e.jpeg
 b8b9b036c9aa13c3d5890e0e547666fd6939f527.jpeg
@@ -914,7 +925,7 @@ ed9adc6304704177f7e05a3998b42d73331d0752.jpeg
 edc3fbeaf6e9179c70c471666a922e4d3b7acb12.jpeg
 fd289c4c4dd1e0a19e09932f073f9296a3ee79e5.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/15:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/15:
 5757639477f1f86cb37e3c1e1fd3611d32cbf1f8.jpeg
 b1404fba1cad2389b2ffff1292e224a2093d8daa.jpeg
 b6cbcfb4eea7386deec50de39629a45b77f8ddf0.jpeg
@@ -926,7 +937,7 @@ e5a0da647b125b9f33ea133760f374b7140e5a52.jpeg
 e705430e1588dd373a743346d207baf49a27de15.jpeg
 fc6c11d8824da3dbf30a8a5299e347f2c3912e73.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/150:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/150:
 4c46145350838cca677873d107dd48c390f22094.jpeg
 4dbad78938693d85c55afe9404e09a97b64b946c.jpeg
 59c70da1316d1fa08eeff81a59cc7bdf0d5d2bd4.jpeg
@@ -938,7 +949,7 @@ a730d951b31492470260107a31b48a41ad7b1a36.jpeg
 a8f6ea73746a2da0176d638a757d79bf6733fb83.jpeg
 bb0e86ccb1f5d2332ac026d3fa257cb598cf79ce.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/151:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/151:
 2b11585d8f8e812f132d576caa710c72fdaf6b95.jpeg
 3e5ecd7f11a422607d09a0fe70b6ba07daf27a09.jpeg
 505cf9d6f37a875a72d86af5094fe664721436c1.jpeg
@@ -950,7 +961,7 @@ bd03c545067e9f738bf55805dee6d3365aef6545.jpeg
 ddb81119014b702f245132f574079a7a3ad26c16.jpeg
 e906d8d644b6f7ba7904c04ddb5fe0a5c914a03f.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/152:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/152:
 17cf5e7d07267b590e9ae7981c093d11b29c97a0.jpeg
 25908edcb6ccb8947a11029ba3e3e75c61471daf.jpeg
 32210c3f96501b0e546276c6c375ea58de9b0667.jpeg
@@ -962,7 +973,7 @@ e906d8d644b6f7ba7904c04ddb5fe0a5c914a03f.jpeg
 ed5337f806c2029ab0ce181aceee0b49915f3a41.jpeg
 f0509f2c14f5ea602ae89a675725ba23a02c3988.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/153:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/153:
 71fc03339840ec5fb5ba628117e4306b9523238b.jpeg
 81048766d79fdd34016a8fc5a64d9cf0afb913ee.jpeg
 833a61790901c5f5512e948ea8c098b673446b08.jpeg
@@ -974,7 +985,7 @@ ecc46bd82ac5e373e2c9a2009b353e449136b6bb.jpeg
 f2db37bc803c171d862596c96375b1dff21e81d2.jpeg
 f5bb236534cc4467fbbfdb7fed006a5aa0e05a90.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/154:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/154:
 0fd3a4256cc17134576d8a53659cec806b34c31a.jpeg
 2b7266a9b6f3823ae1b8d5d457e116f7ff0d15c7.jpeg
 2bc49fa03365f94cb3d2dc4ee63187945ad2c0ab.jpeg
@@ -986,7 +997,7 @@ f5bb236534cc4467fbbfdb7fed006a5aa0e05a90.jpeg
 d9abc7eec19f461674eaf6b9c70fa8b7e443353e.jpeg
 fb3679866c1017f05934c844040102313862394b.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/155:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/155:
 0aefcef510ae9ddc549187560641d5cd9cadbd4d.jpeg
 14d0fde8549dcf8d3d4091c21bf5cb22cc9b0694.jpeg
 17e06470878fd910ab627ded3a965f1795d10a6e.jpeg
@@ -998,7 +1009,7 @@ ac5f836e48a4ca94fe747f701072181c782faf20.jpeg
 b25d0be31acf6b751b3cf8c8c0edb99f6c328bfe.jpeg
 f784c8688bac2c4c7ec4a47281515eec97e53924.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/156:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/156:
 7161a783186813af047ec6ba17b8fa854aa29288.jpeg
 8b5e390f8144c3a3ddf626084f087e53db5cea42.jpeg
 8de2e0415682d16efa5c2a6ff3a419bf74f76184.jpeg
@@ -1010,7 +1021,7 @@ e8cb1be6f1c794893d9e5eef91456086f7539982.jpeg
 f08582c7a556f138fc54f6a0b2d75bd1d09a7bda.jpeg
 fa623722ad1d16b8c257c623ed637d4d92e4c6aa.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/157:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/157:
 39f3fc5bc6e143b4198d0ce035b14f24ffdce8f0.jpeg
 6e4d1e0ff6a3ea015bfe2e4aa565495d3c4a30c9.jpeg
 a625f6ad0208b56a0f49bce25db25496b1ab1d52.jpeg
@@ -1022,7 +1033,7 @@ ee255d24d3ac8ff33e2956d9cd6580adf663bfb9.jpeg
 f2dfc3ec925a5fd6820815b4738b2f42201dceeb.jpeg
 f53e93980a233677a6d448947c864f400bb6edba.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/158:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/158:
 0438e856bcdf8c8d9e2498deef02b73f7df1555c.jpeg
 2673123148553442309655b3e5258dee27894518.jpeg
 3c9ea4856dde4d679fffc6783829255b6870d7df.jpeg
@@ -1034,7 +1045,7 @@ e65fd326f50c8dd4eeb8ae8b2be0cabd5f4633a8.jpeg
 f377eeb91a2baf50afab400a1590d41e7558b84d.jpeg
 fe09b7c1cf5495cbd8037cb79a5078cc5d4d6ebb.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/159:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/159:
 166cc3714ba446e3d3d3f714bed5f0aea84e90f6.jpeg
 44abc42dbe14af3113295b63ab42e3611c556007.jpeg
 79794b0755967ffd5001b878071eafb9ab73377d.jpeg
@@ -1046,7 +1057,7 @@ d8322f8854f9dcd73075be2efaf10724a25b4516.jpeg
 e2b7852cc5145f49d2cd421a1716163d86cf1da8.jpeg
 f5ddae87c8c755ef90f6356786b9c78502796766.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/16:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/16:
 2ca59644b0633f45f5d85cb1d95c24896c1ef7eb.jpeg
 312f1560e874c0a7be7e5fbee521fa5899b9207f.jpeg
 3465b9f49e6f8553745a2d8242dc19822b50a40c.jpeg
@@ -1058,7 +1069,7 @@ d993284ef3c3d558328211fa8e0ab61a634786bf.jpeg
 e76f4b4aedfcc5506bcda4406a7b09716e7c9037.jpeg
 fd1da5ce5d1af22b3527e54c55f71c26b09e06e9.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/160:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/160:
 0efb0d17023cdc7c2c039cd0c34e61c033e9cc00.jpeg
 228645d3d96d636df42b16eae159308f85748552.jpeg
 48416b87d0d44c03323d1e7992432f90c7c6c973.jpeg
@@ -1070,7 +1081,7 @@ dc13489074f07afb4e212d3dbca9217dfff54e98.jpeg
 dd065d3bb14f91a29d0f89236d0a2a1c1d554f2e.jpeg
 ec65608fb2b352e907ccefae93320ad67cc83b9e.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/161:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/161:
 265e2a27e39ab68843ac2284850f02b6799a8a8a.jpeg
 6661bb65619d6a4b1039da0507e83ee742fdf330.jpeg
 74fd71d9ba0f798634477fc88b5d0ccf8e326fbf.jpeg
@@ -1082,7 +1093,7 @@ f12924592516f0424703bf94e5d8c2247b7a6cc1.jpeg
 f957884094b1e45f0598b96cbb5891a2e69208b3.jpeg
 fa34c80ed5f9512719c5b0a98ee69b1061fb7ebe.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/162:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/162:
 03f480da166f18fa89f3bb9075581770aacf3b80.jpeg
 09c3d9af53ea3b361faee8470d17deb9349000e1.jpeg
 0a00fe689ffd3408491de19ea2037f8daa128a85.jpeg
@@ -1094,7 +1105,7 @@ a6dec4fa99403273dd5fce2fc4ad88149c7e95dd.jpeg
 ad2ab4f849fd555a0f0d09ce32b7a473afdbdee9.jpeg
 dfbb2996d3938dcf4f77cd5112a8f3cc165d4f6d.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/163:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/163:
 134222730d8bb440427735611729a7e3e09dc11d.jpeg
 29c3e7a95c6cb39744a7a61e17dd44abb6a77c14.jpeg
 35a906a2ba3aaa560333ed53d702f73f41b390cf.jpeg
@@ -1106,7 +1117,7 @@ dfbb2996d3938dcf4f77cd5112a8f3cc165d4f6d.jpeg
 f3afbd63813d149d7d57187c7214c0d7a249d853.jpeg
 fed26af53be0a9943187a605872c54fe9bd715dc.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/164:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/164:
 1fe1258e40dc10f40215e033d8bd9d06a15655da.jpeg
 40484d9477150684428da4163b726c8d48c3ad1c.jpeg
 76bc58a41554954aaed48d224a83c601c56e7c7c.jpeg
@@ -1118,7 +1129,7 @@ d56a103f3a83eb9e04f86d53269b4c65a9e45ca8.jpeg
 e4b6e3f61921e8086d238d1fd7ccc82cdeda9a1e.jpeg
 ff429f6fbe90fe529d681a8b6ccbb867cc430af4.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/165:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/165:
 07c244738fa18f322da0bd4bc718a37384bc0c0a.jpeg
 0991ffbaf5615198c9421198f4c17e641ef90afd.jpeg
 199c29c6c154125d830f6d47e053cff3560b7aa4.jpeg
@@ -1130,7 +1141,7 @@ a848f901a0cd06edf84006574f25fc4e9c3c9130.jpeg
 b8385ec9b9e0394be711b3600a7afe64fbbd6b20.jpeg
 fa539ee655bab7eed7cae1e1b501ad25197ab958.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/166:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/166:
 13ba8ec09075562f93481416424e170e82dc9c29.jpeg
 26cafbfdd5207fd991a77bb5c0f00bf812fa7411.jpeg
 385976487f788b09e6ce320b2a0856490cbc771b.jpeg
@@ -1142,7 +1153,7 @@ cf2ac2331586453880391919fedee458248133dc.jpeg
 d8d070d8412357017e22d313fa8bb3c36f1317f6.jpeg
 dbd86b26d2fbf52cef238ba1b0d59602c9ac8bbf.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/167:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/167:
 11a3ffac517082564e86e4598d65caf928a3c59a.jpeg
 1a9c74b86178fd5040b60803ddeb5144db67c485.jpeg
 35634544f0449ea236ca32153db6b579ab7bee88.jpeg
@@ -1154,7 +1165,7 @@ b46fbc1c0e5bc439a62c9ac11f18b383e028f057.jpeg
 f3aa88236601da97880de59e34d17536e9cfe6d0.jpeg
 f89a52df0ee88412e874d6467f9b01e253590333.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/168:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/168:
 066db859b7a6d4c4b3adedc423b68147b4ad12ae.jpeg
 133c52bec62fe0a2bea5b404e09703ac14c87b84.jpeg
 15e0235e115b0f6babe4ceeb18a52cb8ea6e5171.jpeg
@@ -1166,7 +1177,7 @@ b41c96b7935080ef5eddd027bc42d59f727cb3f1.jpeg
 d3438e8440dc3585108b9e77b12c2942bb6bcce2.jpeg
 ec1dd2d7f021cfc4cb08397c7d704bf8fa5c9340.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/169:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/169:
 182c9145cdb83dd80404a2d325363295609f10b1.jpeg
 4d46c0ac9a104da9600da974964d31abda956b44.jpeg
 645b12f72e9d03c1964d9c3df338891cca52edfd.jpeg
@@ -1178,7 +1189,7 @@ d1a0d966c5bd65f44e491ac8691ed6f242cad0ea.jpeg
 e22a4b9d935a394a9f276abe5e0d69471bc581a1.jpeg
 f9d05f3c11354538a57bf42d6a36ae2d279310b0.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/17:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/17:
 14d8769b6197c41d4c35234533152737d33afeb8.jpeg
 31b5924364464ac0ff368285c8456c407a1876e0.jpeg
 5b2ebf8885eebfd8fee36899beca6fead1fec636.jpeg
@@ -1190,7 +1201,7 @@ dff743f5b81a677cc92a11616f6070cce13d3ba5.jpeg
 e5f6a070cd46cd40706c1507305e4da2c1f00b7a.jpeg
 e98b05972194fa090bc30141d5fb46ad9acb3c85.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/170:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/170:
 029c0d4096f3d7d708a07577001fe2a103a828b9.jpeg
 4df2429db3e93554d95c8152043f6cde48319058.jpeg
 8ac71185eae44499bd34f4ecce71b35b0c9426f1.jpeg
@@ -1202,7 +1213,7 @@ e251a1fee894464a76a20008e8e0155b235af111.jpeg
 e82b0076103652c51214c570f3a2accd6a953e17.jpeg
 f89671a653a4071a4dc8e9a8afcb1f0eb950df37.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/171:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/171:
 0162c7108b22f84fe135b2f20c59120348e89ebb.jpeg
 5097c30e318ec9677b8339eaee0b447ff9081c39.jpeg
 5a21d18d6bb24f547ce38aa63d05c32eb064fbf3.jpeg
@@ -1214,7 +1225,7 @@ dc2e4c49b8b2abcf46f7637314be370a726965a9.jpeg
 e2fd721f17223ac91f7cec9d91d280076c03b14d.jpeg
 fdfe0d8160ccbc13f74555b8129583c7b0bc9668.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/172:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/172:
 351be8af250d4eed05d0657c96e3d98af0619302.jpeg
 3c7a023f37e46570aabfc0a5d6f33ebb620fc46b.jpeg
 6c488263e6f958df5d54b2750311b4088a675261.jpeg
@@ -1226,7 +1237,7 @@ e5bca65dc51f8a2964b2ac7cdfd819113979bec9.jpeg
 f8fff4eb840423b52e1a84102c0a0fa9328b5958.jpeg
 fca93b88fbd0961c9dad5f331a118b4db893b36b.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/173:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/173:
 415688763fcefef33f118c3ffb1db5c71265c3a1.jpeg
 640d460b15af591a59c4ba5b914051195a8c29a6.jpeg
 b3d550f8569724f91e84fa10496ebc1964e94a6d.jpeg
@@ -1238,7 +1249,7 @@ f6a0dd7922aecd16bdc9c6588ef944757a3b113c.jpeg
 f8591245c7d3bb317660c91b2954e1c3218ed12b.jpeg
 f96ab830d51d84e4289653e039c2044fb7b4ce9e.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/174:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/174:
 08cd1de45d74e5e771ed2c20feffa2513f6264bf.jpeg
 3bb9cc5c51ac1fc92270e343eb77b907df826f52.jpeg
 51924af20064302b0364fbf5659a1663a6a08eba.jpeg
@@ -1250,7 +1261,7 @@ d6ecc17f52add0f2df8b418645d5050712fc1339.jpeg
 ed9e98b8a71fd1dac4a66ec33f5f92b4c6e62dc7.jpeg
 f92a679e2afdb289106dc6f2447f21330bb9be1c.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/175:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/175:
 07b0b964cfa41d36cf14738e3878486882accdcb.jpeg
 171c367d41db4e5d2bad19c71d9521ba726d0020.jpeg
 20429f5d3b6b82289b47df1eb5cc496ebee45736.jpeg
@@ -1262,7 +1273,7 @@ ef54567c441a5178eff446779b89ad5af4634ceb.jpeg
 f7766c6a3c63d70399be2e4427f6a376af025987.jpeg
 fbe150760ebf34c0944bc3c63ef877f369e2beb2.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/176:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/176:
 4d91f95bbddc7403a4de86206215e74369c92b94.jpeg
 62a0c621a71c04027139080e650870cb9ad4a160.jpeg
 9a4333df19117400b450de99a5784285250520cd.jpeg
@@ -1274,7 +1285,7 @@ dd4def5ff2a5ec8494b41d14a581dd40b88900d5.jpeg
 ea4375ceb8045be53a72320327b5dd064e68d1a4.jpeg
 f4368d0bae79104aef281afee29cfc79dc14a9f3.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/177:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/177:
 1687ff9a345110542d0d7bcf32e587d5251b5982.jpeg
 4b38b2483fcc2dd64d2e5fe892ab51f0457be5f1.jpeg
 7d002e2cb8290066adf97ea9c4c11bc2ebaeaec7.jpeg
@@ -1286,7 +1297,7 @@ bf07ebb1bb3e900511f7398203c78b013675b037.jpeg
 e2fe5ca40955511f1d312235baeb0557f2789334.jpeg
 fe1fa455ada1de3c1da2d4a86ef056dee6036231.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/178:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/178:
 2070892f8ca15bae042a6fa8cd2ce78d2ad23320.jpeg
 4377edfe41ecc1be2bcc19b1fff2785eea3c2dff.jpeg
 4ef7d7d0dcb071a55f170495bcea3fe2a394b63f.jpeg
@@ -1298,7 +1309,7 @@ ae6658031da74953aa2ec505fc0a4ab20b363d87.jpeg
 c0c579703e355d2b3612b2192fb8a8fe92bf907b.jpeg
 d32e3de542ee60c064b05da26958ce7e0723baa5.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/179:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/179:
 55254e3216158b948e4a4b6b17ddb359eecc01fb.jpeg
 57e4c8a625d8ce5becf381fce46205c79a02e30f.jpeg
 6502ff60e1ee93bc1b977e3443a73bc8b94b7e46.jpeg
@@ -1310,7 +1321,7 @@ d92e98b2406d4e6aa32a8ab0df36da353562be5a.jpeg
 efe64042a75fcafc2d10ca7f4a86dca0e4db4303.jpeg
 f91d922c7db990d345afa1790a2dece7e01af485.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/18:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/18:
 0f2d11a5e235a939b904a47150f02187292db3f9.jpeg
 1c4369743404ccfa533b57ef361f5dae59ae20e3.jpeg
 288b11f50e0537ca42425332e7dffe3bc62af37a.jpeg
@@ -1322,7 +1333,7 @@ c64d502e7ebdecd9f9ec6c1ce7f5a5c1174f6c9d.jpeg
 d16165cc6180db58394e80e42f02c8c787e71ad4.jpeg
 fab302b5e746a447ec5da40346ae1e63f5ff27b4.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/180:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/180:
 1b69d8dd3b2c2213d1ef196767a6873ca249bcd8.jpeg
 42aa09904cd47505edb73a44f9444ac43049fdfe.jpeg
 445aca5e5637b030b55e2847ceb1e255ce4f679f.jpeg
@@ -1334,7 +1345,7 @@ c5addd3fa846ea800ffcc667b0891305189e100f.jpeg
 dbc76c53ae3d572c463c94eb14579382123bf4e8.jpeg
 e4c8eb9bd75b26e4d78b4045e52c50a2026093dd.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/181:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/181:
 1ab6ad98173c5f30cb169bb752a861da42ae5224.jpeg
 2cbb0eeabf8ac34609ab16a0481f8873d139a485.jpeg
 3e7452901d7e7fe10cdc87a1583b6b78fe7d519e.jpeg
@@ -1346,7 +1357,7 @@ bf688b8424c2773f749a39f6858d96da4a9cf659.jpeg
 d2d1734b94829b27dd42117df7d3358237d13309.jpeg
 d695f26a544967580bb54445d7074503fec09ee2.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/182:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/182:
 1f68e7d93e1ef327cf6fea9c0255cab4b122257a.jpeg
 8e3482527afb96624b069a9b2046f9ec9dffb63a.jpeg
 adeb5f75efc290bda849084884c15358bfaafa1e.jpeg
@@ -1358,7 +1369,7 @@ da4423d8f3f12fc2f256c8292200fd987f4b4aa7.jpeg
 decf23591c6e4e7da5d55db196918b7bcb88a483.jpeg
 fea8e1564f75fb91d3f403b4ef06b03c27c19711.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/183:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/183:
 191e104edb12c0b5ade91a74a0068420098b4804.jpeg
 235869f5fef3bc788d03177c44a300b5868fa4fe.jpeg
 237e8d803b2a996a081f31a73524f2b599f0af7c.jpeg
@@ -1370,7 +1381,7 @@ fea8e1564f75fb91d3f403b4ef06b03c27c19711.jpeg
 a73f6562d084d38a1e8e1a777bdaae0120c92399.jpeg
 c3b4f4101e9da18dfb195935fa40a97162cf246d.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/184:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/184:
 29d390b8598b8702314913afa1a392d46eb4b255.jpeg
 2c31222ea3a4b75649cdc1c853b019148e1e87d7.jpeg
 3570640ba79364b0b9ac0def4cda034c623d2a39.jpeg
@@ -1382,7 +1393,7 @@ de1bc6db15ebf5a83b5f15b13e925177cdd3c8b6.jpeg
 e7fcb4a57865c90b769754e0282172f1ef1077a7.jpeg
 feb14d8cd9077ee4272a2238191b5ae4b8b9466d.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/185:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/185:
 4eff351dda42dc4531f89fde2c5af5bfa90fa67a.jpeg
 504e592797d8fe79bf1ce8f9875807b972c2383e.jpeg
 8e9f422f4175c9e9f83e77b457850620ff28fe29.jpeg
@@ -1394,7 +1405,7 @@ f6ec6a0d8e3e1dfd478ab68f3d48a24f95b68f77.jpeg
 fe1f19cef8418dabfe9abd6fb8227f7e0d60fb1e.jpeg
 fe77e34b26961322ea978c09a80db698904ef38c.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/186:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/186:
 230a9e11a8c792bef8de63e14a3e2ecbbcc0fd9e.jpeg
 4f9b8155be86c0835c6359b03fbb394de4e0f179.jpeg
 7c347d9b347a37a5ab2e63eeab2fd83ecaa61054.jpeg
@@ -1406,7 +1417,7 @@ d08e096339c526692781db509cdb8e6a51838e75.jpeg
 e076febbcfadd58c8e9773c36331a88fc3b17bcb.jpeg
 ea6a5dcc968e06ea6e9fc11a3da6f1c3ca53c661.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/187:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/187:
 1ced6fcfb7a35734d52c19c38f131a9ddf38416b.jpeg
 5384c8228d37bf2a18a9e1765e227f096c854827.jpeg
 97c31b80ce6566d55fd8b06e5f98466dc871a551.jpeg
@@ -1418,7 +1429,7 @@ ed70246337039213a3dab186bb092a26e04ed67c.jpeg
 ed92cd0e1ecc677c8eee23ff2294bbbde3b7f089.jpeg
 eef934d476c1727ab30c7cf43937869e650d0b91.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/188:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/188:
 1a17ee53a06e7336fe314272e04ee30c769b1eec.jpeg
 1bdcd80866844875e5f130861180bb15b79ef1d7.jpeg
 47720b2903d82ad28f2a1497a602203a223b1f95.jpeg
@@ -1430,7 +1441,7 @@ d7a72c450006ea64ddf60ec2b372d99a1fb79bbe.jpeg
 da60e39748ae8f193dc22afc909e4f1c160202d9.jpeg
 e625273ef6195429f5322ed10f59d9b6d511c8eb.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/189:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/189:
 1222a2289cad1f5c4f6005739f47e68b048a17f6.jpeg
 312ae838aeaf7e7e92eaae9c440e538e6e0a50bf.jpeg
 3bf9de4551ca4804ead237cf4e9d093dbae6066a.jpeg
@@ -1442,7 +1453,7 @@ e625273ef6195429f5322ed10f59d9b6d511c8eb.jpeg
 c45a6d5b10f79d72839edb6f4e919bddb5454493.jpeg
 eff4786635ec1867ef18e3bd3d28c4cf4d2e33a3.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/19:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/19:
 29dae77284bd84f48072a636072b9b83c53a6981.jpeg
 441f015d05ca8714b18424ff7c4b3afdf05cde80.jpeg
 5bfbc8cbf81de4e2d7dfd9b798262d1d2b36ffa8.jpeg
@@ -1454,7 +1465,7 @@ d69224f983d60b87cdd84e5c6ad940a9e075a5b4.jpeg
 d82d3e30f7172774519c8dba0784735c811103e2.jpeg
 dfa0a1887921ac42186956f8cb325ae578eb06b5.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/190:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/190:
 1a9d60518554d895498b8eb96791c3d51160124b.jpeg
 596f5a875d38ba85c50c9e3a0672f2c9b2d41bb0.jpeg
 5a614ce3e5972ffdc0daf56e53bf2af2ea998102.jpeg
@@ -1466,7 +1477,7 @@ ca4e859930b7ab132f3eae60aab02ea296ccce4d.jpeg
 da8dbd79900778fd3a2a6e07c46af43577972514.jpeg
 e18eb48d73a92a4068ea379873ccadbce7e70ec0.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/191:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/191:
 05a8f5d3ea9d45d26f061db477e78f27202cbf5b.jpeg
 1271b16b374b3846fa84fb399c404cbd20dcafcd.jpeg
 18461c0f7ded5e642e9bf0b36cf43b88dc7df3c4.jpeg
@@ -1478,7 +1489,7 @@ e18eb48d73a92a4068ea379873ccadbce7e70ec0.jpeg
 9e5416df69abebfe1499aa792509c19c503dee04.jpeg
 f3a1d881b00062a11cd4f3dbb4a695ea20372421.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/192:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/192:
 05779347e96fe8d19866c2f304896bb0d199a5a5.jpeg
 1cd3781b1c096a37817c86bfda285a22b7f8ccd4.jpeg
 4bd129bdeee5d5384fd06e899a06fd93de108347.jpeg
@@ -1490,7 +1501,7 @@ af89ee4bfe7aa9e081518f0532212032c7dd7266.jpeg
 c5723380ae10022383957289562a819a82977855.jpeg
 d910fef7e229c45609023411673aab9e944bcf90.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/193:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/193:
 2efe82bda7f23e084e85ca99ac0fd8b4b325c022.jpeg
 6753c23f24bf4298e36d5903f755b7f1137d1d5d.jpeg
 7b88d8432f281fc343d9a41291e2af2997e6d413.jpeg
@@ -1502,7 +1513,7 @@ aadbea5396077c3a5ac086e7bc223f959bffb374.jpeg
 defd696cf26051a5648f020c7626a254328a4bb5.jpeg
 ed8446ad91cb4f299e34cf1c3fbdb3507e041a95.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/194:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/194:
 11bf62585dae78a3e59fdc2bbf4f8227f8737245.jpeg
 1220f6008e42ae4c130893d67dd24fc8808f3bca.jpeg
 15245e688dacff0c9fb650f40502bef75c9356f1.jpeg
@@ -1514,7 +1525,7 @@ d5e0dca4dbbc95457c65822df3eb86d64fc928f6.jpeg
 fb36d6c3da2745d18929cff4e467a2bece46da50.jpeg
 fcd3f6161486e5cf15a850a4882113f7064d7591.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/195:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/195:
 0f389b0e6458d2413ec0427516a7c8183b08ea5a.jpeg
 21db5ce7bc53f3cc6c63d2d52c96913858f825e6.jpeg
 43651fe0054738ca2a09f844d3ea4be00bd52611.jpeg
@@ -1526,7 +1537,7 @@ fcd3f6161486e5cf15a850a4882113f7064d7591.jpeg
 8ad4f960136753fc5f183e5c152e5e1c9efde7b8.jpeg
 a21e1037f7c86fc0009ecbba5d0fd3a0c4b05618.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/196:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/196:
 0ef671473aea74edbd62d1004fa4248faabfbc71.jpeg
 103a011423b3f6641179cb2490944cbcb14d4f50.jpeg
 11c4c167c3c794865038d1b3600dc2d29e897178.jpeg
@@ -1538,7 +1549,7 @@ e3f687da2ba778c96ef84c9c66430827a1817d7d.jpeg
 fb3efd1a6c026f4ef79264ee88247639c0966f2e.jpeg
 fe90e18c80e6bb37f353b2c906cac02da9044760.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/197:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/197:
 2d61cd0dd6e4d68b77d5958fab42cd8381996d4f.jpeg
 508f0b8ba5db539aa7fb310a2c20b8341c504a2a.jpeg
 761eb996da3e625f7de3dd949657b3a4f727202b.jpeg
@@ -1550,7 +1561,7 @@ df6cfd1bc309227d06d65cda972e7c3b2ea555e0.jpeg
 e1d8b5b14ea719c1749ee1949553762b9a230aca.jpeg
 fb609a8916da70169a19f70ae3d5d6b717a77f16.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/198:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/198:
 062d1284b96bd2952384d6e4cbf6f9ee05b040c7.jpeg
 1e9b40868c7f4e381d119eb222fdca14b4807909.jpeg
 3ba45552b83d70f68afbf6560d4fc4a92aa9932a.jpeg
@@ -1562,7 +1573,7 @@ d64c279ccd950e10581031d8ff5d95418d4c8723.jpeg
 d8cdc92ac7f9ace772c18783980a4d5a10338109.jpeg
 df5dbd58f8194857a2b0eacd89e2a720f8e11366.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/199:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/199:
 071ca73f90b96759d7f4ad78539101945a4b295c.jpeg
 4ef44375bac985ac027c6f14d3071072b5970d75.jpeg
 5c1a68d6283c6f5001cc5f9e27926e5608e4c799.jpeg
@@ -1574,7 +1585,7 @@ df5dbd58f8194857a2b0eacd89e2a720f8e11366.jpeg
 b0b8d75410bd7a3e64daa3dedf93aa35f47c31a1.jpeg
 bb70015164e64056bbab3b83619ff6aba362e3d8.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/2:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/2:
 807b3688188c55a32c9166a58b65a5143e69480b.jpeg
 8c95a9295b913dfa7c09249679de3e5e9bde8bd0.jpeg
 8dbe7fb5b7bcc94a69038a8197e28475f0336066.jpeg
@@ -1586,7 +1597,7 @@ f2c217158597d0c6c2d8c10f67e67492996e55e0.jpeg
 f3f5459bc6eecdf01616a1a9c21d27075d31001b.jpeg
 f82eb5914602bb0bc538fc417ca3757949743eec.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/20:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/20:
 4cb29b1a18fd11a7c75a369daf7a9624166ea9da.jpeg
 63516e858b674df123c288a497d8bfdccaa3516c.jpeg
 65c25438589fd0a4a538178c3ddc2ba97000b738.jpeg
@@ -1598,7 +1609,7 @@ c39cd8b68e5d8eab33831fe2865821d38877b77e.jpeg
 c8af799752acebb00922188c3a9ce4ad6c45c715.jpeg
 d8295a8ad1948b847c880ab0a1a3b18c63280468.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/21:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/21:
 162d071c7af889282f4a5a94e62357c79e386d9c.jpeg
 4bb30d58a54880c8486c2053ff5e5d65def3086e.jpeg
 5b666b8c9f3c2426427ae6862192196aa184bd5a.jpeg
@@ -1610,7 +1621,7 @@ bd773322f2c2ebf70ec1ebf773ab089ce5aefd0a.jpeg
 cd6afcac43e0108f5d42a50690eda4742886f334.jpeg
 fc290c77b6c3082d1b0adb8b035c4bf0002cf5d4.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/22:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/22:
 b8a4ecc6c9d25201b300e317ef24a8778f81a308.jpeg
 c10ed2785efe787a08267bc0764ec36f99223ad1.jpeg
 ca65b7dcda16312c2eda2cebc56a5f5f9b5394b5.jpeg
@@ -1622,7 +1633,7 @@ eb5015f794279ccaa051e4b77ec5e1f0ea6e9fdb.jpeg
 f093169db7cce78fd140b948ff7df20c7ce721f9.jpeg
 fc4ff7a9aa989802accb183909a051053419a912.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/23:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/23:
 0542f0f606c444d23f410bea7b42ccd58a64ba10.jpeg
 2603c360b85b2d107c730efa9fec182611984c88.jpeg
 2d47a479d2254f0c8b54cb8b6a3f37331db62a6a.jpeg
@@ -1634,7 +1645,7 @@ c6867d04b403eb4212a857e49ca49f1a588dd93f.jpeg
 ec472f358d5a1b1fdca2242bcd03644f2e738dc4.jpeg
 fc3309a0df13228b9d7c7993331fe9115df0d340.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/24:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/24:
 88b1e880482b41f5c38797de43764f75d0ed8276.jpeg
 9e9d55408f4fbe3ed296a56f51f794cba8668ae2.jpeg
 a07ff90aef1c520fe0ab4a5527e7865e78ae36e5.jpeg
@@ -1646,7 +1657,7 @@ daf351ed1f822e7a2a6526b3eae58f2c0a1e86a3.jpeg
 f5ed83042cefe1f74b5ee434795bef52b230218c.jpeg
 fb555a545398d0ab1239c2f8a917968b0e450acb.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/25:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/25:
 0efaf7e7f404f4b07e3d246de30059b52281abaa.jpeg
 1650aff63dc42dc3fe7224dc7436def35b0acd6a.jpeg
 1e9712c6b21e67973e3b7957bfbdef64526b0a9f.jpeg
@@ -1658,7 +1669,7 @@ a9e17d6a06cd5141ffef88595bc1e47c98a2e4a5.jpeg
 ee1c94e58cf6b93deed37164703dcdf386b81a96.jpeg
 f74a7451b7f278074009644587304f5b2b0d71ea.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/26:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/26:
 1d3fd4cd2547a8d9be855128f6528f2df6003861.jpeg
 472c05a5b437d54aa1defd8679ee18d9ff093b23.jpeg
 673ee6c8cb221bc8ae7da3d59c41c15a806e7f68.jpeg
@@ -1670,7 +1681,7 @@ a13acfdb3ce1831e9cd03398f0c5afa4672ce721.jpeg
 ce85584acfdbf65fdb7a6ec0bb64ccdceaebb22e.jpeg
 e3594f8b49df0c2bea49eb6f31af0abeb11cc210.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/27:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/27:
 4cdc50656d88c7e4d2a03046cdfb6d839fac0299.jpeg
 4d5cf49be0aa22616d803123514507f46f547544.jpeg
 5352cd5cfe82ee16c246344ed20337a58c15d921.jpeg
@@ -1682,7 +1693,7 @@ c89fdf14361b7cf5a61ee100cf7dfe2199ad0a64.jpeg
 c95d59763a9812208895ef7e1fe871e75300e7a3.jpeg
 cac5913828bdc4a3408da552a560b6f55e33433f.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/28:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/28:
 0e4aaa0916ec72d721204b5e3ff3c528ba015d9f.jpeg
 64e495cad3c09f2abe22576e4690c38c9b04c72e.jpeg
 88b2228afe5a44b1dd296f20bb2bd27339cc995d.jpeg
@@ -1694,7 +1705,7 @@ c0757e073f259937d85259d908c169c9fa028e47.jpeg
 f25bee8bcb385e00a4fd12ee7b358638c0639b36.jpeg
 f3a5236799e1ce5b360e50a66e30c98960f60586.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/29:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/29:
 079bfb43e53efb2adf04d371e7f1a9397752ded9.jpeg
 20ff5a5d699e9eb0e3845df21135bde70803390d.jpeg
 3b8e5c15ffee08589f0ba630e899a9aa1af93b61.jpeg
@@ -1706,7 +1717,7 @@ c61073c8a13f5a1e333b0ce63e39ed24955dc1df.jpeg
 daa4d8b97581a5ba1579ae05955105ebbe1cb6f2.jpeg
 ffc09b3c3215db095e5c7ba60b643ac0c41d4568.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/3:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/3:
 0cf73b97b86415673e59550d200d3479f5640d04.jpeg
 18c643aadc993b9e5614838d002b5d32b0483999.jpeg
 1a388b636b5b41315b482e6f4ad0274ef3ecbd2a.jpeg
@@ -1718,7 +1729,7 @@ d4bbd61a1a54b47db14b3762758a1c6cbf0de018.jpeg
 e9a3e1201ed6fc3ff60466201c19dea9a3f8c511.jpeg
 f976028e7ad0be62ca942d8a1cbb53dc29ec64c0.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/30:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/30:
 03323f17e006c78f7ba5839eb5614969ea52fe4b.jpeg
 0eb71ed52e4333e6f9c68c7f25e79ffc77ebd8f3.jpeg
 6b893fd980a6d8d9fa3f6840cc7f1481659336a7.jpeg
@@ -1730,7 +1741,7 @@ e479f0e0f8895eb310fca1fe66716da6f1e20446.jpeg
 efe094fb90b5cd3c1af3f6dc3a04e8ebb78059c2.jpeg
 ff84e793ede851846eb8d16828aee30f871fe279.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/31:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/31:
 07da59a8b50fbb1db03a16afea0405ff2c9ab0ca.jpeg
 172e4dd13cfb3838f4fd41b576ddacf92ef8730b.jpeg
 57ea1dce28e800fc655b5df11ab9f5a9e4efe003.jpeg
@@ -1742,7 +1753,7 @@ e41ad8df7a6e0e44b7edecf71e9c72790f788823.jpeg
 f4345c3a92d5f0c46bae8f14302cbac41cd39a96.jpeg
 f4e7c37efd253ab862cf053bcd9909c62265f694.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/32:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/32:
 0bd41b22fcb1e53ce02b7e7fa857fad58d3a96aa.jpeg
 7fd88bf8a5ba8c9a5c90791452d35de9b0892da6.jpeg
 8500858f3c100b0cac1ef1c7b6936e89281ec683.jpeg
@@ -1754,7 +1765,7 @@ da9b4dfbb90c5cfde8084ab9c964f1a3c18b1973.jpeg
 ea3853fd97f4f7ac1344062c848e6dcba9e7b70f.jpeg
 fc882c8daa61e297eb0fffacfc3867808631251b.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/33:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/33:
 1fa5a0f87090301a5ea619be0b667536634f3a69.jpeg
 5688a520baaeec4ef61a6f9bece74ee59a062136.jpeg
 6a044fbfebb48e2a58a315584cc59c2275c95936.jpeg
@@ -1766,7 +1777,7 @@ dccadbbd7730ced8e5b738dedc0e62113f9afe18.jpeg
 fe3937c559933ee261c4078856474f42a08861d1.jpeg
 feec939d2c2f4bbc37328b48e30bf6ca0516e0b9.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/34:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/34:
 2281b67857e5081ff114fd292e6b5221e8dbc94a.jpeg
 331c8873ebe68f3da422f9b69763b86a1fc15a44.jpeg
 65795a4df6051f69acb436bc5dac78a3fa5ba98f.jpeg
@@ -1778,7 +1789,7 @@ a7e0510894f45fc3bdbf8588e62fedd2bcc8fce0.jpeg
 aea92d7d6bfe0f5a106a48ed327ca050bf82a36d.jpeg
 e0e636303ea1df0d18ef047aa85f85a39e953f54.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/35:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/35:
 28d4112f7c8de4597853d99d9a3a188d64d699aa.jpeg
 40a446aca44c40fa6dd04e5506455039d5ad76d1.jpeg
 9475710a8c04040363922504029d09103045f762.jpeg
@@ -1790,7 +1801,7 @@ e2bc3c8e82b15a3b32a9fc25d06a058dc96b6e2d.jpeg
 f0a542112df27198ea8c63ac36d69ead09b3f79e.jpeg
 fbeea8aa7d5fff001d86d4beda6a01b5ebf7f674.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/36:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/36:
 01493e96319c26fdf2071970570dcf690df3344f.jpeg
 2b39865be8cfd4f7a7cb4519c38c5c0b9246aba3.jpeg
 30350741ef5eb3fe49d2d26990b300c01667fa09.jpeg
@@ -1802,7 +1813,7 @@ c962d8cbbe65977cfba90ffa2bcc74622b4bf55e.jpeg
 f6f7355798afc90573d1d61a2172f111eb3ceccb.jpeg
 fbad05153f99e9a2cd5930342aff523465e1e52f.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/37:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/37:
 04dd056ffd339096d2f8986f4873c84d29e668eb.jpeg
 207df83484a716f079c18696817e2e75d648c98d.jpeg
 4cf6d229d22f5f42c6bf6f8363e4f8eab7715cca.jpeg
@@ -1814,7 +1825,7 @@ c79124afd17cf15c2f385540da4c32c6689d769f.jpeg
 df4853173007ff4a927321b2b7ac7caccc7b8274.jpeg
 fb0b47e2c59bb7776d257527fe0dd16aa063ca40.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/38:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/38:
 12bb964ee3969d16ecdb875b2e9dac8c9a6b8caa.jpeg
 96d5ada8bbda3e0e3c2c6306c9b56d0091a350d5.jpeg
 9bb11a11a863d54eb5aeee99d00b7df82ac342ba.jpeg
@@ -1826,7 +1837,7 @@ ecc560fe5a79b85e3f4887a95163823ae16b1a4c.jpeg
 f8590ed5678767b77a8f61cc1122d6ccdd602721.jpeg
 fb431c9823b70a265473660720a8df4c4ab77db4.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/39:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/39:
 058ff0140f0b976f8d80178e376e9cb87c04d67b.jpeg
 56821a11b432ccc0c32ecbe29fce61564874a98a.jpeg
 76f6670096bb0b92eaa5bcb808b2a934aef0cb84.jpeg
@@ -1838,7 +1849,7 @@ ef52de1a1633e5dd6f209d0729ae503f0cd0d67b.jpeg
 f351ca8a47873f47d4dbca28d404edc60dc06417.jpeg
 f6f966b4293cc9f082f6049b4874bcba59d2f7ed.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/4:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/4:
 076067646a7168cc8fbc22e722073d10a779d587.jpeg
 10c406ff6220430c75040f3bd24b5f4f995552bc.jpeg
 15f869764cbb3c3c6948c604f9691f0f8fcf0c65.jpeg
@@ -1850,7 +1861,7 @@ be6dee1d0ae696dfe8f5be894bf2115dfa7805b4.jpeg
 f74b45796a4c05038dea5df3575825db3af6c176.jpeg
 fc303fd7d9b43cb62ff22eb0bb52dfe8244f87ec.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/40:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/40:
 794c3c923bd67622932261a3fae913171840fe58.jpeg
 7b9692d6c064bd7e09f6d811df70da4c448b5b80.jpeg
 8641fc8987a7f4fdfea7674321d11e7859c36ce4.jpeg
@@ -1862,7 +1873,7 @@ d11e629dcb27be472fdecac4879b2521426ecf4a.jpeg
 de7d20ff7aa51daacfbafe27a84e14f7bb56e9ab.jpeg
 fbaff27fce5c898ce9ce93c2af4659e8ff8c5e23.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/41:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/41:
 5e470ec85c8a0cd49f9c0349e1f555b5df3b87d8.jpeg
 73ea339f6c0f63725388b568f9e7a182cdda27fe.jpeg
 79a35517b2c4bbc50359794fe87ab3a224d7556e.jpeg
@@ -1874,7 +1885,7 @@ d06b30ad78eb8c9d5b1d27587d199ba4ef99d03f.jpeg
 f6c30047fb45ea9f99bab439e32ca048b23b0575.jpeg
 f95d272c6d3ce64cf2e56c1a666738e442fb304b.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/42:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/42:
 8596951bd1bb8f0133d7ef7b794f9a9d2faa75c3.jpeg
 89004179ceb9eae5c68b00d56d21d6ecda5c2a45.jpeg
 8da6fdd68281b275c183096d705fce14185b8714.jpeg
@@ -1886,7 +1897,7 @@ d12cadeb8888427e35e21df83ff242abb79cc9b1.jpeg
 ee184a20dafda0e0f67270c719b22d17f9056fe6.jpeg
 efdda80a327cafb4c34e7c81bb8515422d8281e9.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/43:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/43:
 1b477eff023f979b77b4c90b139593c78223a372.jpeg
 226f0988a768095e869ec5675c6f964637ad55a3.jpeg
 2d8b4e7b5b1155004bbf0b03d018e0ea9d1b2cec.jpeg
@@ -1898,7 +1909,7 @@ f25efb94e35fac771d8e0b35e54290ac8e461b78.jpeg
 f51d4b88ad235d7245d4f7f38378dbe510bb4b24.jpeg
 fc707aebef3ee7675c3003444fa54e42f55d7cbc.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/44:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/44:
 19605791e7efdc7ac7219f1fbb106a71a6734f42.jpeg
 1c5070ae173ffcf92778481d66d2961400bce55e.jpeg
 2b4d658bcab03719a12b2ba06e289d333dbec048.jpeg
@@ -1910,7 +1921,7 @@ cc658a5b68578772846608a4da0f561abae34a9f.jpeg
 d9f0970668b23cd2f337833cc85d31e5f2bd2bc4.jpeg
 f82a5b7efc138a7a515f2605352e1263f43e2e20.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/45:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/45:
 010fc75c161f1c35858e5b41ef2d4e7f26793777.jpeg
 23eab75cf9b9f49f20ef4bba2c36df2cc772f1bd.jpeg
 3f9c2354231b2c0cdddd22361c1187bcbf65268a.jpeg
@@ -1922,7 +1933,7 @@ c65ba921c8480053d4f7d64a32b962c1f49adca0.jpeg
 cef01fa1fea60f8441be9c6dfc2219f75aa24362.jpeg
 dd9f7d4a73d0ba687e5c4275e71e4d6fff2500f0.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/46:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/46:
 8ffabdf6d72dd9a1ccbddeeb7f87ba7937b8410b.jpeg
 9b13ce96ea6632d74a66e344955f1fdddeeb9ac5.jpeg
 9bdf00d5a1919532fedc36e16ad89b5686648fbe.jpeg
@@ -1934,7 +1945,7 @@ dcd47e08fddab1b74b0836d8778c42dc693f46f7.jpeg
 f58961ba581e8daa250da50635101b51728cc41b.jpeg
 f9f6792c267ec976086620c43754ef02d9add9dd.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/47:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/47:
 6066b6ef7f8c107baa0fca475b9ecf1ccfcd7611.jpeg
 850bbd809ea66543b944e85df66cbb08c4ff201c.jpeg
 90b7750333b20d276bd0ee3ddc3729ac995b3f65.jpeg
@@ -1946,7 +1957,7 @@ ef9db3a5a2bd0a597df37016c960f4f53d9b9a98.jpeg
 f80c4c98a82a0c18ff028221d786c7ebf58d6bb3.jpeg
 feb1a991361496859e2bfc0e0aeed277649a9ea4.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/48:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/48:
 369b234517f388a30b6edcceb277904e61e300b7.jpeg
 3e52318e0fc3697f4b43a693d3f28d940b3222d7.jpeg
 494ae404131a4da154cb40251a10c8fe27a68ed0.jpeg
@@ -1958,7 +1969,7 @@ f24f0c567b358e1e73f489e3e5d9cb115d03612a.jpeg
 fb6bc3df7eae1daa90e2eaae4a01a87c41fdae4e.jpeg
 fbcd6c00f98d64fa5a81ea909b9d4f250c09fd76.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/49:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/49:
 41c7ec5560b47002a6c4913c856518373c8350d6.jpeg
 4d0ab5fbe80324efcc10cefa1175bf21c4ffebcd.jpeg
 545459bbc00342c4bea3e1412965628101fc6924.jpeg
@@ -1970,7 +1981,7 @@ fbcd6c00f98d64fa5a81ea909b9d4f250c09fd76.jpeg
 d275320d9171acf0b34e118726ad868074def578.jpeg
 e497b4c16bc6c7fa435972c35106142e3ed18be3.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/5:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/5:
 100fc058b8d24a959bfb156dd4e7e2f7f887d20f.jpeg
 679c5741ea91890d671963d5db95cbffac3255ce.jpeg
 8c7d1879fcc6a50496b28e2b08603b517c42a2a2.jpeg
@@ -1982,7 +1993,7 @@ ab95281e7795bafebf93b2c1b822b46d1ebd943e.jpeg
 b0cfc1974bbb0e1a5f94e9201fe664ef6ded508d.jpeg
 b8645851941740d0c4e8b4b31aa19c2f4b5eb57d.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/50:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/50:
 177c5a7a57f6818bf0d3cab0402dd78886813b67.jpeg
 28fba493c39fd585c756dd5f542f67567bb35c4a.jpeg
 3b860b486fc24317a71bfe70861591efb941048e.jpeg
@@ -1994,7 +2005,7 @@ f77d6fb55ea9585039b5da0e1234b25f5cf5ad36.jpeg
 f9355e714e03e6b0ae75deb77b4b4c396f6525e6.jpeg
 fc2787a709383d30a0211d0388b4d38a2814c19a.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/51:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/51:
 0ec2f35a418ed7ac8174c3100dcbbd54f22e843b.jpeg
 0ef03ad0bd8ee7d86b433a1855e22d6db4eecfbc.jpeg
 15759a67c88abec692d68f91ae0460ebb224101f.jpeg
@@ -2006,7 +2017,7 @@ fc2787a709383d30a0211d0388b4d38a2814c19a.jpeg
 7705d32698046ddfd387581ce76698f9e287ab8d.jpeg
 bef81b60e9ded41878616bfe5c4b2a4c1dcadc20.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/52:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/52:
 25edd6276d1fc9f3108754781c705935b64e1377.jpeg
 3ee48cc608c14e0c013e7e405b5f70ab6765fcff.jpeg
 4cc68fe757a7bbae644a48a9116217ffa90056b5.jpeg
@@ -2018,7 +2029,7 @@ bef81b60e9ded41878616bfe5c4b2a4c1dcadc20.jpeg
 b0dd2e54bc3511a316585011750d5265aea1b626.jpeg
 dbf33296c3bb5a14d24a85bb3aea95263cb4a501.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/53:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/53:
 2121340788ac02c0cd546a6b248315a9b66f2295.jpeg
 8b4736254e40564ae89843240489a8b51a47f2f0.jpeg
 b0eef2270a4f6703a30983189605dad7fbc98ffe.jpeg
@@ -2030,7 +2041,7 @@ ecf956ab3af881e2c8d7e6116845f11202d3cdad.jpeg
 f86268f785fe827198df5574c9538db243934102.jpeg
 fc8239b135f027589bbb772bc42ac6b4d088b6ac.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/54:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/54:
 11c57c109068291f9c8a8b0733e5e88ebec5c399.jpeg
 3511460cb5f48afced6a959f8269f4d0b7c2bac0.jpeg
 46fb9cac6e19c6be51902fffd7eb290b83a44bd4.jpeg
@@ -2042,7 +2053,7 @@ d419bc302c417564ddd2caa586b5c48c3b3f1518.jpeg
 ebe4bd2b81555356cb7d2a31e452a464061f90ae.jpeg
 f10f2ce1b63ae0d830f8bd708cfa23a28135329f.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/55:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/55:
 008786499c1726d2614f9e3aee20478c5ef48ae2.jpeg
 2908d6face9f3e8924e53a31c0639d4cb38ba453.jpeg
 2e107d3fa13a1746db6b9e64b6567fdb7a04f120.jpeg
@@ -2054,7 +2065,7 @@ cd948bddb880ccb3331b83a0c5c0130c7e993da0.jpeg
 d5844e68de05ca9df821bc8ed77797883146aa66.jpeg
 ded4855d6839cd688559820e4d8d36c156434377.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/56:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/56:
 38ccadf239faf829ea80a031626905b7a7dbd460.jpeg
 4d15b7054479e6af477afca77d2dfa947c24cfc8.jpeg
 85cee1eceddc6f4ba0887708b8ccc89c6eba5507.jpeg
@@ -2066,7 +2077,7 @@ cb1996e9d685379af5d931f5ef6bec105d06d805.jpeg
 d99c2a408c68f3bfdabb3a3f493b0443655d91f9.jpeg
 eb80d59e4be3cfc5e38ea68d8b491d0417f33055.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/57:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/57:
 26188a3db4e25e1aa209550f37c768c3e5c5af4a.jpeg
 4cccf286a4d3c8861d00ef55993e85fff77ca19a.jpeg
 4f9171621dc9246acc236e28528d9c68cc97d76e.jpeg
@@ -2078,7 +2089,7 @@ eb80d59e4be3cfc5e38ea68d8b491d0417f33055.jpeg
 f68790877cce1456cd79821ff7a2b0dc29df4152.jpeg
 fed7a4176aed43fd4345dd55d90da5be5c969b01.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/58:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/58:
 21bd65367ed98d081960d4ac777cccf2ea8afc7b.jpeg
 298449ad0e1ab909992598924166902266512980.jpeg
 595fd89a2d9ae70644c62652062e9edf0671820c.jpeg
@@ -2090,7 +2101,7 @@ c9e4a3dce2d77c5d6f87a4147ded035d2148c3db.jpeg
 d19932880ba111b544fa846e34b275d0f0d5c584.jpeg
 ec5329d5f48a3f80c115ee3e0e632da4e9659ddd.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/59:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/59:
 12ba4ce1fe48ea6bd61048ebe12975ee22de6793.jpeg
 41d91d2ea5238b1cc51d46c8bbcbbd1e02ed32b8.jpeg
 442b0233334d0f49f880c4d38c9afda3243dc011.jpeg
@@ -2102,7 +2113,7 @@ c888ff1e868bc9fc70c85fd1c45e5be05536fa57.jpeg
 e72e52711c873b5909482fa09462b6348b0c12be.jpeg
 eaa1132b1a2cc883dac0cb0b065279b666eec0ee.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/6:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/6:
 0a5f3a19015e6aacb2c2c95f5d4246c67b4e029b.jpeg
 190eefdc99b7f6e7b4dbdd2f0cd4a606698efed9.jpeg
 2c710be3a03aab7cfb018086f50768506a622675.jpeg
@@ -2114,7 +2125,7 @@ c22e983d28788e338e3c1aed67ef7bcde39787ac.jpeg
 e3f5c14496734e8233e285b659e4ad35d31e4b84.jpeg
 f655c56af601255a6566c5fe8ccfd2900751b2db.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/60:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/60:
 3d08eb4e0c913bf068f0ebe680d98a5a3d3ecf7c.jpeg
 413343fb8ec00f24f4a47bb63e31e794a73d857e.jpeg
 60ef84bd56443e6847b9f9e65f092910ce2b80ec.jpeg
@@ -2126,7 +2137,7 @@ c8b935e250ad81596b66d591827dc901b2881859.jpeg
 d2c61a95b9abd1bb4f876a0a2d448acf72293b06.jpeg
 d6e46f6c3bb4e7a5d76f3fe1fb18c533896b8421.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/61:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/61:
 4653f642c18b903fc4b1c041f9b85af721a54ec5.jpeg
 53724adcfd7d734e0b87d1900126f054e277fc34.jpeg
 53c0852e690f81ea639d0bb59e5b8d71b4c3eeeb.jpeg
@@ -2138,7 +2149,7 @@ d6e46f6c3bb4e7a5d76f3fe1fb18c533896b8421.jpeg
 c161eab13bb1338e406e069c0af8f19755d19980.jpeg
 f2ff6f0b04beacf5ee707f5aef45b33063607579.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/62:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/62:
 1527f023d433e05812e3e6908748cba68d994a6a.jpeg
 16d868a98826fbd25577893c24a0ea5c2acb7867.jpeg
 1d906b037ec2bdaaa6aeacd8702f635a1d091c5e.jpeg
@@ -2150,7 +2161,7 @@ dba892724fbd0a8a1c90310ece77cffce4a36573.jpeg
 dd393730689fce20a0c68cd96c50048509f590c1.jpeg
 f0e228873109d3a41bb018852f6d8de92ba5a990.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/63:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/63:
 1a2dca7124acd71531ee99e44ce2c0fd15f8c9a1.jpeg
 3548adfc2f6136fd657952072114c407e349bf87.jpeg
 3ea4813929bff5116bd5b06ca166fd09eb5367e4.jpeg
@@ -2162,7 +2173,7 @@ d58579aa5ae8798a53bb8a79cedccb73259026aa.jpeg
 e289a899937e48d6d8a52d3ca082eb2ae54cc1a2.jpeg
 ea70a257a8ddb346df7b41c592709d8c6adba2ce.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/64:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/64:
 5acb16b8a5f1b54ab6649b2ca5bebcc437859510.jpeg
 8a4ff300814e9550e5f5ef4b1111acaf57f188d4.jpeg
 8d5faa430e77804850e5ac69c8ebf7073e475a03.jpeg
@@ -2174,7 +2185,7 @@ f88ccbb0b1405e26c3debf4a4960f85a39c0d0ac.jpeg
 f8eabeea1e23c5110d22183ff7a345aa4e37427d.jpeg
 fe764b67ee820c6fe2c3b7e845286b13cd7a051b.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/65:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/65:
 1ac6bcc2ddb42d4c0f995772886522e5a124879e.jpeg
 502773b4940b5915e3980d14e689ca89d436a8cb.jpeg
 75632a4184b5f8b79126cdc7b50c366aa7d36474.jpeg
@@ -2186,7 +2197,7 @@ d6ff3681f5a74ddd62566da7375533d5c78d5ed8.jpeg
 d76795571431236bfb6e9177793d99cb6cf0db1d.jpeg
 df6875e0a6464e810b7a5a10b764f29ef71aa1d2.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/66:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/66:
 1c04e436e994b8ea6ad664e727036caddbdb4b96.jpeg
 31eb449013b6bd8ba027c66a93db4edef07bba40.jpeg
 35956f9a20c21ea671e1ec9f27a498a2938eafa1.jpeg
@@ -2198,7 +2209,7 @@ bb503830971f6bcb0d5d57cff16003aefb15fd35.jpeg
 c5626611692553be3fbed9ec56411bb94d90e0b7.jpeg
 e86660d0fcfe5609ac67d94facea39d6c29a9516.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/67:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/67:
 a8e8778e119746e38c80ad4dd1e3c88334672a4b.jpeg
 ad26d96af13e46b327659fa2a338f5da4bcd9383.jpeg
 b49bc70cd7baca6ea708b6bf1d4b20595bb2e967.jpeg
@@ -2210,7 +2221,7 @@ cfab581762470bf6a02686f378a66f6f8c220d95.jpeg
 d442160316d3c34e4a973c61cd2179f2fcb25df7.jpeg
 edb8ad2a35a9e92fcc01c8532f6e0b49b666da58.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/68:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/68:
 02c3f02fda3418dd2636133089eed51329c1c8dc.jpeg
 4cc15e87903acf3d22ddb573c9b49bf9c898528e.jpeg
 73f02965baf35f6977e3126a3076104be4c983f3.jpeg
@@ -2222,7 +2233,7 @@ f3f5d70354bcc7298fe196fcc083dff622c85935.jpeg
 f897265485d51a1a102d13a013e249253fddb4e3.jpeg
 f9fa4f47a65f099d5ea21c92645c022356d18545.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/69:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/69:
 1717b2933da2ab31ba058c051fb8548bb3c0ebc7.jpeg
 37aac22e88c602c801e5cbf683de08d2511bf5a7.jpeg
 4b5e42a3b76f07b8a05971308ee238a0d6a86030.jpeg
@@ -2234,7 +2245,7 @@ c0ffc6c2c9adf884ce4c91e38ecef6b0e111b0a6.jpeg
 c666258debf7f8b518218fa27d352df5c4731537.jpeg
 cd9c6647ef8cc30d3d8ce3b276e221ffe0a50c71.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/7:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/7:
 000ad60be25ce06569f4309f62a4f13d0803920d.jpeg
 08535231bc428fb562c164a09234ddf48ae4ed99.jpeg
 2688c8c7d3273d7276e84c60742081d594d4f55c.jpeg
@@ -2246,7 +2257,7 @@ bcf2f4b610c3e1690ec02fd7f41a9d94fc51537f.jpeg
 bf4504b135caa6f865591bd6c10f0fb7321b55f8.jpeg
 f1dbb6320f8459849f9d9918462b1c8a5ce27b1a.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/70:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/70:
 24e1aaa5921ee8fe9422b5d00ecaaadd95d87f36.jpeg
 417153556ef8b32ba862602a6dcd51a02a527adc.jpeg
 451800a8dcb0e3ce24caf37c9d2054b175a89d52.jpeg
@@ -2258,7 +2269,7 @@ cf6d9310dfc1f18c5a34ad2f224b701950a53466.jpeg
 f44efab716dddbd4aa5b0395befa9a4005069068.jpeg
 fcb7c607b8dec7b543f6fba22d3aa518138fb4eb.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/71:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/71:
 8a5ea32df45ec3a72d6f38551a323819f23c1063.jpeg
 963c783ad681e5ee25bab3e25e4d31c11ca2cc06.jpeg
 9f43bac6d7e3a54771aef88824f8e0767d35b5fb.jpeg
@@ -2270,7 +2281,7 @@ e1e95665cf94acc64778f1f284689f8c536a0d74.jpeg
 ee4956677e774c380e6a5a105743fe918093b077.jpeg
 fd62f464a3370fe9c602052099966b0ac2d6055c.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/72:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/72:
 13ab4e39e217d3ef5da1b51a902e6720175ac64d.jpeg
 4b8b6ace95bd8e5b57c37b1ad21cb2666d3ea200.jpeg
 582ac474e689252acde9530890857337b1fb0b74.jpeg
@@ -2282,7 +2293,7 @@ e35a4c1d7aa849086fe1d8d80f50890b329e19de.jpeg
 ed165acbe2d5802d6cf1da5b916bec30622824cd.jpeg
 fd11247f99ec2d7eebca5da3d5d0039ee3716856.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/73:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/73:
 4d21d5ed4b4d758c3660c4323cb430a72b9645e0.jpeg
 50b9179d86102a37443db41daa277fed6b536004.jpeg
 569e2a3b21c0452e6e5453c1ea58c7a516f4271b.jpeg
@@ -2294,7 +2305,7 @@ aa91655eaaa62c3c48d35b71f79383a64bf293c6.jpeg
 bd997e6493c2b19e349d54dbb744d741161caa5d.jpeg
 bde44f834948c376fb6cddd364d14ac52cc1dcce.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/74:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/74:
 0b2a789fd88a710b1b53d13be3f4ace90ae1342a.jpeg
 2f138b5921eff18e841a8d2900943c24d97b4461.jpeg
 6c8434d4166346c43b3c43c5f5d9c2a3fd94ec3e.jpeg
@@ -2306,7 +2317,7 @@ a9ebc6093717f852e2a0f7f47f6e60d5a243886b.jpeg
 b1e8b5705a8da5586c3054e30655801b38203cce.jpeg
 f7438a6544df3b8096c08e5a58c7da68eb6232d6.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/75:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/75:
 1abcf3977117410c5bd7b523d052243967717dca.jpeg
 53949db14350793f3d48491417d024592374d4eb.jpeg
 624f0781074370bab065ab6083edb281d33c04fc.jpeg
@@ -2318,7 +2329,7 @@ bcf885a960bc54b11ad84c719d3acf9659efc707.jpeg
 d73cf9c5c3fe2c5037eb45377a363ce807363598.jpeg
 e5f30c81a80093e83ecc78253c39c1e2a2287c74.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/76:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/76:
 15fee4e310b744c9685862b9c1d9c278b120d0cb.jpeg
 215779118899ec544c4d2a8c0e56829fb97cb4dc.jpeg
 27a44cd3abe4fbf434d24a32e9c0aefc005288e0.jpeg
@@ -2330,7 +2341,7 @@ d96c0cf1038eee32326ea3eae6821681c36a8fee.jpeg
 dcc3139419549d20afdaaade838ac2b908201785.jpeg
 de5178a7d95e5a9e0fdcbcb95214e5c9e4446670.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/77:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/77:
 1fa4a2142a818e6f837fb4cb96ed59b615d6c3f2.jpeg
 64fa2d098bd8f3beeca101e59b1256ad2c82ff4e.jpeg
 7e7c70b7cf818fcf7692607a712668c112fb89bb.jpeg
@@ -2342,7 +2353,7 @@ b96ce6021273408c62f497220d055dbcfebe381b.jpeg
 e5ba613bc783d7a9346c783b05c569750010c30b.jpeg
 ffa7ff8ab59f63765b2c48b25c8c2423e081abe5.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/78:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/78:
 554e61d6050bc10048116534bbe73017e88b3b6f.jpeg
 57c5835e0e39637a2808d3c5198ed3ee8480db33.jpeg
 64db14a3ade935d9048f1521e80394e5cb72f490.jpeg
@@ -2354,7 +2365,7 @@ c974501cd3762789c2446912f24c196406b1aaa8.jpeg
 d4aac197619416fab63d7b5eed7e4ace8fe66898.jpeg
 fac57fdfbecddcf36b6eea202f57bcae5a22a2b8.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/79:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/79:
 1c46f11ab4647ce6f6325b1986b75b096ee6e3f8.jpeg
 3559aac1bf748aaa2cfe5de26940a9f3d442908d.jpeg
 4e8d9b4ae306b5f3978dddd796ef8f32940deb48.jpeg
@@ -2366,7 +2377,7 @@ ddb9b6eff510f14f91233797f1a5eae321cbc09d.jpeg
 e601d4f4b1fbca09997ac96e889d9bd3a60e52d0.jpeg
 ea697439554d6d07a05ff39bcfcbbf5b0627a505.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/8:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/8:
 318b12f6012a01974a4d0b951254411ad02a3536.jpeg
 324d36f50cd7e236ed71d3086d3efa0fe09ac9e9.jpeg
 3db6c4212d56571fb5cadcfb2d8e8b935dfd024f.jpeg
@@ -2378,7 +2389,7 @@ a6d991fc53f7c9eb8bb1ba82fd35df2ade1186a4.jpeg
 ca2a3439d6b56191a347c2f54c3d7930ea96fcdd.jpeg
 d9e598b2643a3ca7e28c5a8c879938b10f64a6d4.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/80:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/80:
 1adc2b6966ed105d4475d9943588c76cfaa31ac2.jpeg
 589f6bd2c0c59e399eb1ecea8faed2e2076def95.jpeg
 72c388962f29de7f0b609fc0e6697988c64b896c.jpeg
@@ -2390,7 +2401,7 @@ d410b6a965f361130e8cf7f52a753e617848dcfb.jpeg
 e7c87b262fe744492b1421f09157e92a64684150.jpeg
 efd28ec68d31e6246e15f9d573221446ea834f96.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/81:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/81:
 17c0d5b1053c76b16957e085e995748e14e0b7c0.jpeg
 2e65f0bb7023550569613a8967e0a42796e0db93.jpeg
 3ceb43bc2a928943aff57e4bd8d5dc193578873a.jpeg
@@ -2402,7 +2413,7 @@ f9728b3d566a1ff0234df411cec9edba54e14d9a.jpeg
 f9e52782ab62cf389c9bc0a8816384c0739a5353.jpeg
 fdfe18e693ea59892de0df5ec68c24f531a582b9.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/82:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/82:
 852e2fc84cafdb5a5a9b5f8d70da271f8914fde9.jpeg
 895d024470f4d43ef54c2b0d56c34bc988f0534d.jpeg
 9676ff2db28e84a86ad81e4fe98b536439ca2b5a.jpeg
@@ -2414,7 +2425,7 @@ e10c15857a09ea943a7483f5a648056313c299bb.jpeg
 f0a0ecdd7ccf9ac4ad8ef38837b5b1e8001aef6d.jpeg
 fd15455ca48a9a447eb7e459b5864ab72bb1a8f1.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/83:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/83:
 3a64b0adbf0eec521c49cd03cf92b13150bf8137.jpeg
 6b94911afea7ffab9bc3e0e679ecb2aa548978c4.jpeg
 8c9eba26e705cad379d382a4a4426d68d208cf3f.jpeg
@@ -2426,7 +2437,7 @@ d941487d15189eabb712e2098054b31d094f7cbc.jpeg
 ee29b8666701b34608bc35be111ea760b055deb3.jpeg
 f7ffdedacd2be2a8f71f7da2ec57f8669da27f8e.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/84:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/84:
 14d61da765ee3a1a88f2d7a796ea830836b0781d.jpeg
 422aae8ce4cb75fcb94d1b033436f1599c0ad007.jpeg
 4fa5dff83e4df88b4eda189049acfa7532036be1.jpeg
@@ -2438,7 +2449,7 @@ ab0ff130154335b067afa176ea781f9933fb6acd.jpeg
 d55f7831b72e6623d371bb4f2a4838783904762c.jpeg
 d97b190b929dfd93aba4ebe8ed79852f438520bb.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/85:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/85:
 12355221920dbe34a590d20c85c6b57aa0658952.jpeg
 2dda19092ced2403255d0a3640d1ba0a069bfdeb.jpeg
 6679ddd6f7128fb0405ce8d75fca799af2fc5980.jpeg
@@ -2450,7 +2461,7 @@ aa70962aba2b4f66308f6aa985bba6af8f48e6c8.jpeg
 dc7d5e2df92d9f3df933d0105678eb1c411ad151.jpeg
 ff55acd1509b1888a0b44a80fb4daa8fff12763b.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/86:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/86:
 0a99c7500df982ec823a84d1a56db7c32a526cc3.jpeg
 5dfcc406f1c24fe14955a2b6ad769f17f18d2cda.jpeg
 710ed11cc36eba00da3693f1c3bb810d630a2b99.jpeg
@@ -2462,7 +2473,7 @@ de25d69b19ed3f8204469c841a24906a396a75fe.jpeg
 efadbea8a259adb1b1c35095e146329b30317761.jpeg
 f4a30e05bb034f00804f80e2954c1e65b211c9f9.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/87:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/87:
 0909eb7d5d96127af5878e28b0792c78a13e4263.jpeg
 1d54f8a65359f4054685bb5788e8f8983c26523f.jpeg
 43209ca2f41ee8d958f710f6d9054b4cda72424d.jpeg
@@ -2474,7 +2485,7 @@ f6e98b2a4805ae3c75a890d3c37b1ff18af70053.jpeg
 fbe7d233144b1b42828bf084c8f7587a30987d2b.jpeg
 fd56026e46eb330352fbd877de9129df94be9984.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/88:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/88:
 0a81ac2248eb01201b9712ef1f5ad1d5be8e3c5a.jpeg
 1e689a79d2d17caf66b9234c6969234eeede60a2.jpeg
 ac96c31220c8bf929899a5393df7b5f7feb7e2e3.jpeg
@@ -2486,7 +2497,7 @@ dc4db10cfc5dbd8205d04d141f7b6ed9205efbbf.jpeg
 e3a65a152ad77642cfd02fe8a57861f194adbe22.jpeg
 fd98fba6ce26755c953ad9285ea267ea315341c1.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/89:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/89:
 6ce59a12e7202237caf6b726027bccd1bcfd95c8.jpeg
 7cab8a30bd6d9a087300f8bd3a8fa5fbce83a684.jpeg
 84b09dd16ae0c94c9be174cb1d0188f890fac533.jpeg
@@ -2498,7 +2509,7 @@ b61fa385a5f80b5f42d8ec61d74f9a6a8b5f27c1.jpeg
 c4f263770262eb16197a630ebe4f1692396a1765.jpeg
 d9a6f5c95598305246eb422a04c5555572826ef9.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/9:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/9:
 7ae53e434118ba4496ccec025b3e5ed9d80775a1.jpeg
 7da025044046b51391ae842b092e11a164628fcd.jpeg
 a294e18f9288d89683fa7c3fe8f1e8274381669a.jpeg
@@ -2510,7 +2521,7 @@ d23c1ce890eb59f903ccf125148ad83b512c8068.jpeg
 ed5ef147e3f3a2381de4740f9059639028b08b18.jpeg
 ef2452f5dcdcb4f8eb37bb23839dc2dd095e0b6a.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/90:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/90:
 afc9913c0b82b633c8790fae7802f8e19e6d940d.jpeg
 b18d7fd28907c0a294eff96d817e132fcf3f80e6.jpeg
 bd02135f62321171898cb11436778c41e7f2394c.jpeg
@@ -2522,7 +2533,7 @@ ecdc59b259b318277c475fc725d30adbe0a3fb07.jpeg
 ef38e06b7d2bf10708ea90284f7d47f69ec57ee3.jpeg
 fd896e684f255106f7b08b588b9cafb75c79c610.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/91:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/91:
 320c6709f0eb4b7fca45608a39f7bda265bc9b97.jpeg
 36c8f27eb596e3013857be54b94a8eabef37d40f.jpeg
 4d0da2b34a7578d47098aa3808d81332a463206d.jpeg
@@ -2534,7 +2545,7 @@ c9739165c880e8736005d7b773f176fdf8778de2.jpeg
 c991aa1b4570abc2a016795edf8c214471a3b31e.jpeg
 dc8f9ef8c9981fa5acb77dda5c3a44bec07bc9af.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/92:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/92:
 0dc66befef1a30929aea942a3295a034bb27cf07.jpeg
 25f8e30a070b904c5f18b140f6bb1f07e09349b1.jpeg
 71ab4d6eb80421ea00d58f2dbbcf559a5a6d5828.jpeg
@@ -2546,7 +2557,7 @@ eb4884b3f289ca2d443e41de552e5e520174b300.jpeg
 f320422c042787034c0c43219813e7974e157ee4.jpeg
 f67dec5ea2689994a7de9ae09d4faf2e3c38a3b6.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/93:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/93:
 01e530f24735e85ba96adde983680be35cad4615.jpeg
 02775cbdd3374d2fb8dfb0626322d2ef47302e9a.jpeg
 1bc2d2d90b7e305ca5b575786064f19052661eaa.jpeg
@@ -2558,7 +2569,7 @@ c0d537f290b8774eb38dd8ff9be8bd71ef08be52.jpeg
 da3f314342fd2c234d19d76a237947cdfb129f3a.jpeg
 f4f7d51340c382530d80fe253037d803e2e67093.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/94:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/94:
 8508ef85a116e05c32b6546ff14a50ae4656149e.jpeg
 8e4efafd371ddb1c4ea519bb38c5609261300546.jpeg
 9adc7cf13c73c0953232a8601665540688b42197.jpeg
@@ -2570,7 +2581,7 @@ f7c8e4ff470f2795facd78ef5e3d04a7359e7750.jpeg
 fa5056eb82ad327eb4ab8fd90238111e46f8f862.jpeg
 fc0c9e696c81a6b25a11e736501aefbf762761a9.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/95:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/95:
 09cc90a3d58685483f2e00f84434370577f15ddf.jpeg
 8e3093f6940cc5899559d3efc7cf3fc9b7c8e46d.jpeg
 bdfb91e77f258bbe4f586e170d1c520f44954eb5.jpeg
@@ -2582,7 +2593,7 @@ f26a83e4e5a2177c294cd6fbcb299532d00739f0.jpeg
 fc211649f89fe534e66de6f962ea1e053fcba14e.jpeg
 ff6145bdeaa1088dce8d64b768d79b30ff35feeb.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/96:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/96:
 9ed3d4f7f0a37852ab8206252d565fafa872b26f.jpeg
 af4db20424d40e04f5b417ec4f3848caf07306ef.jpeg
 b1e85b93fead35d46a53b1e8a23763cb127a03ce.jpeg
@@ -2594,7 +2605,7 @@ ebffc348839b54e3845305431059e4ee6fb10637.jpeg
 f1276a18d807bf6f70aacdfd74a29abbdd3b1690.jpeg
 f32e370fa29c4e8cef3c030ae67e64d3f660dbac.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/97:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/97:
 431db690c67387e8e7eb2f80044c02e654ebddc4.jpeg
 685c48b7dfe1de4dbf9e101b97348e973fceb593.jpeg
 8c163b184a3d182174cbd261c0c4c01ad94979a9.jpeg
@@ -2606,7 +2617,7 @@ eaa975fedcb424989dea3d9c8c6fbcf9edb29004.jpeg
 f8bb313e59020b511ebe12d10d80389d3b4fd5e5.jpeg
 fdb2b3f3098fcb800a9d79f6932a947f9679300d.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/98:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/98:
 22ee12dfbe7bd367e5ea351582719330853ed5bc.jpeg
 61fffb2400ace4afcd7eab6cc0cd2fe596ff4275.jpeg
 7a824306a989e8fffd415f7cc9faa67a291d396d.jpeg
@@ -2618,7 +2629,7 @@ c1e05b692f405c9f9e67d42d159ef5d5a47b332c.jpeg
 c52103e8be67bc3021f092d8d522b344b9f6ce1a.jpeg
 d80de8119a83972dbc4d47c3290eb94ee8dbaea6.jpeg
 
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/99:
+/scratch.ssd/takonoselidze/job_5295285.pbs-m1.metacentrum.cz/imagenetv2-top-images/imagenetv2-top-images-format-val/99:
 4da770098590db6493e6a4e86f92e9f9f193d37d.jpeg
 6310df7bfa56913b47a10f66d41581cace2823bf.jpeg
 65bbb8c2b423b28949f28ee560c07058034d3a23.jpeg
@@ -2629,165 +2640,12 @@ da373554fbcc266d2d310d268a80406ce4daa9e6.jpeg
 e154c34a01901e70c11e706656525db35619964c.jpeg
 e2b1f1e5f407c4f4fdb07a66be7f8d4c67108632.jpeg
 fcfa37b5e6ca6997b8205fb92c79ca9095c4cc0c.jpeg
-
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/pics:
-4829556.pbs-m1.metacentrum.cz
-
-/scratch.ssd/takonoselidze/job_5271117.pbs-m1.metacentrum.cz/pics/4829556.pbs-m1.metacentrum.cz:
-best_adversarial_patch.png
-res_0.png
-res_1.png
-res_10.png
-res_11.png
-res_12.png
-res_13.png
-res_14.png
-res_15.png
-res_16.png
-res_17.png
-res_18.png
-res_19.png
-res_2.png
-res_20.png
-res_21.png
-res_22.png
-res_23.png
-res_24.png
-res_25.png
-res_26.png
-res_27.png
-res_28.png
-res_29.png
-res_3.png
-res_30.png
-res_31.png
-res_32.png
-res_33.png
-res_34.png
-res_35.png
-res_36.png
-res_37.png
-res_38.png
-res_39.png
-res_4.png
-res_40.png
-res_41.png
-res_42.png
-res_43.png
-res_44.png
-res_45.png
-res_46.png
-res_47.png
-res_48.png
-res_49.png
-res_5.png
-res_50.png
-res_51.png
-res_52.png
-res_53.png
-res_54.png
-res_55.png
-res_56.png
-res_57.png
-res_58.png
-res_59.png
-res_6.png
-res_60.png
-res_61.png
-res_62.png
-res_63.png
-res_64.png
-res_65.png
-res_66.png
-res_67.png
-res_68.png
-res_69.png
-res_7.png
-res_70.png
-res_71.png
-res_72.png
-res_73.png
-res_74.png
-res_75.png
-res_76.png
-res_77.png
-res_78.png
-res_79.png
-res_8.png
-res_80.png
-res_81.png
-res_82.png
-res_83.png
-res_84.png
-res_85.png
-res_86.png
-res_87.png
-res_88.png
-res_89.png
-res_9.png
-res_90.png
-res_91.png
-res_92.png
-res_93.png
-res_94.png
-res_95.png
-res_96.png
-res_97.png
-res_98.png
-res_99.png
 Running singularity container...
 Defaulting to user installation because normal site-packages is not writeable
-Collecting wandb
-  Downloading wandb-0.18.3-py3-none-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (9.7 kB)
-Collecting click!=8.0.0,>=7.1 (from wandb)
-  Downloading click-8.1.7-py3-none-any.whl.metadata (3.0 kB)
-Collecting docker-pycreds>=0.4.0 (from wandb)
-  Downloading docker_pycreds-0.4.0-py2.py3-none-any.whl.metadata (1.8 kB)
-Collecting gitpython!=3.1.29,>=1.0.0 (from wandb)
-  Downloading GitPython-3.1.43-py3-none-any.whl.metadata (13 kB)
-Collecting platformdirs (from wandb)
-  Downloading platformdirs-4.3.6-py3-none-any.whl.metadata (11 kB)
-Collecting protobuf!=4.21.0,!=5.28.0,<6,>=3.12.0 (from wandb)
-  Downloading protobuf-5.28.2-cp38-abi3-manylinux2014_x86_64.whl.metadata (592 bytes)
-Collecting psutil>=5.0.0 (from wandb)
-  Downloading psutil-6.0.0-cp36-abi3-manylinux_2_12_x86_64.manylinux2010_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (21 kB)
-Collecting pyyaml (from wandb)
-  Downloading PyYAML-6.0.2-cp38-cp38-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (2.1 kB)
-Requirement already satisfied: requests<3,>=2.0.0 in /usr/local/lib/python3.8/dist-packages (from wandb) (2.32.3)
-Collecting sentry-sdk>=1.0.0 (from wandb)
-  Downloading sentry_sdk-2.16.0-py2.py3-none-any.whl.metadata (9.8 kB)
-Collecting setproctitle (from wandb)
-  Downloading setproctitle-1.3.3-cp38-cp38-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (9.9 kB)
-Requirement already satisfied: setuptools in /usr/lib/python3/dist-packages (from wandb) (45.2.0)
-Requirement already satisfied: typing-extensions in /usr/local/lib/python3.8/dist-packages (from wandb) (4.12.2)
-Requirement already satisfied: six>=1.4.0 in /usr/local/lib/python3.8/dist-packages (from docker-pycreds>=0.4.0->wandb) (1.16.0)
-Collecting gitdb<5,>=4.0.1 (from gitpython!=3.1.29,>=1.0.0->wandb)
-  Downloading gitdb-4.0.11-py3-none-any.whl.metadata (1.2 kB)
-Requirement already satisfied: charset-normalizer<4,>=2 in /usr/local/lib/python3.8/dist-packages (from requests<3,>=2.0.0->wandb) (3.3.2)
-Requirement already satisfied: idna<4,>=2.5 in /usr/local/lib/python3.8/dist-packages (from requests<3,>=2.0.0->wandb) (3.10)
-Requirement already satisfied: urllib3<3,>=1.21.1 in /usr/local/lib/python3.8/dist-packages (from requests<3,>=2.0.0->wandb) (2.2.3)
-Requirement already satisfied: certifi>=2017.4.17 in /usr/local/lib/python3.8/dist-packages (from requests<3,>=2.0.0->wandb) (2024.8.30)
-Collecting smmap<6,>=3.0.1 (from gitdb<5,>=4.0.1->gitpython!=3.1.29,>=1.0.0->wandb)
-  Downloading smmap-5.0.1-py3-none-any.whl.metadata (4.3 kB)
-Downloading wandb-0.18.3-py3-none-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (13.0 MB)
-   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 13.0/13.0 MB 48.8 MB/s eta 0:00:00
-Downloading click-8.1.7-py3-none-any.whl (97 kB)
-Downloading docker_pycreds-0.4.0-py2.py3-none-any.whl (9.0 kB)
-Downloading GitPython-3.1.43-py3-none-any.whl (207 kB)
-Downloading protobuf-5.28.2-cp38-abi3-manylinux2014_x86_64.whl (316 kB)
-Downloading psutil-6.0.0-cp36-abi3-manylinux_2_12_x86_64.manylinux2010_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl (290 kB)
-Downloading sentry_sdk-2.16.0-py2.py3-none-any.whl (313 kB)
-Downloading platformdirs-4.3.6-py3-none-any.whl (18 kB)
-Downloading PyYAML-6.0.2-cp38-cp38-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (746 kB)
-   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 746.5/746.5 kB 9.1 MB/s eta 0:00:00
-Downloading setproctitle-1.3.3-cp38-cp38-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl (31 kB)
-Downloading gitdb-4.0.11-py3-none-any.whl (62 kB)
-Downloading smmap-5.0.1-py3-none-any.whl (24 kB)
-Installing collected packages: smmap, setproctitle, sentry-sdk, pyyaml, psutil, protobuf, platformdirs, docker-pycreds, click, gitdb, gitpython, wandb
-Successfully installed click-8.1.7 docker-pycreds-0.4.0 gitdb-4.0.11 gitpython-3.1.43 platformdirs-4.3.6 protobuf-5.28.2 psutil-6.0.0 pyyaml-6.0.2 sentry-sdk-2.16.0 setproctitle-1.3.3 smmap-5.0.1 wandb-0.18.3
+Requirement already satisfied: python-dotenv in /auto/plzen1/home/takonoselidze/.local/lib/python3.8/site-packages (1.0.1)
 Running Python script
-Using device: cuda
-Singularity execution failed
+Copying results to home directory...
+Job completed successfully!
 
 **********************************************************************************************************
 

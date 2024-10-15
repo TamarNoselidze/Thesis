@@ -161,11 +161,17 @@ def attack(attack_name, attack_params, model, dataloader, brightness_factor=None
                 image = adjust_brightness(image, brightness_factor)
             image = image.unsqueeze(0)  # Add batch dimension
 
-            adversarial_image = attack_name(model, image, **attack_params).to(device)
+            #adversarial_image = attack_name(model, image, **attack_params).to(device)
+            adversarial_image = attack_name(model, image, **attack_params).detach().to(device)
             original_logits = model(image)
             adversarial_logits = model(adversarial_image)
             _, orig_predicted_class = original_logits.max(1)
             _, adv_predicted_class = adversarial_logits.max(1)
+            print(f"Original logits shape: {original_logits.shape}")
+            print(f"Adversarial logits shape: {adversarial_logits.shape}")
+            print(f"Original predicted class: {orig_predicted_class}")
+            print(f"Adversarial predicted class: {adv_predicted_class}")
+            
             adv_images.append(adversarial_image)
             orig_predicted_classes.append(orig_predicted_class)
             adv_predicted_classes.append(adv_predicted_class)
