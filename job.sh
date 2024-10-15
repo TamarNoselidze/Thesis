@@ -15,7 +15,8 @@ PROJECT_DIR="$HOME_DIR/Thesis/Random_Position_Patch"
 DATASET_DIR="$HOME_DIR/Thesis/imagenetv2-top-images"
 CONTAINER_PATH="$HOME_DIR/containers/pytorch_container.sif"
 
-#set -o allexport; source "$HOME_DIR/Thesis/.env"; set +o allexport
+set -o allexport; source "$HOME_DIR/Thesis/.env"; set +o allexport
+
 
 # Add local bin to PATH
 #export PATH="$PATH:/storage/brno2/home/takonoselidze/.local/bin"
@@ -37,7 +38,7 @@ echo "Copying project and dataset to scratch..."
 cp -r "$PROJECT_DIR"/* "$SCRATCHDIR" || { echo "Project copy failed"; exit 1; }
 cp -r "$DATASET_DIR" "$SCRATCHDIR" || { echo "Dataset copy failed"; exit 1; }
 cp $HOME_DIR/Thesis/sing.sh $SCRATCHDIR
-
+cp $HOME_DIR/Thesis/.env $SCRATCHDIR
 
 echo "Files in scratch directory:"
 ls -R $SCRATCHDIR

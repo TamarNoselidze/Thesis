@@ -11,19 +11,27 @@ from deployer import Deployer
 from helper import save_image, save_patch
 from loss import AdversarialLoss
 
+from dotenv import load_dotenv
+
+
+load_dotenv(os.path.join(os.getenv('SCRATCHDIR', '.'), '.env'))
+
+# Check if the API key is loaded
+api_key = os.getenv('WANDB_API_KEY')
+print(f"WANDB_API_KEY: {api_key}")  # This should print your actual API key
 
 def start(device, generator, deployer, discriminator, attack_type, dataloader, num_of_epochs=40, input_dim=100):
     # print(f'-------------- Attack type: {attack_type}')
     import wandb
 
     # Initialize W&B
-    wandb.init(project='Random Position Patch Attacks', entity='takonoselidze', config={
+    wandb.init(project='Random Position Patch Attacks', entity='takonoselidze-charles-university', config={
         'epochs': num_of_epochs,
         'attack_type': 'Including the image embeddings' if attack_type=='0' else 'Without the image embeddings',
         'input_dim': input_dim
     })
 
-    num_classes = 2000  
+    num_classes = 200  
     best_epoch_asr = 0  
     best_epoch_images = {}
     total_asr = 0
