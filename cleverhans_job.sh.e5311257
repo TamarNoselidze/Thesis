@@ -1,9 +1,0 @@
-wandb: Using wandb-core as the SDK backend. Please refer to https://wandb.me/wandb-core for more information.
-wandb: Currently logged in as: takonoselidze (takonoselidze-charles-university). Use `wandb login --relogin` to force relogin
-wandb: Tracking run with wandb version 0.18.3
-wandb: Run data is saved locally in /scratch.ssd/takonoselidze/job_5311257.pbs-m1.metacentrum.cz/wandb/run-20241016_114151-a82urv49
-wandb: Run `wandb offline` to turn off syncing.
-wandb: Syncing run generous-capybara-4
-wandb: ⭐️ View project at https://wandb.ai/takonoselidze-charles-university/Cleverhans%20FGSM-vit_b_16
-wandb: 🚀 View run at https://wandb.ai/takonoselidze-charles-university/Cleverhans%20FGSM-vit_b_16/runs/a82urv49
-Terminated

@@ -1,34 +1,7 @@
-metacentrum
-add image as an arg to optimize the generator
-cleverhans experiments 
-starship ? ? customize terminal 
-
-
-
-python main.py --attack=HOP-SKIP --image_folder_path=../imagenetv2-top-images/imagenetv2-top-images-format-val --models=vit_b_16 --epochs=0\
-
-
-
-wandb.ai install
-
-save all the images
-
-
-cvmfs/ 
-(BOOKWORM)takonoselidze@skirit:~$ ls /cvmfs
-(BOOKWORM)takonoselidze@skirit:~$ ls /cvmfs/singularity.metacentrum.cz/NGC
-
-
-cleverhans script, image with existing pyt
-
-
-
-
-
-
-
-
-
-
 brightness restriction and color transfer in randm patch attack 
 save results for both gen approaches
+
+
+python main.py --attack=HOP-SKIP --image_folder_path=../imagenetv2-top-images/imagenetv2-top-images-format-val --models=vit_b_16 --epochs=0
+qsub -v ATTACK='HOP-SKIP',MODEL='vit_b_16' cleverhans_job.sh 
+qsub -v ATTACK_TYPE='1',MODEL='vit_b_16',EPOCHS=40 job.sh

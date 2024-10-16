@@ -1,0 +1,38 @@
+{
+  "os":  "Linux-6.8.0-45-generic-x86_64-with-glibc2.39",
+  "python":  "3.12.3",
+  "startedAt":  "2024-10-16T08:35:01.171569Z",
+  "args":  [
+    "--attack=HOP-SKIP",
+    "--image_folder_path=../imagenetv2-top-images/imagenetv2-top-images-format-val",
+    "--models=vit_b_16",
+    "--epochs=0"
+  ],
+  "program":  "/home/tamro/Desktop/Thesis/CleverHans/main.py",
+  "codePath":  "CleverHans/main.py",
+  "git":  {
+    "remote":  "git@github.com:TamarNoselidze/Thesis.git",
+    "commit":  "dd26d9dcf3b76a13d77a0a3bbf9d46813c69c6a0"
+  },
+  "email":  "takonoselidze@gmail.com",
+  "root":  "/home/tamro/Desktop/Thesis/CleverHans",
+  "host":  "MSI",
+  "username":  "tamro",
+  "executable":  "/home/tamro/thesisEnv/bin/python3",
+  "codePathLocal":  "main.py",
+  "cpu_count":  16,
+  "cpu_count_logical":  22,
+  "disk":  {
+    "/":  {
+      "total":  "1005867986944",
+      "used":  "132125364224"
+    }
+  },
+  "memory":  {
+    "total":  "33327157248"
+  },
+  "cpu":  {
+    "count":  16,
+    "countLogical":  22
+  }
+}

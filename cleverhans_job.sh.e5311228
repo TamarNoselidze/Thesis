@@ -1,6 +1,0 @@
-  WARNING: The script dotenv is installed in '/storage/brno2/home/takonoselidze/.local/bin' which is not on PATH.
-  Consider adding this directory to PATH or, if you prefer to suppress this warning, use --no-warn-script-location.
-  File "main.py", line 239
-    wandb.init(project=f"Cleverhans {args.attack}-{"&".join(models)}")
-                       ^
-SyntaxError: f-string: expecting '}'
