@@ -15,10 +15,9 @@ from dotenv import load_dotenv
 
 
 load_dotenv(os.path.join(os.getenv('SCRATCHDIR', '.'), '.env'))
-
-# Check if the API key is loaded
 api_key = os.getenv('WANDB_API_KEY')
-print(f"WANDB_API_KEY: {api_key}")  # This should print your actual API key
+# print(f"WANDB_API_KEY: {api_key}")  
+
 
 def start(device, generator, deployer, discriminator, attack_type, dataloader, num_of_epochs=40, input_dim=100):
     # print(f'-------------- Attack type: {attack_type}')
@@ -45,6 +44,8 @@ def start(device, generator, deployer, discriminator, attack_type, dataloader, n
         # best_epoch_patch = None   
         best_batch_asr = 0
         best_batch_images = {}
+
+        epoch_images = {}
 
         temp_count=1
         for batch in dataloader:
@@ -109,7 +110,12 @@ def start(device, generator, deployer, discriminator, attack_type, dataloader, n
                 'batch_asr': batch_asr,
                 'epoch': epoch + 1
             })
+            
+            batch_images = {}
+            for i in range(batch_size):
+                batch_images[images[i].cpu()] = modified_images[i].cpu()  
 
+            epoch_images.update(batch_images)
             epoch_total_asr += batch_asr
 
             if batch_asr > best_batch_asr:
@@ -119,9 +125,9 @@ def start(device, generator, deployer, discriminator, attack_type, dataloader, n
                 # best_epoch_patches = adv_patches.clone
 
                 # Save the original and modified images for the best batch
-                best_batch_images = {}
-                for i in range(batch_size):
-                    best_batch_images[images[i].cpu()] = modified_images[i].cpu()  
+                # best_batch_images = {}
+                # for i in range(batch_size):
+                #     best_batch_images[images[i].cpu()] = modified_images[i].cpu()  
 
         print(f'@@ best batch ASR in this epoch is: {best_batch_asr}')
         print(f'   best batch ASR in the previous epoch was: {best_epoch_asr}')
@@ -129,7 +135,7 @@ def start(device, generator, deployer, discriminator, attack_type, dataloader, n
         if best_batch_asr > best_epoch_asr:   # if the best batch outperforms the best batch in prev epoch, update the best_epoch_images
             best_epoch_asr = best_batch_asr
             print(f'   we changed best_epoch_asr value to: {best_batch_asr}')
-            best_epoch_images = best_batch_images
+            best_epoch_images = epoch_images
 
         avg_epoch_asr = epoch_total_asr / len(dataloader)
         total_asr += avg_epoch_asr
@@ -152,8 +158,13 @@ def start(device, generator, deployer, discriminator, attack_type, dataloader, n
 
     i=0
     for original, modified in best_epoch_images.items():
-        save_image(original, modified, f"res_{i}", pics_dir)
+        # save_image(original, modified, f"res_{i}", pics_dir)
         i+=1    
+        image_key = f'best_epoch_img_{i}'
+        wandb.log({
+                f'Original Image {image_key}': wandb.Image(original.cpu()),
+                f'Modified Image {image_key}': wandb.Image(modified.cpu()),
+                })
 
     print(f'\n\nResults saved.\nBest ASR achieved over {num_epochs} epochs: {best_epoch_asr * 100:.2f}%')
 
