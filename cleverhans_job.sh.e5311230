@@ -1,0 +1,6 @@
+ERROR: Could not install packages due to an OSError: [Errno 17] File exists: '/storage/brno2/home/takonoselidze/.local'
+
+  File "main.py", line 239
+    wandb.init(project=f"Cleverhans {args.attack}-{"&".join(models)}")
+                       ^
+SyntaxError: f-string: expecting '}'

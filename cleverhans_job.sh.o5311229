@@ -1,0 +1,13 @@
+Copying project and dataset to scratch...
+Running singularity container...
+Defaulting to user installation because normal site-packages is not writeable
+Collecting python-dotenv
+  Using cached python_dotenv-1.0.1-py3-none-any.whl.metadata (23 kB)
+Using cached python_dotenv-1.0.1-py3-none-any.whl (19 kB)
+Installing collected packages: python-dotenv
+Running Python script
+Singularity execution failed
+
+**********************************************************************************************************
+
+The SCRATCHes have been SUCCESSFULLY cleaned...

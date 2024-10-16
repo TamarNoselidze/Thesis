@@ -1,0 +1,10 @@
+wandb: Using wandb-core as the SDK backend. Please refer to https://wandb.me/wandb-core for more information.
+wandb: Currently logged in as: takonoselidze (takonoselidze-charles-university). Use `wandb login --relogin` to force relogin
+wandb: - Waiting for wandb.init()...wandb: \ Waiting for wandb.init()...wandb: | Waiting for wandb.init()...wandb: Tracking run with wandb version 0.18.3
+wandb: Run data is saved locally in /scratch.ssd/takonoselidze/job_5311644.pbs-m1.metacentrum.cz/wandb/run-20241016_115843-b6igq29j
+wandb: Run `wandb offline` to turn off syncing.
+wandb: Syncing run amber-snowflake-2
+wandb: ⭐️ View project at https://wandb.ai/takonoselidze-charles-university/Cleverhans%20PGD-vit_b_16
+wandb: 🚀 View run at https://wandb.ai/takonoselidze-charles-university/Cleverhans%20PGD-vit_b_16/runs/b6igq29j
+wandb: 500 encountered ({"errors":[{"message":"An internal error occurred. Please contact support.","path":["upsertBucket"]}],"data":{"upsertBucket":null}}), retrying request
+Terminated

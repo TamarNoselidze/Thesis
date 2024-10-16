@@ -1,0 +1,13 @@
+Copying project and dataset to scratch...
+Running singularity container...
+Defaulting to user installation because normal site-packages is not writeable
+Requirement already satisfied: python-dotenv in /auto/vestec1-elixir/home/takonoselidze/.local/lib/python3.8/site-packages (1.0.1)
+Running Python script
+device: cuda  |  models: ['resnet50']  |  attack_name: <function fast_gradient_method at 0x1538ef0baf70>
+[1;34mwandb[0m: 🚀 View run [33mlogical-feather-1[0m at: [34mhttps://wandb.ai/takonoselidze-charles-university/Cleverhans FGSM-resnet50/runs/53ufb5up[0m
+[1;34mwandb[0m: Find logs at: [1;35mwandb/run-20241016_123606-53ufb5up/logs[0m
+Singularity execution failed
+
+**********************************************************************************************************
+
+The SCRATCHes have been SUCCESSFULLY cleaned...
