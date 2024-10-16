@@ -19,7 +19,7 @@ set -o allexport; source "$HOME_DIR/Thesis/.env"; set +o allexport
 
 ATTACK=${ATTACK:-'FGSM'}  # Default attack type
 MODELS=${MODELS:-'vit_b_16'}     # Default model
-EPOCHS=${EPOCHS:-0}           # Number of epochs
+EPOCHS=${EPOCHS:-1}           # Number of epochs
 
 SCRATCH_RESULTS="$SCRATCHDIR/results"
 SCRATCH_LOGS="$SCRATCHDIR/logs"
@@ -37,8 +37,9 @@ cp $HOME_DIR/Thesis/.env $SCRATCHDIR
 
 
 # Go to the scratch directory
-echo "Files in scratch directory:"
-ls -R $SCRATCHDIR
+# echo "Files in scratch directory:"
+# ls -R $SCRATCHDIR
+
 mkdir -p "$SCRATCH_RESULTS" "$SCRATCH_LOGS" || { echo "Failed to create result/log directories"; exit 1; }
 
 echo "Running singularity container..."

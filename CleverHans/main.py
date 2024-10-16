@@ -153,7 +153,7 @@ def attack(attack_name, attack_params, model, dataloader, brightness_factor=None
         images, _ = batch
         images = images.to(device)
         batch_size = images.shape[0]
-        print(f'Working with batch {i+1}. Size of this batch is: {batch_size}')
+        # print(f'Working with batch {i+1}. Size of this batch is: {batch_size}')
 
         # for j in range(batch_size):
         for image in images:
@@ -167,11 +167,14 @@ def attack(attack_name, attack_params, model, dataloader, brightness_factor=None
             adversarial_logits = model(adversarial_image)
             _, orig_predicted_class = original_logits.max(1)
             _, adv_predicted_class = adversarial_logits.max(1)
-            print(f"Original logits shape: {original_logits.shape}")
-            print(f"Adversarial logits shape: {adversarial_logits.shape}")
-            print(f"Original predicted class: {orig_predicted_class}")
-            print(f"Adversarial predicted class: {adv_predicted_class}")
-            
+            # print(f"Original logits shape: {original_logits.shape}")
+            # print(f"Adversarial logits shape: {adversarial_logits.shape}")
+            # print(f"Original predicted class: {orig_predicted_class}")
+            # print(f"Adversarial predicted class: {adv_predicted_class}")
+
+            wandb.log({"original_image": wandb.Image(image.cpu()), 
+            "adversarial_image": wandb.Image(adversarial_image.cpu())})
+
             adv_images.append(adversarial_image)
             orig_predicted_classes.append(orig_predicted_class)
             adv_predicted_classes.append(adv_predicted_class)
@@ -212,7 +215,6 @@ def get_model(model_name):
 
 if __name__ == "__main__":
 
-    wandb.init(project="cleverhans-attack")
     parser = argparse.ArgumentParser(description='CleverHans Attacks')
 
     parser.add_argument('--attack', choices=['FGSM', 'CWl2', 'HOP-SKIP', 'PGD', 'Sl1D'], help='The attack to perform.')
@@ -234,37 +236,42 @@ if __name__ == "__main__":
     dataloader = DataLoader(dataset, batch_size=32, shuffle=True)
 
     attack_name, attack_params = get_attack_info(attack_name=args.attack, epsilon=0.09)
+    wandb.init(project=f"Cleverhans {args.attack}-{"&".join(models)}")
 
     epochs = int(args.epochs)
     output_filename = f'./results{args.attack}-VS-{"&".join(models)}.txt'
-    num_of_images = 100
+    num_of_images = 2000
+    
+    print(f'device: {device}  |  models: {models}  |  attack_name: {attack_name}')
 
-    with open(output_filename, 'w') as f:
-        total_mismatch = {x : 0 for x in models}
-        # for i in range(epochs):
-        #     f.write(f'{"-"*30} Results for epoch {i+1} {"-"*30}\n')
-        #     print(f'{"-"*30} Results for epoch {i+1} {"-"*30}')
+    # with open(output_filename, 'w') as f:
+    total_mismatch = {x : 0 for x in models}
+    # for i in range(epochs):
+    #     f.write(f'{"-"*30} Results for epoch {i+1} {"-"*30}\n')
+    #     print(f'{"-"*30} Results for epoch {i+1} {"-"*30}')
 
-        for model_name in models:
-            model = get_model(model_name).to(device)
-            # model = get_model(model_name)
-            for epoch in range(epochs):
-                adv_images, original_preds, adv_preds = attack(attack_name, attack_params, model, dataloader, brightness_factor, device)
-                mismatched = evaluate_predictions(original_preds, adv_preds)
-                total_mismatch[model_name] += mismatched
-                wandb.log({f'{model_name}_epoch_{epoch}_mismatch': mismatched})
-            # adversarial_images, original_preds, adversarial_preds = attack(attack_name, attack_params, model, dataloader, brightness_factor)
-            # mismatched = evaluate_predictions(original_preds, adversarial_preds)
-            # f.write(f'The attack {args.attack} managed to fool the model `{model_name}` {mismatched} out of {num_of_images} times.\n')
-            # print(f'The attack {args.attack} managed to fool the model `{model_name}` {mismatched} out of {num_of_images} times.')
-            # total_mismatch[model_name] += mismatched
-        # f.write(f'{"-"*85}\n\n')
-        
-        # for mod_name, Nmis in total_mismatch.items():
-        #     f.write(f'\nAverage success rate of the attack on {mod_name} model: {Nmis/num_of_images* 100:.2f}%\n')
-        # f.flush()
-        for mod_name, Nmis in total_mismatch.items():
-            wandb.log({f'{mod_name}_success_rate': Nmis/num_of_images * 100})
-        
-        wandb.finish()
+    for model_name in models:
+        model = get_model(model_name).to(device)
+        # model = get_model(model_name)
+
+        for epoch in range(epochs):
+            adv_images, original_preds, adv_preds = attack(attack_name, attack_params, model, dataloader, brightness_factor, device)
+            mismatched = evaluate_predictions(original_preds, adv_preds)
+            total_mismatch[model_name] += mismatched
+            wandb.log({f'{model_name}_epoch_{epoch}_mismatch': mismatched})
+
+        # adversarial_images, original_preds, adversarial_preds = attack(attack_name, attack_params, model, dataloader, brightness_factor)
+        # mismatched = evaluate_predictions(original_preds, adversarial_preds)
+        # f.write(f'The attack {args.attack} managed to fool the model `{model_name}` {mismatched} out of {num_of_images} times.\n')
+        # print(f'The attack {args.attack} managed to fool the model `{model_name}` {mismatched} out of {num_of_images} times.')
+        # total_mismatch[model_name] += mismatched
+    # f.write(f'{"-"*85}\n\n')
+    
+    # for mod_name, Nmis in total_mismatch.items():
+    #     f.write(f'\nAverage success rate of the attack on {mod_name} model: {Nmis/num_of_images* 100:.2f}%\n')
+    # f.flush()
+    for mod_name, Nmis in total_mismatch.items():
+        wandb.log(f'\nAverage success rate of the attack on {mod_name} model: {Nmis/num_of_images* 100:.2f}%\n')
+    
+    wandb.finish()
     # save_images(image_tensor, adversarial_image, result_dir, image_name)
