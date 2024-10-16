@@ -236,7 +236,7 @@ if __name__ == "__main__":
     dataloader = DataLoader(dataset, batch_size=32, shuffle=True)
 
     attack_name, attack_params = get_attack_info(attack_name=args.attack, epsilon=0.09)
-    wandb.init(project=f"Cleverhans {args.attack}-{"&".join(models)}")
+    wandb.init(project=f'Cleverhans {args.attack}-{"&".join(models)}')
 
     epochs = int(args.epochs)
     output_filename = f'./results{args.attack}-VS-{"&".join(models)}.txt'
