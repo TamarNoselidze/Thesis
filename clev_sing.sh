@@ -10,5 +10,6 @@ echo "Running Python script"
 python3 main.py \
     --attack "$1" \
     --image_folder_path "$2" \
-    --models "$3" \
-    --epochs "$4"
+    --model "$3" \
+    --brightness "$4" \
+    --additional "$5"

@@ -1,48 +1,25 @@
+import os, argparse, wandb
+import numpy as np
+
 import torch
 from torchvision import datasets, transforms
 from torch.utils.data import DataLoader
 
-from torchvision.models.resnet import resnet50,ResNet50_Weights
-from torchvision.models import vit_b_16, ViT_B_16_Weights
-from torchvision.models import vit_b_32, ViT_B_32_Weights
+from torchvision.models.resnet import resnet50, ResNet50_Weights, resnet152, ResNet152_Weights
+from torchvision.models import vit_b_16, ViT_B_16_Weights, vit_l_32, ViT_L_32_Weights, vgg16_bn, VGG16_BN_Weights
 
-from torch.autograd import Variable
-
-# from cleverhans.torch.attacks import fast_gradient_method, projected_gradient_descent
 from cleverhans.torch.attacks.fast_gradient_method import fast_gradient_method
 from cleverhans.torch.attacks.carlini_wagner_l2 import carlini_wagner_l2
 from cleverhans.torch.attacks.hop_skip_jump_attack import hop_skip_jump_attack 
 from cleverhans.torch.attacks.projected_gradient_descent import projected_gradient_descent
 from cleverhans.torch.attacks.sparse_l1_descent import sparse_l1_descent
 
-# import PIL
-from PIL import Image
-import numpy as np
-
-import matplotlib.pyplot as plt
-import argparse
-import wandb
-
-
-def preprocess_image(raw_image_path):
-
-    preprocess = transforms.Compose([
-        transforms.Resize(256),
-        transforms.CenterCrop(224),
-        transforms.ToTensor(),
-        transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
-    ])
-
-    image = Image.open(raw_image_path)
-    image_tensor = preprocess(image)    # for saving the preprocessed image
-    image_tensor_unsqueezed = image_tensor.unsqueeze(0)  # Add a batch dimension   # for attacking
-
-    return image_tensor, image_tensor_unsqueezed
 
 def adjust_brightness(image, brightness_factor):
-    brightness_transform = transforms.ColorJitter(brightness=brightness_factor)
-    image = brightness_transform(image)
-    return image
+    brightness_transform = transforms.ColorJitter(brightness=brightness_factor, contrast=0.3)
+    adjusted_image = brightness_transform(image)
+    return adjusted_image
+
 
 def transform():
     transform = transforms.Compose([
@@ -50,26 +27,6 @@ def transform():
         transforms.ToTensor(),
     ])
     return transform
-
-def save_images(original_image, adversarial_image, result_dir, image_name, ):
-    
-    inv_normalize = transforms.Normalize(
-        mean=[-0.485/0.229, -0.456/0.224, -0.406/0.225],
-        std=[1/0.229, 1/0.224, 1/0.225]
-    )
-
-    original_image_normalized = inv_normalize(original_image)
-    adversarial_image = adversarial_image.squeeze(0)  # Remove batch dimension
-    adversarial_image_normalized = inv_normalize(adversarial_image)
-    adversarial_image_normalized = adversarial_image_normalized.clamp(0, 1)  # Clip to make sure the values are valid for an image
-
-    to_pil_image = transforms.ToPILImage()
-    original_image_pil = to_pil_image(original_image_normalized)
-    adv_image_pil = to_pil_image(adversarial_image_normalized)
-
-
-    original_image_pil.save(f'{result_dir}/{image_name}_processed.jpg')
-    adv_image_pil.save(f'{result_dir}/{image_name}_adversarial.jpg')
 
 
 def get_attack_info(attack_name, epsilon):
@@ -88,6 +45,7 @@ def get_attack_info(attack_name, epsilon):
             'targeted' : False,
             'sanity_checks' : False,
         }
+
     elif attack_name == 'PGD':
         attack = projected_gradient_descent
         attack_params = {
@@ -100,6 +58,7 @@ def get_attack_info(attack_name, epsilon):
             'targeted': False,
             'sanity_checks' : False
         }
+
     elif attack_name == 'CWl2':
         attack = carlini_wagner_l2
         attack_params = {
@@ -116,7 +75,6 @@ def get_attack_info(attack_name, epsilon):
         attack_params = {
             'norm' : np.inf,   # 2 or np.inf
             'max_num_evals' : 100,
-
             'constraint': 2,  # 'l2', 'l1', or 'linf'
             # 'stepsize': 0.5,
             # 'steps': 40,
@@ -139,41 +97,39 @@ def get_attack_info(attack_name, epsilon):
     else:
         raise ValueError("Unsupported attack")
         
-
     return attack, attack_params
 
-def attack(attack_name, attack_params, model, dataloader, brightness_factor=None, epsilon=0.03, device='cpu'):
 
-    # adv_image = fast_gradient_method(model, image, epsilon, np.inf, targeted=False)
-    # adv_image = sparse_l1_descent(model, image, **attack_params)
+def attack(attack_name, attack_params, model, dataloader, brightness_factor=None, device='cpu'):
     model.to(device)
     adv_images, orig_predicted_classes, adv_predicted_classes = [], [], []
 
     for i, batch in enumerate(dataloader):
         images, _ = batch
         images = images.to(device)
-        batch_size = images.shape[0]
-        # print(f'Working with batch {i+1}. Size of this batch is: {batch_size}')
 
-        # for j in range(batch_size):
         for image in images:
+            original_image = image.clone().detach().to(device)  # Capture original image
+
             if brightness_factor != None:
-                image = adjust_brightness(image, brightness_factor)
+                image = adjust_brightness(image.cpu(), brightness_factor).to(device)
+
             image = image.unsqueeze(0)  # Add batch dimension
 
-            #adversarial_image = attack_name(model, image, **attack_params).to(device)
             adversarial_image = attack_name(model, image, **attack_params).detach().to(device)
             original_logits = model(image)
             adversarial_logits = model(adversarial_image)
             _, orig_predicted_class = original_logits.max(1)
             _, adv_predicted_class = adversarial_logits.max(1)
-            # print(f"Original logits shape: {original_logits.shape}")
-            # print(f"Adversarial logits shape: {adversarial_logits.shape}")
-            # print(f"Original predicted class: {orig_predicted_class}")
-            # print(f"Adversarial predicted class: {adv_predicted_class}")
 
-            wandb.log({"original_image": wandb.Image(image.cpu()), 
-            "adversarial_image": wandb.Image(adversarial_image.cpu())})
+            # Log images based on brightness adjustment
+            if brightness_factor != None:
+                wandb.log({"original_image": wandb.Image(original_image.cpu()), 
+                            "image_adjusted_brightness" : wandb.Image(image.cpu()),
+                            "adversarial_image": wandb.Image(adversarial_image.cpu())})
+            else:
+                wandb.log({"original_image": wandb.Image(image.cpu()), 
+                            "adversarial_image": wandb.Image(adversarial_image.cpu())})
 
             adv_images.append(adversarial_image)
             orig_predicted_classes.append(orig_predicted_class)
@@ -194,21 +150,18 @@ def evaluate_predictions(original_preds, adversarial_preds):
 
 
 def get_model(model_name):
-    # models = []
     if model_name == 'resnet50':
         model = resnet50(weights=ResNet50_Weights.DEFAULT)
-
+    elif model_name == 'resnet152':
+        model = resnet152(weights=ResNet152_Weights.DEFAULT)
+    elif model_name == 'vgg16_bn':
+        model = vgg16_bn(weights=VGG16_BN_Weights.DEFAULT)
     elif model_name == 'vit_b_16':
         model = vit_b_16(weights=ViT_B_16_Weights.DEFAULT)
-        
-    elif model_name == 'vit_b_32':
-        model = vit_b_32(ViT_B_32_Weights.DEFAULT)
+    elif model_name == 'vit_l_32':
+        model = vit_l_32(ViT_L_32_Weights.DEFAULT)
     
     model.eval()
-    # models.append(model)
-
-    ## add more models
-        
     return model
 
 
@@ -219,59 +172,47 @@ if __name__ == "__main__":
 
     parser.add_argument('--attack', choices=['FGSM', 'CWl2', 'HOP-SKIP', 'PGD', 'Sl1D'], help='The attack to perform.')
     parser.add_argument('--image_folder_path', help='Image dataset to perturb', default='../imagenetv2-top-images/imagenetv2-top-images-format-val')
-    # parser.add_argument('--model', choices=['resnet50', 'vit_b_16'], help='Model to attack')
-    parser.add_argument('--models', nargs='+', choices=['resnet50', 'vit_b_16', 'vit_b_32'], help='Models to attack')
-    parser.add_argument('--epochs', help='Number of epochs')
+    parser.add_argument('--model', choices=['resnet50', 'resnet152', 'vgg16_bn', 'vit_b_16', 'vit_l_32'], help='Model to attack')
+    # parser.add_argument('--epochs', help='Number of epochs')
     parser.add_argument('--brightness', help='Brightness value, between 0 (black image) and 2')
+    parser.add_argument('--additional', help='Any additional comment that will be added to the project name for logging in wandb')
     args = parser.parse_args()
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-
-    models = args.models
     image_folder = args.image_folder_path
-    brightness_factor = None if args.brightness is None else float(args.brightness)
-    # attack_name = args.attack
+    assert os.path.exists(image_folder), f"Could not locate the image dataset at {image_folder}" 
     dataset = datasets.ImageFolder(image_folder, transform=transform())
     dataloader = DataLoader(dataset, batch_size=32, shuffle=True)
 
+    # No use of multiple epochs, since Cleverhans has non-training methods - but could be used for future improvements.
+    # assert isinstance(args.epochs, int), "Epochs should be an integer"
+    # epochs = int(args.epochs)
+
+    brightness_factor = None if args.brightness is None else float(args.brightness)
+    additional_comment = args.additional
     attack_name, attack_params = get_attack_info(attack_name=args.attack, epsilon=0.09)
-    wandb.init(project=f'Cleverhans {args.attack}-{"&".join(models)}')
-
-    epochs = int(args.epochs)
-    output_filename = f'./results{args.attack}-VS-{"&".join(models)}.txt'
+    model_name = args.model
+    model = get_model(model_name).to(device)
+    
     num_of_images = 2000
-    
-    print(f'device: {device}  |  models: {models}  |  attack_name: {attack_name}')
+    total_mismatch = 0
 
-    # with open(output_filename, 'w') as f:
-    total_mismatch = {x : 0 for x in models}
-    # for i in range(epochs):
-    #     f.write(f'{"-"*30} Results for epoch {i+1} {"-"*30}\n')
-    #     print(f'{"-"*30} Results for epoch {i+1} {"-"*30}')
+    project_name = f'Cleverhans {args.attack}-{model_name}{ "(br "+str(brightness_factor)+")" if brightness_factor else ""}{ "_"+additional_comment if additional_comment else ""}'
+    wandb.init(project=project_name, config= {
+        'model_name': model_name,
+        'brightness': args.brightness,
+        'number_of_images' : num_of_images,
+        'attack_name': args.attack,
+        **attack_params  # Log the attack parameters
+    })
 
-    for model_name in models:
-        model = get_model(model_name).to(device)
-        # model = get_model(model_name)
+    adv_images, original_preds, adv_preds = attack(attack_name, attack_params, model, dataloader, brightness_factor, device)
+    mismatched = evaluate_predictions(original_preds, adv_preds)
+    total_mismatch += mismatched
+    wandb.log({f'Number of mistmatches on {model_name} model': mismatched})
 
-        for epoch in range(epochs):
-            adv_images, original_preds, adv_preds = attack(attack_name, attack_params, model, dataloader, brightness_factor, device)
-            mismatched = evaluate_predictions(original_preds, adv_preds)
-            total_mismatch[model_name] += mismatched
-            wandb.log({f'{model_name}_epoch_{epoch}_mismatch': mismatched})
-
-        # adversarial_images, original_preds, adversarial_preds = attack(attack_name, attack_params, model, dataloader, brightness_factor)
-        # mismatched = evaluate_predictions(original_preds, adversarial_preds)
-        # f.write(f'The attack {args.attack} managed to fool the model `{model_name}` {mismatched} out of {num_of_images} times.\n')
-        # print(f'The attack {args.attack} managed to fool the model `{model_name}` {mismatched} out of {num_of_images} times.')
-        # total_mismatch[model_name] += mismatched
-    # f.write(f'{"-"*85}\n\n')
-    
-    # for mod_name, Nmis in total_mismatch.items():
-    #     f.write(f'\nAverage success rate of the attack on {mod_name} model: {Nmis/num_of_images* 100:.2f}%\n')
-    # f.flush()
-    for mod_name, Nmis in total_mismatch.items():
-        wandb.log(f'\nAverage success rate of the attack on {mod_name} model: {Nmis/num_of_images* 100:.2f}%\n')
+    success_rate = (total_mismatch /  num_of_images) * 100
+    wandb.log({f'Success rate on {model_name} model': success_rate})
     
     wandb.finish()
-    # save_images(image_tensor, adversarial_image, result_dir, image_name)
