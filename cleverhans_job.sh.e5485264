@@ -1,0 +1,24 @@
+wandb: Using wandb-core as the SDK backend. Please refer to https://wandb.me/wandb-core for more information.
+wandb: Currently logged in as: takonoselidze (takonoselidze-charles-university). Use `wandb login --relogin` to force relogin
+wandb: Tracking run with wandb version 0.18.3
+wandb: Run data is saved locally in /scratch.ssd/takonoselidze/job_5485264.pbs-m1.metacentrum.cz/wandb/run-20241021_144703-urdzxv21
+wandb: Run `wandb offline` to turn off syncing.
+wandb: Syncing run fine-violet-1
+wandb: ⭐️ View project at https://wandb.ai/takonoselidze-charles-university/Cleverhans%20FGSM-resnet50
+wandb: 🚀 View run at https://wandb.ai/takonoselidze-charles-university/Cleverhans%20FGSM-resnet50/runs/urdzxv21
+wandb: - 356.317 MB of 356.317 MB uploadedwandb:                                                                                
+wandb: 
+wandb: Run history:
+wandb:       Number of mistmatches on resnet50 model ▁
+wandb: Success rate of FGSM attack on resnet50 model ▁
+wandb: 
+wandb: Run summary:
+wandb:       Number of mistmatches on resnet50 model 912
+wandb: Success rate of FGSM attack on resnet50 model 45.6
+wandb: 
+wandb: 🚀 View run fine-violet-1 at: https://wandb.ai/takonoselidze-charles-university/Cleverhans%20FGSM-resnet50/runs/urdzxv21
+wandb: ⭐️ View project at: https://wandb.ai/takonoselidze-charles-university/Cleverhans%20FGSM-resnet50
+wandb: Synced 5 W&B file(s), 0 media file(s), 0 artifact file(s) and 4000 other file(s)
+wandb: Find logs at: ./wandb/run-20241021_144703-urdzxv21/logs
+tar: Removing leading `/' from member names
+tar: Removing leading `/' from hard link targets

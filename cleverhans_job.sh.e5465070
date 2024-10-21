@@ -1,0 +1,24 @@
+wandb: Using wandb-core as the SDK backend. Please refer to https://wandb.me/wandb-core for more information.
+wandb: Currently logged in as: takonoselidze (takonoselidze-charles-university). Use `wandb login --relogin` to force relogin
+wandb: Tracking run with wandb version 0.18.3
+wandb: Run data is saved locally in /scratch.ssd/takonoselidze/job_5465070.pbs-m1.metacentrum.cz/wandb/run-20241020_180416-g5hg2ghz
+wandb: Run `wandb offline` to turn off syncing.
+wandb: Syncing run fast-music-1
+wandb: ⭐️ View project at https://wandb.ai/takonoselidze-charles-university/Cleverhans%20FGSM-vit_b_16%28br%200.8%29
+wandb: 🚀 View run at https://wandb.ai/takonoselidze-charles-university/Cleverhans%20FGSM-vit_b_16%28br%200.8%29/runs/g5hg2ghz
+wandb: - 523.847 MB of 523.847 MB uploadedwandb:                                                                                
+wandb: 
+wandb: Run history:
+wandb: Number of mistmatches on vit_b_16 model ▁
+wandb:          Success rate on vit_b_16 model ▁
+wandb: 
+wandb: Run summary:
+wandb: Number of mistmatches on vit_b_16 model 1884
+wandb:          Success rate on vit_b_16 model 94.2
+wandb: 
+wandb: 🚀 View run fast-music-1 at: https://wandb.ai/takonoselidze-charles-university/Cleverhans%20FGSM-vit_b_16%28br%200.8%29/runs/g5hg2ghz
+wandb: ⭐️ View project at: https://wandb.ai/takonoselidze-charles-university/Cleverhans%20FGSM-vit_b_16%28br%200.8%29
+wandb: Synced 5 W&B file(s), 0 media file(s), 0 artifact file(s) and 6000 other file(s)
+wandb: Find logs at: ./wandb/run-20241020_180416-g5hg2ghz/logs
+tar: Removing leading `/' from member names
+tar: Removing leading `/' from hard link targets

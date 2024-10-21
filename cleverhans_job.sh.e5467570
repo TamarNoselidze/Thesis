@@ -1,0 +1,24 @@
+wandb: Using wandb-core as the SDK backend. Please refer to https://wandb.me/wandb-core for more information.
+wandb: Currently logged in as: takonoselidze (takonoselidze-charles-university). Use `wandb login --relogin` to force relogin
+wandb: Tracking run with wandb version 0.18.3
+wandb: Run data is saved locally in /scratch.ssd/takonoselidze/job_5467570.pbs-m1.metacentrum.cz/wandb/run-20241020_225443-rkn47a4o
+wandb: Run `wandb offline` to turn off syncing.
+wandb: Syncing run silver-armadillo-1
+wandb: ⭐️ View project at https://wandb.ai/takonoselidze-charles-university/Cleverhans%20FGSM-vgg16_bn%28br%200.3%29
+wandb: 🚀 View run at https://wandb.ai/takonoselidze-charles-university/Cleverhans%20FGSM-vgg16_bn%28br%200.3%29/runs/rkn47a4o
+wandb: - 389.357 MB of 389.357 MB uploadedwandb:                                                                                
+wandb: 
+wandb: Run history:
+wandb: Number of mistmatches on vgg16_bn model ▁
+wandb:          Success rate on vgg16_bn model ▁
+wandb: 
+wandb: Run summary:
+wandb: Number of mistmatches on vgg16_bn model 1995
+wandb:          Success rate on vgg16_bn model 99.75
+wandb: 
+wandb: 🚀 View run silver-armadillo-1 at: https://wandb.ai/takonoselidze-charles-university/Cleverhans%20FGSM-vgg16_bn%28br%200.3%29/runs/rkn47a4o
+wandb: ⭐️ View project at: https://wandb.ai/takonoselidze-charles-university/Cleverhans%20FGSM-vgg16_bn%28br%200.3%29
+wandb: Synced 5 W&B file(s), 0 media file(s), 0 artifact file(s) and 6000 other file(s)
+wandb: Find logs at: ./wandb/run-20241020_225443-rkn47a4o/logs
+tar: Removing leading `/' from member names
+tar: Removing leading `/' from hard link targets

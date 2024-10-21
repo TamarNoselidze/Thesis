@@ -25,8 +25,14 @@ def transform():
     transform = transforms.Compose([
         transforms.Resize((224, 224)),
         transforms.ToTensor(),
+        transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]) 
     ])
     return transform
+
+def denormalize(image_tensor):
+    mean = torch.tensor([0.485, 0.456, 0.406]).view(3, 1, 1)
+    std = torch.tensor([0.229, 0.224, 0.225]).view(3, 1, 1)
+    return image_tensor * std + mean
 
 
 def get_attack_info(attack_name, epsilon):
@@ -74,7 +80,7 @@ def get_attack_info(attack_name, epsilon):
         attack = hop_skip_jump_attack
         attack_params = {
             'norm' : np.inf,   # 2 or np.inf
-            'max_num_evals' : 100,
+            'max_num_evals' : 2000,  # default is 10000
             'constraint': 2,  # 'l2', 'l1', or 'linf'
             # 'stepsize': 0.5,
             # 'steps': 40,
@@ -107,6 +113,7 @@ def attack(attack_name, attack_params, model, dataloader, brightness_factor=None
     for i, batch in enumerate(dataloader):
         images, _ = batch
         images = images.to(device)
+        print(f'Working with batch {i+1}')
 
         for image in images:
             original_image = image.clone().detach().to(device)  # Capture original image
@@ -124,7 +131,7 @@ def attack(attack_name, attack_params, model, dataloader, brightness_factor=None
 
             # Log images based on brightness adjustment
             if brightness_factor != None:
-                wandb.log({"original_image": wandb.Image(original_image.cpu()), 
+                wandb.log({"original_image": wandb.Image(denormalize(original_image.cpu())), 
                             "image_adjusted_brightness" : wandb.Image(image.cpu()),
                             "adversarial_image": wandb.Image(adversarial_image.cpu())})
             else:
@@ -134,6 +141,7 @@ def attack(attack_name, attack_params, model, dataloader, brightness_factor=None
             adv_images.append(adversarial_image)
             orig_predicted_classes.append(orig_predicted_class)
             adv_predicted_classes.append(adv_predicted_class)
+        print(f'Adversarial images for batch {i+1} generated successfully\n')
 
     return adv_images, orig_predicted_classes, adv_predicted_classes
 
@@ -189,7 +197,11 @@ if __name__ == "__main__":
     # assert isinstance(args.epochs, int), "Epochs should be an integer"
     # epochs = int(args.epochs)
 
-    brightness_factor = None if args.brightness is None else float(args.brightness)
+    try:
+        brightness_factor = float(args.brightness)
+    except:
+        brightness_factor = None
+    # brightness_factor = None if args.brightness is None or '' else float(args.brightness)
     additional_comment = args.additional
     attack_name, attack_params = get_attack_info(attack_name=args.attack, epsilon=0.09)
     model_name = args.model
@@ -211,8 +223,10 @@ if __name__ == "__main__":
     mismatched = evaluate_predictions(original_preds, adv_preds)
     total_mismatch += mismatched
     wandb.log({f'Number of mistmatches on {model_name} model': mismatched})
+    print(f'\n{"="*60}\nNumber of mistmatches on {model_name} model: {mismatched}')
 
     success_rate = (total_mismatch /  num_of_images) * 100
-    wandb.log({f'Success rate on {model_name} model': success_rate})
+    wandb.log({f'Success rate of {args.attack} attack on {model_name} model': success_rate})
+    print(f'Success rate of {args.attack} attack on {model_name} model: {success_rate}\n{"="*60}\n')
     
     wandb.finish()

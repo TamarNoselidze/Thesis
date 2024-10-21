@@ -1,6 +1,6 @@
 #!/bin/bash
-#PBS -q gpu@pbs-m1.metacentrum.cz
-#PBS -l walltime=4:00:00
+#PBS -q gpu_long@pbs-m1.metacentrum.cz
+#PBS -l walltime=50:00:00
 #PBS -l select=1:ncpus=1:ngpus=1:mem=30gb:scratch_local=100gb
 
 trap 'clean_scratch' TERM EXIT
@@ -20,8 +20,8 @@ set -o allexport; source "$HOME_DIR/Thesis/.env"; set +o allexport
 ATTACK=${ATTACK:-'FGSM'}  # Default attack type
 MODEL=${MODEL:-'vit_b_16'}     # Default model
 # EPOCHS=${EPOCHS:-1}           # Number of epochs
-BRIGHTNESS=${BRIGHTNESS:-''}
-ADDITIONAL=${ADDITIONAL:-''}
+BRIGHTNESS=${BRIGHTNESS}
+ADDITIONAL=${ADDITIONAL}
 
 SCRATCH_RESULTS="$SCRATCHDIR/results"
 SCRATCH_LOGS="$SCRATCHDIR/logs"

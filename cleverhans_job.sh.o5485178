@@ -1,0 +1,76 @@
+Copying project and dataset to scratch...
+Running singularity container...
+Defaulting to user installation because normal site-packages is not writeable
+Requirement already satisfied: python-dotenv in /auto/vestec1-elixir/home/takonoselidze/.local/lib/python3.8/site-packages (1.0.1)
+Running Python script
+Working with batch 
+Working with batch 
+Working with batch 
+Working with batch 
+Working with batch 
+Working with batch 
+Working with batch 
+Working with batch 
+Working with batch 
+Working with batch 
+Working with batch 
+Working with batch 
+Working with batch 
+Working with batch 
+Working with batch 
+Working with batch 
+Working with batch 
+Working with batch 
+Working with batch 
+Working with batch 
+Working with batch 
+Working with batch 
+Working with batch 
+Working with batch 
+Working with batch 
+Working with batch 
+Working with batch 
+Working with batch 
+Working with batch 
+Working with batch 
+Working with batch 
+Working with batch 
+Working with batch 
+Working with batch 
+Working with batch 
+Working with batch 
+Working with batch 
+Working with batch 
+Working with batch 
+Working with batch 
+Working with batch 
+Working with batch 
+Working with batch 
+Working with batch 
+Working with batch 
+Working with batch 
+Working with batch 
+Working with batch 
+Working with batch 
+Working with batch 
+Working with batch 
+Working with batch 
+Working with batch 
+Working with batch 
+Working with batch 
+Working with batch 
+Working with batch 
+Working with batch 
+Working with batch 
+Working with batch 
+Working with batch 
+Working with batch 
+Working with batch 
+Number of mistmatches on resnet152 model: 863
+Success rate on resnet152 model: 43.15
+Copying results to home directory...
+Job completed successfully!
+
+**********************************************************************************************************
+
+The SCRATCHes have been SUCCESSFULLY cleaned...
