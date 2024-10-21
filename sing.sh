@@ -11,4 +11,7 @@ python3 main.py \
     --attack_type "$1" \
     --image_folder_path "$2" \
     --model "$3" \
-    --epochs "$4"
+    --patch_size "$4" \
+    --epochs "$5" \
+    --brightness "$6" \
+    --color_transfer "$7"

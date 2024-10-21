@@ -24,7 +24,10 @@ set -o allexport; source "$HOME_DIR/Thesis/.env"; set +o allexport
 #
 ATTACK_TYPE=${ATTACK_TYPE:-0}  # Default attack type
 MODEL=${MODEL:-'vit_b_16'}     # Default model
+PATCH_SIZE=${PATCH_SIZE:-64}
 EPOCHS=${EPOCHS:-40}           # Number of epochs
+BRIGHTNESS=${BRIGHTNESS}
+COL_TRANSFER=${COL_TRANSFER}
 
 SCRATCH_RESULTS="$SCRATCHDIR/results"
 SCRATCH_LOGS="$SCRATCHDIR/logs"
@@ -52,7 +55,10 @@ singularity exec --nv "$CONTAINER_PATH" bash sing.sh \
 	"$ATTACK_TYPE" \
 	"$SCRATCHDIR/imagenetv2-top-images/imagenetv2-top-images-format-val" \
 	"$MODEL" \
-	"$EPOCHS" || { echo "Singularity execution failed"; exit 1; }
+	"$PATCH_SIZE"\
+	"$EPOCHS" \
+	"$BRIGHTNESS" \
+	"$COL_TRANSFER" || { echo "Singularity execution failed"; exit 1; }
 
 # archive the results
 echo "Archiving results..."
