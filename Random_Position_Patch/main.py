@@ -43,7 +43,7 @@ def start(project_name, device, generator, deployer, discriminator, attack_type,
         'input_dim': input_dim
     })
 
-    # num_classes = 200
+
     best_epoch_asr = 0  
     best_epoch_images = {}
     total_asr = 0
@@ -86,7 +86,7 @@ def start(project_name, device, generator, deployer, discriminator, attack_type,
 
                 adv_patches = torch.cat(adv_patches, dim=0).to(device)  # Stack generated patches
 
-            print(f"   Generated adversarial patch: {adv_patches[0].cpu()}")  # Log a generated patch
+            # print(f"   Generated adversarial patch: {adv_patches[0].cpu()}")  # Log a generated patch
 
             # deploying 
             for i in range(batch_size):
@@ -190,11 +190,7 @@ def start(project_name, device, generator, deployer, discriminator, attack_type,
     for original, modified in best_epoch_images.items():
         i+=1    
         image_key = f'best_epoch_img_{i}'
-        # wandb.log({
-        #         f'Original Image {image_key}': wandb.Image(original.cpu()),
-        #         f'Modified Image {image_key}': wandb.Image(modified.cpu()),
-        #         })
-        
+          
         wandb.log({
         image_key: [wandb.Image(original.cpu(), caption=f"Original Image {i}"), 
                     wandb.Image(modified.cpu(), caption=f"Modified Image {i}")]

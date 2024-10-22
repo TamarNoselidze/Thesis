@@ -51,20 +51,18 @@ def get_attack_info(attack_name, epsilon):
             'targeted' : False,
             'sanity_checks' : False,
         }
-
     elif attack_name == 'PGD':
         attack = projected_gradient_descent
         attack_params = {
-            'eps': epsilon,
+            'eps': 0.01,
             'eps_iter': 0.01,
-            'nb_iter': 40,
+            'nb_iter': 15,
             'norm': np.inf,  # Or 1, 2 for l1, l2 norms
             'clip_min': 0,
             'clip_max': 1,
             'targeted': False,
             'sanity_checks' : False
         }
-
     elif attack_name == 'CWl2':
         attack = carlini_wagner_l2
         attack_params = {
