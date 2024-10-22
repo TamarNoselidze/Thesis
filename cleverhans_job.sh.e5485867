@@ -1,0 +1,26 @@
+/usr/local/lib/python3.8/dist-packages/torchvision/models/_utils.py:135: UserWarning: Using 'weights' as positional parameter(s) is deprecated since 0.13 and may be removed in the future. Please use keyword parameter(s) instead.
+  warnings.warn(
+wandb: Using wandb-core as the SDK backend. Please refer to https://wandb.me/wandb-core for more information.
+wandb: Currently logged in as: takonoselidze (takonoselidze-charles-university). Use `wandb login --relogin` to force relogin
+wandb: Tracking run with wandb version 0.18.3
+wandb: Run data is saved locally in /scratch.ssd/takonoselidze/job_5485867.pbs-m1.metacentrum.cz/wandb/run-20241021_164422-sx9ydvdh
+wandb: Run `wandb offline` to turn off syncing.
+wandb: Syncing run driven-sunset-1
+wandb: ⭐️ View project at https://wandb.ai/takonoselidze-charles-university/Cleverhans%20PGD-vit_l_32%28br%200.3%29
+wandb: 🚀 View run at https://wandb.ai/takonoselidze-charles-university/Cleverhans%20PGD-vit_l_32%28br%200.3%29/runs/sx9ydvdh
+wandb: - 458.003 MB of 458.003 MB uploadedwandb:                                                                                
+wandb: 
+wandb: Run history:
+wandb:      Number of mistmatches on vit_l_32 model ▁
+wandb: Success rate of PGD attack on vit_l_32 model ▁
+wandb: 
+wandb: Run summary:
+wandb:      Number of mistmatches on vit_l_32 model 2000
+wandb: Success rate of PGD attack on vit_l_32 model 100
+wandb: 
+wandb: 🚀 View run driven-sunset-1 at: https://wandb.ai/takonoselidze-charles-university/Cleverhans%20PGD-vit_l_32%28br%200.3%29/runs/sx9ydvdh
+wandb: ⭐️ View project at: https://wandb.ai/takonoselidze-charles-university/Cleverhans%20PGD-vit_l_32%28br%200.3%29
+wandb: Synced 5 W&B file(s), 0 media file(s), 0 artifact file(s) and 6000 other file(s)
+wandb: Find logs at: ./wandb/run-20241021_164422-sx9ydvdh/logs
+tar: Removing leading `/' from member names
+tar: Removing leading `/' from hard link targets

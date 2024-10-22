@@ -1,0 +1,206 @@
+Copying project and dataset to scratch...
+Running singularity container...
+Defaulting to user installation because normal site-packages is not writeable
+Requirement already satisfied: python-dotenv in /auto/vestec1-elixir/home/takonoselidze/.local/lib/python3.8/site-packages (1.0.1)
+Running Python script
+Working with batch 1
+Adversarial images for batch 1 generated successfully
+
+Working with batch 2
+Adversarial images for batch 2 generated successfully
+
+Working with batch 3
+Adversarial images for batch 3 generated successfully
+
+Working with batch 4
+Adversarial images for batch 4 generated successfully
+
+Working with batch 5
+Adversarial images for batch 5 generated successfully
+
+Working with batch 6
+Adversarial images for batch 6 generated successfully
+
+Working with batch 7
+Adversarial images for batch 7 generated successfully
+
+Working with batch 8
+Adversarial images for batch 8 generated successfully
+
+Working with batch 9
+Adversarial images for batch 9 generated successfully
+
+Working with batch 10
+Adversarial images for batch 10 generated successfully
+
+Working with batch 11
+Adversarial images for batch 11 generated successfully
+
+Working with batch 12
+Adversarial images for batch 12 generated successfully
+
+Working with batch 13
+Adversarial images for batch 13 generated successfully
+
+Working with batch 14
+Adversarial images for batch 14 generated successfully
+
+Working with batch 15
+Adversarial images for batch 15 generated successfully
+
+Working with batch 16
+Adversarial images for batch 16 generated successfully
+
+Working with batch 17
+Adversarial images for batch 17 generated successfully
+
+Working with batch 18
+Adversarial images for batch 18 generated successfully
+
+Working with batch 19
+Adversarial images for batch 19 generated successfully
+
+Working with batch 20
+Adversarial images for batch 20 generated successfully
+
+Working with batch 21
+Adversarial images for batch 21 generated successfully
+
+Working with batch 22
+Adversarial images for batch 22 generated successfully
+
+Working with batch 23
+Adversarial images for batch 23 generated successfully
+
+Working with batch 24
+Adversarial images for batch 24 generated successfully
+
+Working with batch 25
+Adversarial images for batch 25 generated successfully
+
+Working with batch 26
+Adversarial images for batch 26 generated successfully
+
+Working with batch 27
+Adversarial images for batch 27 generated successfully
+
+Working with batch 28
+Adversarial images for batch 28 generated successfully
+
+Working with batch 29
+Adversarial images for batch 29 generated successfully
+
+Working with batch 30
+Adversarial images for batch 30 generated successfully
+
+Working with batch 31
+Adversarial images for batch 31 generated successfully
+
+Working with batch 32
+Adversarial images for batch 32 generated successfully
+
+Working with batch 33
+Adversarial images for batch 33 generated successfully
+
+Working with batch 34
+Adversarial images for batch 34 generated successfully
+
+Working with batch 35
+Adversarial images for batch 35 generated successfully
+
+Working with batch 36
+Adversarial images for batch 36 generated successfully
+
+Working with batch 37
+Adversarial images for batch 37 generated successfully
+
+Working with batch 38
+Adversarial images for batch 38 generated successfully
+
+Working with batch 39
+Adversarial images for batch 39 generated successfully
+
+Working with batch 40
+Adversarial images for batch 40 generated successfully
+
+Working with batch 41
+Adversarial images for batch 41 generated successfully
+
+Working with batch 42
+Adversarial images for batch 42 generated successfully
+
+Working with batch 43
+Adversarial images for batch 43 generated successfully
+
+Working with batch 44
+Adversarial images for batch 44 generated successfully
+
+Working with batch 45
+Adversarial images for batch 45 generated successfully
+
+Working with batch 46
+Adversarial images for batch 46 generated successfully
+
+Working with batch 47
+Adversarial images for batch 47 generated successfully
+
+Working with batch 48
+Adversarial images for batch 48 generated successfully
+
+Working with batch 49
+Adversarial images for batch 49 generated successfully
+
+Working with batch 50
+Adversarial images for batch 50 generated successfully
+
+Working with batch 51
+Adversarial images for batch 51 generated successfully
+
+Working with batch 52
+Adversarial images for batch 52 generated successfully
+
+Working with batch 53
+Adversarial images for batch 53 generated successfully
+
+Working with batch 54
+Adversarial images for batch 54 generated successfully
+
+Working with batch 55
+Adversarial images for batch 55 generated successfully
+
+Working with batch 56
+Adversarial images for batch 56 generated successfully
+
+Working with batch 57
+Adversarial images for batch 57 generated successfully
+
+Working with batch 58
+Adversarial images for batch 58 generated successfully
+
+Working with batch 59
+Adversarial images for batch 59 generated successfully
+
+Working with batch 60
+Adversarial images for batch 60 generated successfully
+
+Working with batch 61
+Adversarial images for batch 61 generated successfully
+
+Working with batch 62
+Adversarial images for batch 62 generated successfully
+
+Working with batch 63
+Adversarial images for batch 63 generated successfully
+
+
+============================================================
+Number of mistmatches on vit_l_32 model: 2000
+Success rate of PGD attack on vit_l_32 model: 100.0
+============================================================
+
+Copying results to home directory...
+Job completed successfully!
+
+**********************************************************************************************************
+
+The SCRATCHes have been SUCCESSFULLY cleaned...
