@@ -89,7 +89,7 @@ def get_attack_info(attack_name, epsilon):
             'clip_min': 0,
             'clip_max': 1
         }
-    elif attack_name == 'SparseL1':
+    elif attack_name == 'Sl1D':
         attack = sparse_l1_descent
         attack_params = {
             'eps': epsilon,
