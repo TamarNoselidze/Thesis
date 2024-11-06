@@ -90,10 +90,10 @@ def get_attack_info(attack_name, epsilon):
     elif attack_name == 'Sl1D':
         attack = sparse_l1_descent
         attack_params = {
-            'eps': epsilon,
+            'eps': 4.0,
             'nb_iter': 40,
-            'eps_iter': 0.01,
-            'q': 80,  # q controls sparsity
+            'eps_iter': 0.08,
+            # 'q': 80,  # q controls sparsity
             'clip_min': 0,
             'clip_max': 1,
             'targeted': False
