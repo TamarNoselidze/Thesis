@@ -3,6 +3,8 @@ import torch
 class Deployer:
     def deploy(self, patch, image):
         # Image and patch dimensions
+
+        # print(f'--- SHAPE OF THE PATCH: {patch.shape}')
         _, H, W = image.shape
         _, P_H, P_W = patch.shape
         

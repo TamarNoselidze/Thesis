@@ -32,16 +32,16 @@ def adjust_brightness(image, brightness_factor):
     adjusted_image = brightness_transform(image)
     return adjusted_image
 
-def start(project_name, device, generator, deployer, discriminator, attack_type, dataloader, num_of_classes, num_of_epochs=40, brightness_factor=None, color_transfer=None, input_dim=100):
+def start(project_name, device, generator, optimizer, deployer, discriminator, attack_type, dataloader, num_of_classes, num_of_epochs=40, brightness_factor=None, color_transfer=None, input_dim=100):
     import wandb
 
     # Initialize W&B
-    wandb.init(project=project_name, entity='takonoselidze-charles-university', config={
-        'epochs': num_of_epochs,
-        'classes' : num_of_classes,
-        'attack_type': 'Including the image embeddings' if attack_type=='0' else 'Without the image embeddings',
-        'input_dim': input_dim
-    })
+    # wandb.init(project=project_name, entity='takonoselidze-charles-university', config={
+    #     'epochs': num_of_epochs,
+    #     'classes' : num_of_classes,
+    #     'attack_type': 'Including the image embeddings' if attack_type=='0' else 'Without the image embeddings',
+    #     'input_dim': input_dim
+    # })
 
 
     best_epoch_asr = 0  
@@ -63,7 +63,7 @@ def start(project_name, device, generator, deployer, discriminator, attack_type,
         temp_count=1
         for batch in dataloader:
 
-            print(f'@@ working on batch {temp_count}')
+            print(f'@  working on batch {temp_count}')
 
             images, true_labels = batch
             images = images.to(device)
@@ -81,6 +81,7 @@ def start(project_name, device, generator, deployer, discriminator, attack_type,
                 adv_patches = []  # we need to store generated patch for each image
 
                 for i in range(batch_size):
+                    # print(f'*************** calling from start')
                     adv_patch = generator(noise[i].unsqueeze(0).to(device), images[i].unsqueeze(0).to(device))
                     adv_patches.append(adv_patch)
 
@@ -99,10 +100,11 @@ def start(project_name, device, generator, deployer, discriminator, attack_type,
             modified_images = torch.stack(modified_images).to(device)
 
             outputs = discriminator(modified_images)
-            print(f"   Discriminator output: {outputs.data.cpu()}")
+            # print(f"   Discriminator output: {outputs.data.cpu()}")
 
             
-            target_class_y_prime = torch.randint(0, num_of_classes, (batch_size,)).to(device)
+            target_class_y_prime = torch.randint(0, 1000, (batch_size,)).to(device)
+            # print(target_class_y_prime)
             target_class_y_prime[target_class_y_prime == true_labels] = (target_class_y_prime[target_class_y_prime == true_labels] + 1) % num_of_classes
             
             criterion = AdversarialLoss(target_class=target_class_y_prime).to(device)
@@ -118,29 +120,30 @@ def start(project_name, device, generator, deployer, discriminator, attack_type,
             # correct = (predicted == true_labels).sum()
 
 
-            print(f"   Loss: {loss.item()}")
+            print(f"     Loss: {loss.item()}")
 
             # If you have the criterion, you can also print its input values
-            print(f"   Criterion input (outputs): {outputs.data.cpu()}")
-            print(f"   Criterion target: {target_class_y_prime.cpu()}")
+            # print(f"   Criterion input (outputs): {outputs.data.cpu()}")
+            # print(f"   Criterion target: {target_class_y_prime.cpu()}")
 
 
-            print(f"   True labels: {true_labels.cpu()}")
-            print(f"   Predicted labels: {predicted.cpu()}")
-            print(f"   Correct predictions: {correct}")
+            print(f"     True labels: {true_labels.cpu()}")
+            print(f"     Predicted labels: {predicted.cpu()}")
+
+            print(f"     Correct predictions: {correct}")
 
             batch_asr = (batch_size - correct) / batch_size
-            print(f'@@@@ best_batch_asr so far: {best_batch_asr}')
-            print(f'@@@@ batch {temp_count} has ASR: {batch_asr}')
+            print(f'@    this batch (number {temp_count}) has ASR: {batch_asr}')
+            print(f'@    best_batch_asr so far: {best_batch_asr}')
             temp_count+=1
 
 
             # Log batch metrics to W&B
-            wandb.log({
-                'batch_loss': loss.item(),
-                'batch_asr': batch_asr,
-                'epoch': epoch + 1
-            })
+            # wandb.log({
+            #     'batch_loss': loss.item(),
+            #     'batch_asr': batch_asr,
+            #     'epoch': epoch + 1
+            # })
             
             batch_images = {}
             for i in range(batch_size):
@@ -151,7 +154,7 @@ def start(project_name, device, generator, deployer, discriminator, attack_type,
 
             if batch_asr > best_batch_asr:
                 best_batch_asr = batch_asr
-                print(f'@@@@@@ current batch asr is better than best_batch_asr ({best_batch_asr}) so we are updating its value.')
+                print(f'@       current batch asr is better than best_batch_asr ({best_batch_asr}) so we are updating its value.')
                 # best_patch = adv_patch.clone().detach()  # Save the best performing patch
                 # best_epoch_patches = adv_patches.clone
 
@@ -160,7 +163,7 @@ def start(project_name, device, generator, deployer, discriminator, attack_type,
                 # for i in range(batch_size):
                 #     best_batch_images[images[i].cpu()] = modified_images[i].cpu()  
 
-        print(f'@@ best batch ASR in this epoch is: {best_batch_asr}')
+        print(f'@  best batch ASR in this epoch is: {best_batch_asr}')
         print(f'   best batch ASR in the previous epoch was: {best_epoch_asr}')
 
         if best_batch_asr > best_epoch_asr:   # if the best batch outperforms the best batch in prev epoch, update the best_epoch_images
@@ -173,11 +176,11 @@ def start(project_name, device, generator, deployer, discriminator, attack_type,
         total_asr += avg_epoch_asr
 
         # Log epoch-level metrics to W&B
-        wandb.log({
-            'epoch_avg_asr': avg_epoch_asr,
-            'epoch_best_batch_asr': best_batch_asr,
-            'epoch': epoch + 1
-        })
+        # wandb.log({
+        #     'epoch_avg_asr': avg_epoch_asr,
+        #     'epoch_best_batch_asr': best_batch_asr,
+        #     'epoch': epoch + 1
+        # })
 
         print(f"Epoch [{epoch+1}/{num_of_epochs}], Loss: {loss.item()}, Avg ASR: {avg_epoch_asr * 100:.2f}%")
         print(f'|___ ASR of the best performing batch: {best_batch_asr * 100:.2f}%')
@@ -191,10 +194,10 @@ def start(project_name, device, generator, deployer, discriminator, attack_type,
         i+=1    
         image_key = f'best_epoch_img_{i}'
           
-        wandb.log({
-        image_key: [wandb.Image(original.cpu(), caption=f"Original Image {i}"), 
-                    wandb.Image(modified.cpu(), caption=f"Modified Image {i}")]
-         })
+        # wandb.log({
+        # image_key: [wandb.Image(original.cpu(), caption=f"Original Image {i}"), 
+        #             wandb.Image(modified.cpu(), caption=f"Modified Image {i}")]
+        #  })
         # print(f'displayed: original and modified of {image_key}')
 
     print(f'\n\nResults saved.\nBest ASR achieved over {num_of_epochs} epochs: {best_epoch_asr * 100:.2f}%')
@@ -264,7 +267,6 @@ if __name__ == "__main__":
     
     generator = Generator(patch_size, input_dim, output_dim, k).to(device)
     generator.train()
-
     deployer = Deployer()
 
     model_name = args.model
@@ -289,4 +291,4 @@ if __name__ == "__main__":
     print(f"Discriminator device: {next(discriminator.parameters()).device}")
     
     project_name = f'Random Position Patch_{args.attack_type}-{args.model}{ "(br "+str(brightness_factor)+")" if brightness_factor else ""}{ "_col-tr"+color_transfer if color_transfer else ""}'
-    start(project_name, device, generator, deployer, discriminator, attack_type, dataloader, num_of_classes, num_of_epochs, brightness_factor, color_transfer)
+    start(project_name, device, generator, optimizer, deployer, discriminator, attack_type, dataloader, num_of_classes, num_of_epochs, brightness_factor, color_transfer)

@@ -12,3 +12,14 @@ qsub -v ATTACK_TYPE='1',MODEL='vit_b_16',EPOCHS=40 job.sh
 get started on your own attack
 
 add more models, 4 -> 5th model
+
+
+
+now the patch uses up about 10% or less of the image, we could split it up into several mini-patches (still under 10% in size)
+and place them strategically at the crosspoints of the patches used for linear projection in vision transformers.
+    Of course, this attack would be limited to the digital domain to accurately locate the adversarial patches.
+
+    * for the image-dependent version of the attack, we could do something with the colors of the neighboring pixels of the patch
+    crosspoint - maybe contrasting ?? or if not neighboring, choose the color that a lot of pixels have (or close to it in the color space)
+    so set some threshold, e.g. if 75% of the patch has greenish color, then the adversarial mini-patch will be mainly green (or whatever color contrasts purple)
+    because it often happens so that the patch will be more or less ertgvarovani
