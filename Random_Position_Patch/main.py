@@ -103,9 +103,11 @@ def start(project_name, device, generator, optimizer, deployer, discriminator, a
             # print(f"   Discriminator output: {outputs.data.cpu()}")
 
             
-            target_class_y_prime = torch.randint(0, 1000, (batch_size,)).to(device)
+            # target_class_y_prime = torch.randint(0, 1000, (batch_size,)).to(device)
             # print(target_class_y_prime)
-            target_class_y_prime[target_class_y_prime == true_labels] = (target_class_y_prime[target_class_y_prime == true_labels] + 1) % num_of_classes
+            target_class = 806
+            target_class_y_prime = torch.full((batch_size,), target_class, dtype=torch.long).to(device)
+            # target_class_y_prime[target_class_y_prime == true_labels] = (target_class_y_prime[target_class_y_prime == true_labels] + 1) % num_of_classes
             
             criterion = AdversarialLoss(target_class=target_class_y_prime).to(device)
             loss = criterion(outputs)
@@ -116,8 +118,9 @@ def start(project_name, device, generator, optimizer, deployer, discriminator, a
 
             _, predicted = torch.max(outputs.data, 1)
             
-            correct = (predicted == true_labels).sum().item()
-            # correct = (predicted == true_labels).sum()
+            # correct = (predicted == true_labels).sum().item()
+            correct = len([x.item() == target_class for x in predicted])
+            correct = (predicted == true_labels).sum()
 
 
             print(f"     Loss: {loss.item()}")
@@ -130,9 +133,10 @@ def start(project_name, device, generator, optimizer, deployer, discriminator, a
             print(f"     True labels: {true_labels.cpu()}")
             print(f"     Predicted labels: {predicted.cpu()}")
 
-            print(f"     Correct predictions: {correct}")
+            print(f"     Correctly misclassified: {correct}")
 
-            batch_asr = (batch_size - correct) / batch_size
+            # batch_asr = (batch_size - correct) / batch_size
+            batch_asr = correct / batch_size
             print(f'@    this batch (number {temp_count}) has ASR: {batch_asr}')
             print(f'@    best_batch_asr so far: {best_batch_asr}')
             temp_count+=1
@@ -230,7 +234,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Random Position Patch Attack')
 
     parser.add_argument('--attack_type', choices=['0', '1'], help='0 for the normal patch generation, 1 to include image embedding into the patch training')
-    parser.add_argument('--image_folder_path', help='Image dataset to perturb', default='../imagenetv2-top-images/imagenetv2-top-images-format-val')
+    parser.add_argument('--image_folder_path', help='Image dataset to perturb', default='./imagenetv2-top-images/imagenetv2-top-images-format-val')
     parser.add_argument('--model', choices=['resnet50', 'resnet152', 'vgg16_bn', 'vit_b_16', 'vit_b_32', 'vit_l_16', 'swin_b'], help='Model to attack')
     parser.add_argument('--patch_size', choices=['48', '64', '80'], help='Size of the adversarial patch')
     parser.add_argument('--epochs', help='Number of epochs')
