@@ -48,10 +48,12 @@ def start(project_name, device, generator, optimizer, deployer, discriminator, a
     best_epoch_images = {}
     total_asr = 0
 
+    possible_targets = [random.randint(800, 900) for _ in range(40)]
 
     for epoch in range(num_of_epochs):
 
         print(f'@ Processing epoch {epoch+1}')
+        target_class = possible_targets[epoch]
 
         epoch_total_asr = 0
         # best_epoch_patch = None   
@@ -99,17 +101,19 @@ def start(project_name, device, generator, optimizer, deployer, discriminator, a
             
             modified_images = torch.stack(modified_images).to(device)
 
+            # multiple discriminators
             outputs = discriminator(modified_images)
             # print(f"   Discriminator output: {outputs.data.cpu()}")
 
             
             # target_class_y_prime = torch.randint(0, 1000, (batch_size,)).to(device)
             # print(target_class_y_prime)
-            target_class = 806
+            # target_class = 806
             target_class_y_prime = torch.full((batch_size,), target_class, dtype=torch.long).to(device)
             # target_class_y_prime[target_class_y_prime == true_labels] = (target_class_y_prime[target_class_y_prime == true_labels] + 1) % num_of_classes
             
             criterion = AdversarialLoss(target_class=target_class_y_prime).to(device)
+            # weighted loss for all the discriminators
             loss = criterion(outputs)
             
             optimizer.zero_grad()
@@ -119,8 +123,7 @@ def start(project_name, device, generator, optimizer, deployer, discriminator, a
             _, predicted = torch.max(outputs.data, 1)
             
             # correct = (predicted == true_labels).sum().item()
-            correct = len([x.item() == target_class for x in predicted])
-            correct = (predicted == true_labels).sum()
+            correct = (predicted == target_class).sum().item()
 
 
             print(f"     Loss: {loss.item()}")
