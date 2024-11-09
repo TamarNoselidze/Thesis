@@ -54,6 +54,7 @@ def start(project_name, device, generator, optimizer, deployer, discriminators, 
 
         print(f'@ Processing epoch {epoch+1}')
         target_class = possible_targets[epoch]
+        target_class = 813
 
         epoch_total_asr = 0
         # best_epoch_patch = None   
@@ -125,10 +126,14 @@ def start(project_name, device, generator, optimizer, deployer, discriminators, 
             loss.backward()
             optimizer.step()
 
-            _, predicted = torch.max(outputs.data, 1)
-            
+            total_predicted = []
+            for out in outputs:
+                _, predicted = torch.max(out.data, 1)
+                # print(type(predicted))
+                total_predicted.append(predicted.cpu())
+            print(total_predicted)
             # correct = (predicted == true_labels).sum().item()
-            correct = (predicted == target_class).sum().item()
+            correct = sum([(predicted == target_class).sum().item() for predicted in total_predicted])
 
 
             print(f"     Loss: {loss.item()}")
@@ -139,8 +144,8 @@ def start(project_name, device, generator, optimizer, deployer, discriminators, 
 
 
             print(f"     True labels: {true_labels.cpu()}")
-            print(f"     Predicted labels: {predicted.cpu()}")
-
+            print(f"     Predicted labels: {total_predicted}")
+            print(f"     Target class is: {target_class}")
             print(f"     Correctly misclassified: {correct}")
 
             # batch_asr = (batch_size - correct) / batch_size
