@@ -32,16 +32,16 @@ def adjust_brightness(image, brightness_factor):
     adjusted_image = brightness_transform(image)
     return adjusted_image
 
-def start(project_name, device, generator, optimizer, deployer, discriminator, attack_type, dataloader, num_of_classes, num_of_epochs=40, brightness_factor=None, color_transfer=None, input_dim=100):
+def start(project_name, device, generator, optimizer, deployer, discriminators, attack_type, dataloader, num_of_classes, num_of_epochs=40, brightness_factor=None, color_transfer=None, input_dim=100):
     import wandb
 
     # Initialize W&B
-    # wandb.init(project=project_name, entity='takonoselidze-charles-university', config={
-    #     'epochs': num_of_epochs,
-    #     'classes' : num_of_classes,
-    #     'attack_type': 'Including the image embeddings' if attack_type=='0' else 'Without the image embeddings',
-    #     'input_dim': input_dim
-    # })
+    wandb.init(project=project_name, entity='takonoselidze-charles-university', config={
+        'epochs': num_of_epochs,
+        'classes' : num_of_classes,
+        'attack_type': 'Including the image embeddings' if attack_type=='0' else 'Without the image embeddings',
+        'input_dim': input_dim
+    })
 
 
     best_epoch_asr = 0  
@@ -102,7 +102,10 @@ def start(project_name, device, generator, optimizer, deployer, discriminator, a
             modified_images = torch.stack(modified_images).to(device)
 
             # multiple discriminators
-            outputs = discriminator(modified_images)
+            outputs = []
+            for discriminator in discriminators:
+                output = discriminator(modified_images)
+                outputs.append(output)
             # print(f"   Discriminator output: {outputs.data.cpu()}")
 
             
@@ -114,7 +117,9 @@ def start(project_name, device, generator, optimizer, deployer, discriminator, a
             
             criterion = AdversarialLoss(target_class=target_class_y_prime).to(device)
             # weighted loss for all the discriminators
-            loss = criterion(outputs)
+            total_loss = sum([criterion(out) for out in outputs])
+            # loss = criterion(outputs)
+            loss = total_loss / len(discriminators)   # weighted loss ? ? ? ? ? ? ? 
             
             optimizer.zero_grad()
             loss.backward()
@@ -146,11 +151,11 @@ def start(project_name, device, generator, optimizer, deployer, discriminator, a
 
 
             # Log batch metrics to W&B
-            # wandb.log({
-            #     'batch_loss': loss.item(),
-            #     'batch_asr': batch_asr,
-            #     'epoch': epoch + 1
-            # })
+            wandb.log({
+                'batch_loss': loss.item(),
+                'batch_asr': batch_asr,
+                'epoch': epoch + 1
+            })
             
             batch_images = {}
             for i in range(batch_size):
@@ -183,11 +188,11 @@ def start(project_name, device, generator, optimizer, deployer, discriminator, a
         total_asr += avg_epoch_asr
 
         # Log epoch-level metrics to W&B
-        # wandb.log({
-        #     'epoch_avg_asr': avg_epoch_asr,
-        #     'epoch_best_batch_asr': best_batch_asr,
-        #     'epoch': epoch + 1
-        # })
+        wandb.log({
+            'epoch_avg_asr': avg_epoch_asr,
+            'epoch_best_batch_asr': best_batch_asr,
+            'epoch': epoch + 1
+        })
 
         print(f"Epoch [{epoch+1}/{num_of_epochs}], Loss: {loss.item()}, Avg ASR: {avg_epoch_asr * 100:.2f}%")
         print(f'|___ ASR of the best performing batch: {best_batch_asr * 100:.2f}%')
@@ -201,10 +206,10 @@ def start(project_name, device, generator, optimizer, deployer, discriminator, a
         i+=1    
         image_key = f'best_epoch_img_{i}'
           
-        # wandb.log({
-        # image_key: [wandb.Image(original.cpu(), caption=f"Original Image {i}"), 
-        #             wandb.Image(modified.cpu(), caption=f"Modified Image {i}")]
-        #  })
+        wandb.log({
+        image_key: [wandb.Image(original.cpu(), caption=f"Original Image {i}"), 
+                    wandb.Image(modified.cpu(), caption=f"Modified Image {i}")]
+         })
         # print(f'displayed: original and modified of {image_key}')
 
     print(f'\n\nResults saved.\nBest ASR achieved over {num_of_epochs} epochs: {best_epoch_asr * 100:.2f}%')
@@ -276,9 +281,16 @@ if __name__ == "__main__":
     generator.train()
     deployer = Deployer()
 
-    model_name = args.model
-    discriminator = get_model(model_name).to(device)  # moving model to the appropriate device
-    discriminator.eval()
+    # model_name = args.model
+    # discriminator = get_model(model_name).to(device)  # moving model to the appropriate device
+    # discriminator.eval()
+
+    model_names = ["resnet50", "resnet152"]
+    discriminators = []
+    for model_name in model_names:
+        discriminator = get_model(model_name).to(device)
+        discriminator.eval()
+        discriminators.append(discriminator)
 
     transform = transforms.Compose([
         transforms.Resize((224, 224)),
@@ -297,5 +309,5 @@ if __name__ == "__main__":
     print(f"Generator device: {next(generator.parameters()).device}")
     print(f"Discriminator device: {next(discriminator.parameters()).device}")
     
-    project_name = f'Random Position Patch_{args.attack_type}-{args.model}{ "(br "+str(brightness_factor)+")" if brightness_factor else ""}{ "_col-tr"+color_transfer if color_transfer else ""}'
-    start(project_name, device, generator, optimizer, deployer, discriminator, attack_type, dataloader, num_of_classes, num_of_epochs, brightness_factor, color_transfer)
+    project_name = f'Random Position Patch_tmp_{args.attack_type}-{args.model}{ "(br "+str(brightness_factor)+")" if brightness_factor else ""}{ "_col-tr"+color_transfer if color_transfer else ""}'
+    start(project_name, device, generator, optimizer, deployer, discriminators, attack_type, dataloader, num_of_classes, num_of_epochs, brightness_factor, color_transfer)
