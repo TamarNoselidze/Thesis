@@ -13,8 +13,17 @@ CONTAINER_PATH="$HOME_DIR/containers/pytorch_container.sif"
 set -o allexport; source "$HOME_DIR/Thesis/.env"; set +o allexport
 
 
-TRAINING_MODELS=${TRAINING_MODELS}     
-TARGET_MODELS=${TARGET_MODELS}
+# Split TRAINING_MODELS and TARGET_MODELS into arrays
+IFS=',' read -r -a training_models_array <<< "$TRAINING_MODELS"
+IFS=',' read -r -a target_models_array <<< "$TARGET_MODELS"
+
+# Convert arrays to space-separated strings for logging
+TRAINING_MODELS_STR="${training_models_array[@]}"
+TARGET_MODELS_STR="${target_models_array[@]}"
+
+
+# TRAINING_MODELS=${TRAINING_MODELS}     
+# TARGET_MODELS=${TARGET_MODELS}
 PATCH_SIZE=${PATCH_SIZE:-64}
 EPOCHS=${EPOCHS:-40}           # Number of epochs
 BRIGHTNESS=${BRIGHTNESS}
@@ -45,8 +54,8 @@ echo "Running singularity container..."
 singularity exec --nv "$CONTAINER_PATH" bash sing.sh \
 	"$SCRATCHDIR/imagenetv2-top-images/imagenetv2-top-images-format-val" \
 	"$TRANSFER_MODE" \
-	"$TRAINING_MODELS" \
-	"$TARGET_MODELS" \
+	"$TRAINING_MODELS_STR" \
+	"$TARGET_MODELS_STR" \
 	"$PATCH_SIZE"\
 	"$EPOCHS" \
 	"$BRIGHTNESS" \

@@ -108,6 +108,7 @@ def start(device, generator, optimizer, deployer, discriminators, dataloader, nu
             print(total_predicted)
 
             # correct = sum([(predicted == target_class).sum().item() for predicted in total_predicted])
+            target_class = torch.tensor(target_class, device=device)
             correct_counts = torch.zeros(batch_size).to(target_class.device)
             for predicted in total_predicted:
                 correct_counts += (predicted == target_class).float()
