@@ -13,12 +13,8 @@ CONTAINER_PATH="$HOME_DIR/containers/pytorch_container.sif"
 set -o allexport; source "$HOME_DIR/Thesis/.env"; set +o allexport
 
 
-# Add local bin to PATH
-#export PATH="$PATH:/storage/brno2/home/takonoselidze/.local/bin"
-# Use environment variables from qsub -v
-#
-ATTACK_TYPE=${ATTACK_TYPE:-0}  # Default attack type
-MODEL=${MODEL:-'vit_b_16'}     # Default model
+TRAINING_MODELS=${TRAINING_MODELS}     
+TARGET_MODELS=${TARGET_MODELS}
 PATCH_SIZE=${PATCH_SIZE:-64}
 EPOCHS=${EPOCHS:-40}           # Number of epochs
 BRIGHTNESS=${BRIGHTNESS}
@@ -47,9 +43,10 @@ mkdir -p "$SCRATCH_RESULTS" "$SCRATCH_LOGS" || { echo "Failed to create result/l
 # run the singularity container
 echo "Running singularity container..."
 singularity exec --nv "$CONTAINER_PATH" bash sing.sh \
-	"$ATTACK_TYPE" \
 	"$SCRATCHDIR/imagenetv2-top-images/imagenetv2-top-images-format-val" \
-	"$MODEL" \
+	"$TRANSFER_MODE" \
+	"$TRAINING_MODELS" \
+	"$TARGET_MODELS" \
 	"$PATCH_SIZE"\
 	"$EPOCHS" \
 	"$BRIGHTNESS" \

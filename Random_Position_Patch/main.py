@@ -17,11 +17,11 @@ from torchvision.models import vit_b_16, ViT_B_16_Weights, vit_l_16, ViT_L_16_We
 # from dotenv import load_dotenv
 
 
-seed = 42  # Use a fixed seed for reproducibility
-random.seed(seed)
-numpy.random.seed(seed)
-torch.manual_seed(seed)
-torch.cuda.manual_seed_all(seed)
+# seed = 42  #fixed seed for reproducibility
+# random.seed(seed)
+# numpy.random.seed(seed)
+# torch.manual_seed(seed)
+# torch.cuda.manual_seed_all(seed)
 
 
 # load_dotenv(os.path.join(os.getenv('SCRATCHDIR', '.'), '.env'))
@@ -42,6 +42,8 @@ def start(device, generator, optimizer, deployer, discriminators, dataloader, nu
 
     possible_targets = [random.randint(800, 900) for _ in range(40)]
 
+    generator.reset_weights()
+    optimizer = optim.Adam(generator.parameters(), lr=0.001)
     for epoch in range(num_of_epochs):
 
         print(f'@ Processing epoch {epoch+1}')
@@ -51,7 +53,7 @@ def start(device, generator, optimizer, deployer, discriminators, dataloader, nu
         epoch_total_asr = 0
         # best_epoch_patch = None   
         best_batch_asr = 0
-        best_batch_images = {}
+        # best_batch_images = {}
 
         epoch_images = {}
 
@@ -67,31 +69,13 @@ def start(device, generator, optimizer, deployer, discriminators, dataloader, nu
             batch_size = images.shape[0]   # might change for the last batch
             noise = torch.randn(batch_size, input_dim, 1, 1).to(device)
             modified_images = []
-            adv_patches = None
-
-            # if attack_type == '0':
             adv_patches = generator(noise)
-            # else:
-            #     # generating patches for each image
-            #     adv_patches = []  # we need to store generated patch for each image
-
-            #     for i in range(batch_size):
-            #         # print(f'*************** calling from start')
-            #         adv_patch = generator(noise[i].unsqueeze(0).to(device), images[i].unsqueeze(0).to(device))
-            #         adv_patches.append(adv_patch)
-
-            #     adv_patches = torch.cat(adv_patches, dim=0).to(device)  # Stack generated patches
-
-            # print(f"   Generated adversarial patch: {adv_patches[0].cpu()}")  # Log a generated patch
 
             # deploying 
             for i in range(batch_size):
                 modified_image = deployer.deploy(adv_patches[i], images[i])
                 modified_images.append(modified_image)
 
-                # epoch_images[images[i]] = modified_image
-                # epoch_images.update({images[i] : modified_image})
-            
             modified_images = torch.stack(modified_images).to(device)
 
             # multiple discriminators
@@ -103,8 +87,6 @@ def start(device, generator, optimizer, deployer, discriminators, dataloader, nu
 
             
             # target_class_y_prime = torch.randint(0, 1000, (batch_size,)).to(device)
-            # print(target_class_y_prime)
-            # target_class = 806
             target_class_y_prime = torch.full((batch_size,), target_class, dtype=torch.long).to(device)
             # target_class_y_prime[target_class_y_prime == true_labels] = (target_class_y_prime[target_class_y_prime == true_labels] + 1) % num_of_classes
             
@@ -112,7 +94,7 @@ def start(device, generator, optimizer, deployer, discriminators, dataloader, nu
             # weighted loss for all the discriminators
             total_loss = sum([criterion(out) for out in outputs])
             # loss = criterion(outputs)
-            loss = total_loss / len(discriminators)   # weighted loss ? ? ? ? ? ? ? 
+            loss = total_loss / len(discriminators)   # weighted loss ? ? ?
             
             optimizer.zero_grad()
             loss.backward()
@@ -124,23 +106,22 @@ def start(device, generator, optimizer, deployer, discriminators, dataloader, nu
                 # print(type(predicted))
                 total_predicted.append(predicted.cpu())
             print(total_predicted)
-            # correct = (predicted == true_labels).sum().item()
-            correct = sum([(predicted == target_class).sum().item() for predicted in total_predicted])
 
+            # correct = sum([(predicted == target_class).sum().item() for predicted in total_predicted])
+            correct_counts = torch.zeros(batch_size).to(target_class.device)
+            for predicted in total_predicted:
+                correct_counts += (predicted == target_class).float()
+
+            # majority vote (more than half of the discriminators)
+            majority_threshold = len(total_predicted) // 2
+            correct = (correct_counts > majority_threshold).sum().item()
 
             print(f"     Loss: {loss.item()}")
-
-            # If you have the criterion, you can also print its input values
-            # print(f"   Criterion input (outputs): {outputs.data.cpu()}")
-            # print(f"   Criterion target: {target_class_y_prime.cpu()}")
-
-
             print(f"     True labels: {true_labels.cpu()}")
             print(f"     Predicted labels: {total_predicted}")
             print(f"     Target class is: {target_class}")
             print(f"     Correctly misclassified: {correct}")
 
-            # batch_asr = (batch_size - correct) / batch_size
             batch_asr = correct / batch_size
             print(f'@    this batch (number {temp_count}) has ASR: {batch_asr}')
             print(f'@    best_batch_asr so far: {best_batch_asr}')
@@ -156,7 +137,7 @@ def start(device, generator, optimizer, deployer, discriminators, dataloader, nu
             
             batch_images = {}
             for i in range(batch_size):
-                batch_images[images[i].cpu()] = modified_images[i].cpu()  
+                batch_images[images[i].cpu()] = modified_images[i].cpu()
 
             epoch_images.update(batch_images)
             epoch_total_asr += batch_asr
@@ -164,13 +145,6 @@ def start(device, generator, optimizer, deployer, discriminators, dataloader, nu
             if batch_asr > best_batch_asr:
                 best_batch_asr = batch_asr
                 print(f'@       current batch asr is better than best_batch_asr ({best_batch_asr}) so we are updating its value.')
-                # best_patch = adv_patch.clone().detach()  # Save the best performing patch
-                # best_epoch_patches = adv_patches.clone
-
-                # Save the original and modified images for the best batch
-                # best_batch_images = {}
-                # for i in range(batch_size):
-                #     best_batch_images[images[i].cpu()] = modified_images[i].cpu()  
 
         print(f'@  best batch ASR in this epoch is: {best_batch_asr}')
         print(f'   best batch ASR in the previous epoch was: {best_epoch_asr}')
@@ -200,7 +174,7 @@ def start(device, generator, optimizer, deployer, discriminators, dataloader, nu
     return best_epoch_images
 
 
-def get_models(model_names):
+def get_models(model_names, device):
     models = []
     for model_name in model_names:
         if model_name == 'resnet50':
@@ -241,18 +215,19 @@ def display_images(images):
     # wandb.finish()
 
 
-def transfer_to_target_models(models, images, target_class):
+def transfer_to_target_models(models, images, target_class, device):
     total_images = len(images)
     
     for model in models:
         correctly_misclassified = 0
-        
-        for original, modified in images.items():
-            output = model(modified.unsqueeze(0))  
-            _, predicted = torch.max(output.data, 1)
-            
-            if predicted.item() == target_class:
-                correctly_misclassified += 1
+        with torch.no_grad():  # Disable gradients for evaluation
+            for original, modified in images.items():
+                # output = model(modified.unsqueeze(0))  
+                output = model(modified.unsqueeze(0).to(device))
+                _, predicted = torch.max(output.data, 1)
+                
+                if predicted.item() == target_class:
+                    correctly_misclassified += 1
         
         # Calculate ASR (Attack Success Rate)
         avg_asr = (correctly_misclassified / total_images) * 100
@@ -263,40 +238,24 @@ def transfer_to_target_models(models, images, target_class):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Random Position Patch Attack')
-
-    # parser.add_argument('--attack_type', choices=['0', '1'], help='0 for the normal patch generation, 1 to include image embedding into the patch training')
     parser.add_argument('--image_folder_path', help='Image dataset to perturb', default='../imagenetv2-top-images/imagenetv2-top-images-format-val')
-    # Transferability options
     parser.add_argument('--transfer_mode', choices=['source-to-target', 'ensemble', 'cross-validation'], 
                         help='Choose the transferability approach: source-to-target, ensemble, or cross-validation', default='source-to-target')
-    # parser.add_argument('--model', choices=['resnet50', 'resnet152', 'vgg16_bn', 'vit_b_16', 'vit_b_32', 'vit_l_16', 'swin_b'], help='Model to attack')
-    # List of models for ensemble or cross-validation mode
     parser.add_argument('--training_models', nargs='+', 
                         choices=['resnet50', 'resnet152', 'vgg16_bn', 'vit_b_16', 'vit_b_32', 'vit_l_16', 'swin_b'],
                         help='List of models for ensemble or cross-validation. Use space to separate models, e.g., --model_list resnet50 vit_b_16 swin_b')
     parser.add_argument('--target_models', nargs='+', 
                     choices=['resnet50', 'resnet152', 'vgg16_bn', 'vit_b_16', 'vit_b_32', 'vit_l_16', 'swin_b'],
                     help='List of models to attack and validate trained attack on. Use space to separate models, e.g., --model_list resnet50 vit_b_16 swin_b')
-    parser.add_argument('--patch_size', choices=['48', '64', '80'], help='Size of the adversarial patch')
+    parser.add_argument('--patch_size', choices=['48', '64', '80'], help='Size of the adversarial patch', default=64)
     parser.add_argument('--epochs', help='Number of epochs')
     parser.add_argument('--brightness', help='Brightness level for the patch')
     parser.add_argument('--color_transfer', help='Color transfer value for the patch')
 
-    # parser.add_argument('--brightness', help='Brightness value, between 0 (black image) and 2')
     args = parser.parse_args()
 
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-
-    # attack_type = args.attack_type
-    # if attack_type == '0':            # without image 
-    #     from generator import Generator
-    # elif attack_type == '1':
-    #     from gen import Generator
-    # else:
-    #     raise ValueError('Invalid attack type. \nOptions: 0, 1.')
-
-
-    
+ 
     transfer_mode = args.transfer_mode
     training_model_names = args.training_models
     target_model_names = args.target_models
@@ -314,8 +273,6 @@ if __name__ == "__main__":
         if target_model_names is None:
             raise ValueError("For the ensemble/cross-validation attack you should specify target models.")
         
-
-
     patch_size = args.patch_size
 
     try:
@@ -336,17 +293,7 @@ if __name__ == "__main__":
     generator.train()
     deployer = Deployer()
 
-    # # model_name = args.model
-    # # discriminator = get_model(model_name).to(device)  # moving model to the appropriate device
-    # # discriminator.eval()
-
-    # # model_names = ["resnet50", "resnet152"]
-    # discriminators = []
-    # for model_name in training_model_names:
-    #     discriminator = get_model(model_name).to(device)
-    #     discriminator.eval()
-    #     discriminators.append(discriminator)
-    discriminators = get_models(training_model_names)
+    discriminators = get_models(training_model_names, device)
 
     transform = transforms.Compose([
         transforms.Resize((224, 224)),
@@ -372,7 +319,6 @@ if __name__ == "__main__":
     wandb.init(project=project_name, entity='takonoselidze-charles-university', config={
         'epochs': num_of_epochs,
         'classes' : num_of_classes,
-        # 'attack_type': 'Including the image embeddings' if attack_type=='0' else 'Without the image embeddings',
         'input_dim': input_dim
     })
 
@@ -380,8 +326,7 @@ if __name__ == "__main__":
     display_images(best_ep_imgs)
 
     if target_model_names is not None:
-        target_models = get_models(target_model_names)
-        transfer_to_target_models(target_models, best_ep_imgs, target_class=813)
-
+        target_models = get_models(target_model_names, device)
+        transfer_to_target_models(target_models, best_ep_imgs, target_class=813, device=device)
 
     wandb.finish()

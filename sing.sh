@@ -8,10 +8,11 @@ fi
 
 echo "Running Python script"
 python3 main.py \
-    --attack_type "$1" \
-    --image_folder_path "$2" \
-    --model "$3" \
-    --patch_size "$4" \
-    --epochs "$5" \
-    --brightness "$6" \
-    --color_transfer "$7"
+    --image_folder_path "$1" \
+    --transfer_mode "$2" \
+    --training_models "$3" \
+    --target_models "$4" \
+    --patch_size "$5" \
+    --epochs "$6" \
+    --brightness "$7" \
+    --color_transfer "$8"
