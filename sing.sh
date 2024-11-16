@@ -6,8 +6,8 @@ if [[ -f "$SCRATCHDIR/.env" ]]; then
     export $(grep -v '^#' "$SCRATCHDIR/.env" | xargs)
 fi
 
-TRAINING_MODELS=$3
-TARGET_MODELS=$4
+TRAINING_MODELS="$3"
+TARGET_MODELS="$4"
 
 training_models_list=$(echo "$TRAINING_MODELS" | tr ',' ' ')
 target_models_list=$(echo "$TARGET_MODELS" | tr ',' ' ')
