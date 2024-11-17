@@ -20,5 +20,6 @@ python3 main.py \
     --target_models "$target_models_list" \
     --patch_size "$5" \
     --epochs "$6" \
-    --brightness "$7" \
-    --color_transfer "$8"
+    --num_of_classes "$7" \
+    --brightness "$8" \
+    --color_transfer "$9"

@@ -14,7 +14,6 @@ from generator import Generator
 from torchvision.models.resnet import resnet50, ResNet50_Weights, resnet152, ResNet152_Weights
 from torchvision.models import vit_b_16, ViT_B_16_Weights, vit_l_16, ViT_L_16_Weights, vit_b_32, ViT_B_32_Weights, vgg16_bn, VGG16_BN_Weights, swin_b, Swin_B_Weights
 
-# from dotenv import load_dotenv
 
 
 # seed = 42  #fixed seed for reproducibility
@@ -24,9 +23,7 @@ from torchvision.models import vit_b_16, ViT_B_16_Weights, vit_l_16, ViT_L_16_We
 # torch.cuda.manual_seed_all(seed)
 
 
-# load_dotenv(os.path.join(os.getenv('SCRATCHDIR', '.'), '.env'))
 api_key = os.getenv('WANDB_API_KEY')
-# print(f"WANDB_API_KEY: {api_key}")  
 
 
 def adjust_brightness(image, brightness_factor):
@@ -34,13 +31,16 @@ def adjust_brightness(image, brightness_factor):
     adjusted_image = brightness_transform(image)
     return adjusted_image
 
-def start(device, generator, optimizer, deployer, discriminators, dataloader, num_of_classes, num_of_epochs=40, brightness_factor=None, color_transfer=None, input_dim=100):
+def start(device, generator, optimizer, deployer, discriminators, dataloader, classes, num_of_epochs=40, brightness_factor=None, color_transfer=None, input_dim=100):
 
     best_epoch_asr = 0  
-    best_epoch_images = {}
+    # epoch_images = {}
+    epoch_patches = []
+    target_classes = []
     total_asr = 0
 
-    possible_targets = [random.randint(800, 900) for _ in range(40)]
+    # possible_targets = [random.randint(800, 900) for _ in range(40)]
+    possible_targets = random.sample([i for i in range(1000) if i not in classes], 40)
 
     generator.reset_weights()
     optimizer = optim.Adam(generator.parameters(), lr=0.001)
@@ -48,13 +48,10 @@ def start(device, generator, optimizer, deployer, discriminators, dataloader, nu
 
         print(f'@ Processing epoch {epoch+1}')
         target_class = possible_targets[epoch]
-        target_class = 813
 
         epoch_total_asr = 0
-        # best_epoch_patch = None   
+        best_epoch_patch = None   
         best_batch_asr = 0
-        # best_batch_images = {}
-
         epoch_images = {}
 
         temp_count=1
@@ -72,9 +69,14 @@ def start(device, generator, optimizer, deployer, discriminators, dataloader, nu
             adv_patches = generator(noise)
 
             # deploying 
+            patch = adv_patches[0]  # one patch for all images in the batch
             for i in range(batch_size):
-                modified_image = deployer.deploy(adv_patches[i], images[i])
+                # patch = adv_patches[i]
+                # print(f'----------------- The patch is:\n{patch}')
+                modified_image = deployer.deploy(patch, images[i])
                 modified_images.append(modified_image)
+
+                epoch_images.update({images[i] : modified_image})
 
             modified_images = torch.stack(modified_images).to(device)
 
@@ -105,7 +107,7 @@ def start(device, generator, optimizer, deployer, discriminators, dataloader, nu
                 _, predicted = torch.max(out.data, 1)
                 # print(type(predicted))
                 total_predicted.append(predicted.cpu())
-            print(total_predicted)
+            # print(total_predicted)
 
             # correct = sum([(predicted == target_class).sum().item() for predicted in total_predicted])
             target_class = torch.tensor(target_class, device=device)
@@ -128,7 +130,6 @@ def start(device, generator, optimizer, deployer, discriminators, dataloader, nu
             print(f'@    best_batch_asr so far: {best_batch_asr}')
             temp_count+=1
 
-
             # Log batch metrics to W&B
             wandb.log({
                 'batch_loss': loss.item(),
@@ -136,26 +137,33 @@ def start(device, generator, optimizer, deployer, discriminators, dataloader, nu
                 'epoch': epoch + 1
             })
             
-            batch_images = {}
-            for i in range(batch_size):
-                batch_images[images[i].cpu()] = modified_images[i].cpu()
+            # batch_images = {}
+            # for i in range(batch_size):
+            #     batch_images[images[i].cpu()] = modified_images[i].cpu()
 
-            epoch_images.update(batch_images)
+            # epoch_images.update(batch_images)
             epoch_total_asr += batch_asr
 
             if batch_asr > best_batch_asr:
                 best_batch_asr = batch_asr
+                best_epoch_patch = patch
                 print(f'@       current batch asr is better than best_batch_asr ({best_batch_asr}) so we are updating its value.')
+
+            if best_epoch_patch is None:
+                best_epoch_patch = patch   # just to assign something
 
         print(f'@  best batch ASR in this epoch is: {best_batch_asr}')
         print(f'   best batch ASR in the previous epoch was: {best_epoch_asr}')
-
+        
+        
         if best_batch_asr > best_epoch_asr:   # if the best batch outperforms the best batch in prev epoch, update the best_epoch_images
             best_epoch_asr = best_batch_asr
             print(f'   we changed best_epoch_asr value to: {best_batch_asr}')
-            best_epoch_images.clear()
-            best_epoch_images = epoch_images
+            # best_epoch_images.clear()
+            # best_epoch_images = epoch_images
 
+        epoch_patches.append(best_epoch_patch)
+        target_classes.append(target_class)
         avg_epoch_asr = epoch_total_asr / len(dataloader)
         total_asr += avg_epoch_asr
 
@@ -166,13 +174,26 @@ def start(device, generator, optimizer, deployer, discriminators, dataloader, nu
             'epoch': epoch + 1
         })
 
+        i=1
+        for original, modified in epoch_images.items():
+            image_key = f'epoch_{epoch+1}_img_{i}'
+            
+            wandb.log({
+            image_key: [wandb.Image(original.cpu(), caption=f"Original Image {i} (epoch {epoch+1})"), 
+                        wandb.Image(modified.cpu(), caption=f"Modified Image {i} (epoch {epoch+1})")]
+            })
+            i+=1    
+
+        patch_key = f'epoch_{epoch+1}_best_patch'
+        wandb.log({patch_key : wandb.Image(best_epoch_patch.cpu(), caption=f'Best performing patch of epoch {epoch+1}')})
+
         print(f"Epoch [{epoch+1}/{num_of_epochs}], Loss: {loss.item()}, Avg ASR: {avg_epoch_asr * 100:.2f}%")
         print(f'|___ ASR of the best performing batch: {best_batch_asr * 100:.2f}%')
 
     print(f'\n\n-- Average ASR over all {num_of_epochs} epochs: {total_asr / num_of_epochs * 100:.2f}% --\n\n')
     print(f'\n\nResults saved.\nBest ASR achieved over {num_of_epochs} epochs: {best_epoch_asr * 100:.2f}%')
 
-    return best_epoch_images
+    return epoch_patches, target_classes
 
 
 def get_models(model_names, device):
@@ -210,21 +231,77 @@ def display_images(images):
         image_key: [wandb.Image(original.cpu(), caption=f"Original Image {i}"), 
                     wandb.Image(modified.cpu(), caption=f"Modified Image {i}")]
          })
-        # print(f'displayed: original and modified of {image_key}')
 
-       
-    # wandb.finish()
+
+def test_best_patches(dataloader, deployer, discriminators, target_models, num_of_epochs, patches, target_classes, device):
+    print(f'Testing best patches of the epochs on the following discriminators:\n')
+
+    for epoch in range(num_of_epochs):
+        
+        epoch_images = []
+        patch = patches[epoch]
+        target_class = torch.tensor(target_classes[epoch], device=device)
+        # target_class = torch.tensor(target_class, device=device)
+        epoch_asr = 0
+        target_model_asr = 0
+        for batch in dataloader:
+            images, true_labels = batch
+            images = images.to(device)
+            batch_size = len(images)
+
+            modified_images = []
+
+            for i in range(batch_size):
+                modified_image = deployer.deploy(patch, images[i])
+                modified_images.append(modified_image)
+                epoch_images.append(modified_image)
+
+            # epoch_images.to(device)
+            modified_images = torch.stack(modified_images).to(device)
+
+            outputs = []
+            for discriminator in discriminators:
+                output = discriminator(modified_images)
+                outputs.append(output)
+            # target_class_y_prime = torch.full((batch_size,), target_class, dtype=torch.long).to(device)
+            
+            total_predicted = []
+            for out in outputs:
+                _, predicted = torch.max(out.data, 1)
+                # print(type(predicted))
+                total_predicted.append(predicted.cpu())
+            # print(total_predicted)
+
+            correct_counts = torch.zeros(batch_size).to(target_class.device)
+            for predicted in total_predicted:
+                correct_counts += (predicted == target_class).float()
+
+            majority_threshold = len(total_predicted) // 2
+            correct = (correct_counts > majority_threshold).sum().item()
+
+            batch_asr = correct / batch_size
+            epoch_asr += batch_asr
+
+
+        print(f'The best patch of the epoch: {epoch+1} has ASR: {epoch_asr  * 100:.2f}')
+        if target_models is not None:
+            print(f'Now transfering the patch to target models')
+            transfer_to_target_models(target_models, images, target_class, device)
+    
+        # print(f'This patch has ASR: {epoch_asr  * 100:.2f}')
+
 
 
 def transfer_to_target_models(models, images, target_class, device):
+
     total_images = len(images)
     
     for model in models:
         correctly_misclassified = 0
         with torch.no_grad():  # Disable gradients for evaluation
-            for original, modified in images.items():
+            for image in images:
                 # output = model(modified.unsqueeze(0))  
-                output = model(modified.unsqueeze(0).to(device))
+                output = model(image.unsqueeze(0).to(device))
                 _, predicted = torch.max(output.data, 1)
                 
                 if predicted.item() == target_class:
@@ -237,9 +314,33 @@ def transfer_to_target_models(models, images, target_class, device):
         print(f"Avg ASR: {avg_asr:.2f}%\n")
 
 
+def load_random_classes(image_folder_path, num_of_classses):
+    # Step 1: Load the full dataset to access `dataset.classes`
+    dataset = datasets.ImageFolder(image_folder_path, transform=transform)
+    
+    # Step 2: Randomly select 20 class names from the `dataset.classes`
+    selected_classes = set(random.sample(dataset.classes, num_of_classses))
+    print(f'SELECTED RANDOM CLASSES: {selected_classes}')
+    
+    # Step 3: Filter samples based on the selected class names
+    dataset.samples = [(path, target) for path, target in dataset.samples if dataset.classes[target] in selected_classes]
+    
+    # Step 4: Update dataset.targets to match the filtered samples
+    dataset.targets = [target for _, target in dataset.samples]
+
+    # Step 5: Update dataset.classes and dataset.class_to_idx to reflect the selected classes
+    dataset.classes = sorted(selected_classes)
+    dataset.class_to_idx = {cls: idx for idx, cls in enumerate(dataset.classes)}
+
+    # Step 6: Create a DataLoader for the filtered dataset
+    dataloader = DataLoader(dataset, batch_size=32, shuffle=True)
+    
+    return dataloader, dataset.classes
+
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Random Position Patch Attack')
-    parser.add_argument('--image_folder_path', help='Image dataset to perturb', default='../imagenetv2-top-images/imagenetv2-top-images-format-val')
+    parser.add_argument('--image_folder_path', help='Image dataset to perturb', default='./imagenetv2-top-images/imagenetv2-top-images-format-val')
     parser.add_argument('--transfer_mode', choices=['source-to-target', 'ensemble', 'cross-validation'], 
                         help='Choose the transferability approach: source-to-target, ensemble, or cross-validation', default='source-to-target')
     parser.add_argument('--training_models', nargs='+', 
@@ -250,6 +351,7 @@ if __name__ == "__main__":
                     help='List of models to attack and validate trained attack on. Use space to separate models, e.g., --model_list resnet50 vit_b_16 swin_b')
     parser.add_argument('--patch_size', choices=['48', '64', '80'], help='Size of the adversarial patch', default=64)
     parser.add_argument('--epochs', help='Number of epochs')
+    parser.add_argument('--num_of_classes', type=int, help='Number of (random) classes to train the generator on', default=100)
     parser.add_argument('--brightness', help='Brightness level for the patch')
     parser.add_argument('--color_transfer', help='Color transfer value for the patch')
 
@@ -301,10 +403,13 @@ if __name__ == "__main__":
         transforms.ToTensor(),
     ])
 
-    dataset = datasets.ImageFolder(args.image_folder_path, transform=transform)
-    dataloader = DataLoader(dataset, batch_size=32, shuffle=True)
-    num_of_classes = len(dataset.classes)
-    print(f'NUMBER OF CLASSES: {num_of_classes}')
+    # dataset = datasets.ImageFolder(args.image_folder_path, transform=transform)
+    # dataloader = DataLoader(dataset, batch_size=32, shuffle=True)
+
+    dataloader, classes = load_random_classes(args.image_folder_path, args.num_of_classes)
+    num_of_classes = len(classes)
+    print(f'CLASSES: {classes}')
+    print(f'IN TOTAL: {len(classes)}')
     num_of_epochs = int(args.epochs) if args.epochs else 40
 
     optimizer = optim.Adam(generator.parameters(), lr=0.0002, betas=(0.5, 0.999))   ## try different values
@@ -323,11 +428,13 @@ if __name__ == "__main__":
         'input_dim': input_dim
     })
 
-    best_ep_imgs = start(device, generator, optimizer, deployer, discriminators, dataloader, num_of_classes, num_of_epochs, brightness_factor, color_transfer)
-    display_images(best_ep_imgs)
+    epoch_patches, target_classes = start(device, generator, optimizer, deployer, discriminators, dataloader, classes, num_of_epochs, brightness_factor, color_transfer)
 
+
+    target_models = None
     if target_model_names is not None:
         target_models = get_models(target_model_names, device)
-        transfer_to_target_models(target_models, best_ep_imgs, target_class=813, device=device)
+    test_best_patches(dataloader, deployer, discriminators, target_models, num_of_epochs, epoch_patches, target_classes, device)
+        # transfer_to_target_models(target_models, dataloader, epoch_patches, target_class=813, device=device)
 
     wandb.finish()

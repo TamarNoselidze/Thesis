@@ -26,6 +26,7 @@ TARGET_MODELS_STR="${target_models_array[@]}"
 # TARGET_MODELS=${TARGET_MODELS}
 PATCH_SIZE=${PATCH_SIZE:-64}
 EPOCHS=${EPOCHS:-40}           # Number of epochs
+CLASSES=${CLASSES:-100}
 BRIGHTNESS=${BRIGHTNESS}
 COL_TRANSFER=${COL_TRANSFER}
 
@@ -59,6 +60,7 @@ singularity exec --nv "$CONTAINER_PATH" bash sing.sh \
 	"$PATCH_SIZE"\
 	"$EPOCHS" \
 	"$BRIGHTNESS" \
+	"$CLASSES" \
 	"$COL_TRANSFER" || { echo "Singularity execution failed"; exit 1; }
 
 # archive the results
