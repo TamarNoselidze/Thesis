@@ -16,7 +16,7 @@ echo "Running Python script"
 python3 main.py \
     --image_folder_path "$1" \
     --transfer_mode "$2" \
-    --training_models "$training_model_list" \
+    --training_models "$training_models_list" \
     --target_models "$target_models_list" \
     --patch_size "$5" \
     --epochs "$6" \

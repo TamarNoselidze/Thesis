@@ -59,8 +59,8 @@ singularity exec --nv "$CONTAINER_PATH" bash sing.sh \
 	"$TARGET_MODELS_STR" \
 	"$PATCH_SIZE"\
 	"$EPOCHS" \
-	"$BRIGHTNESS" \
 	"$CLASSES" \
+	"$BRIGHTNESS" \
 	"$COL_TRANSFER" || { echo "Singularity execution failed"; exit 1; }
 
 # archive the results

@@ -1,0 +1,29 @@
+
+[notice] A new release of pip is available: 24.2 -> 24.3.1
+[notice] To update, run: python3 -m pip install --upgrade pip
+wandb: Using wandb-core as the SDK backend. Please refer to https://wandb.me/wandb-core for more information.
+wandb: Currently logged in as: takonoselidze (takonoselidze-charles-university). Use `wandb login --relogin` to force relogin
+wandb: Tracking run with wandb version 0.18.3
+wandb: Run data is saved locally in /scratch.ssd/takonoselidze/job_6379285.pbs-m1.metacentrum.cz/wandb/run-20241110_225022-9cmnb921
+wandb: Run `wandb offline` to turn off syncing.
+wandb: Syncing run ancient-snow-5
+wandb: ⭐️ View project at https://wandb.ai/takonoselidze-charles-university/Random%20Position%20Patch_tmp_
+wandb: 🚀 View run at https://wandb.ai/takonoselidze-charles-university/Random%20Position%20Patch_tmp_/runs/9cmnb921
+Traceback (most recent call last):
+  File "main.py", line 384, in <module>
+    transfer_to_target_models(target_models, best_ep_imgs, target_class=813)
+  File "main.py", line 251, in transfer_to_target_models
+    output = model(modified.unsqueeze(0))
+  File "/usr/local/lib/python3.8/dist-packages/torch/nn/modules/module.py", line 1501, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/torchvision/models/resnet.py", line 285, in forward
+    return self._forward_impl(x)
+  File "/usr/local/lib/python3.8/dist-packages/torchvision/models/resnet.py", line 268, in _forward_impl
+    x = self.conv1(x)
+  File "/usr/local/lib/python3.8/dist-packages/torch/nn/modules/module.py", line 1501, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/torch/nn/modules/conv.py", line 463, in forward
+    return self._conv_forward(input, self.weight, self.bias)
+  File "/usr/local/lib/python3.8/dist-packages/torch/nn/modules/conv.py", line 459, in _conv_forward
+    return F.conv2d(input, weight, bias, self.stride,
+RuntimeError: Input type (torch.FloatTensor) and weight type (torch.cuda.FloatTensor) should be the same or input should be a MKLDNN tensor and weight is a dense tensor
