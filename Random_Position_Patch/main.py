@@ -113,7 +113,7 @@ def start(device, generator, optimizer, deployer, discriminators, dataloader, cl
             target_class = torch.tensor(target_class, device=device)
             correct_counts = torch.zeros(batch_size).to(target_class.device)
             for predicted in total_predicted:
-                correct_counts += (predicted == target_class).float()
+                correct_counts += (predicted.to(device) == target_class).float()
 
             # majority vote (more than half of the discriminators)
             majority_threshold = len(total_predicted) // 2
@@ -174,15 +174,15 @@ def start(device, generator, optimizer, deployer, discriminators, dataloader, cl
             'epoch': epoch + 1
         })
 
-        i=1
-        for original, modified in epoch_images.items():
-            image_key = f'epoch_{epoch+1}_img_{i}'
+        # i=1
+        # for original, modified in epoch_images.items():
+        #     image_key = f'epoch_{epoch+1}_img_{i}'
             
-            wandb.log({
-            image_key: [wandb.Image(original.cpu(), caption=f"Original Image {i} (epoch {epoch+1})"), 
-                        wandb.Image(modified.cpu(), caption=f"Modified Image {i} (epoch {epoch+1})")]
-            })
-            i+=1    
+        #     wandb.log({
+        #     image_key: [wandb.Image(original.cpu(), caption=f"Original Image {i} (epoch {epoch+1})"), 
+        #                 wandb.Image(modified.cpu(), caption=f"Modified Image {i} (epoch {epoch+1})")]
+        #     })
+        #     i+=1    
 
         patch_key = f'epoch_{epoch+1}_best_patch'
         wandb.log({patch_key : wandb.Image(best_epoch_patch.cpu(), caption=f'Best performing patch of epoch {epoch+1}')})
@@ -231,6 +231,8 @@ def display_images(images):
         image_key: [wandb.Image(original.cpu(), caption=f"Original Image {i}"), 
                     wandb.Image(modified.cpu(), caption=f"Modified Image {i}")]
          })
+        
+##### CROSS VALIDATION
 
 
 def test_best_patches(dataloader, deployer, discriminators, target_models, num_of_epochs, patches, target_classes, device):
@@ -291,7 +293,6 @@ def test_best_patches(dataloader, deployer, discriminators, target_models, num_o
         # print(f'This patch has ASR: {epoch_asr  * 100:.2f}')
 
 
-
 def transfer_to_target_models(models, images, target_class, device):
 
     total_images = len(images)
@@ -343,12 +344,10 @@ if __name__ == "__main__":
     parser.add_argument('--image_folder_path', help='Image dataset to perturb', default='./imagenetv2-top-images/imagenetv2-top-images-format-val')
     parser.add_argument('--transfer_mode', choices=['source-to-target', 'ensemble', 'cross-validation'], 
                         help='Choose the transferability approach: source-to-target, ensemble, or cross-validation', default='source-to-target')
-    parser.add_argument('--training_models', nargs='+', 
-                        choices=['resnet50', 'resnet152', 'vgg16_bn', 'vit_b_16', 'vit_b_32', 'vit_l_16', 'swin_b'],
-                        help='List of models for ensemble or cross-validation. Use space to separate models, e.g., --model_list resnet50 vit_b_16 swin_b')
-    parser.add_argument('--target_models', nargs='+', 
-                    choices=['resnet50', 'resnet152', 'vgg16_bn', 'vit_b_16', 'vit_b_32', 'vit_l_16', 'swin_b'],
-                    help='List of models to attack and validate trained attack on. Use space to separate models, e.g., --model_list resnet50 vit_b_16 swin_b')
+    parser.add_argument('--training_models', type=str)
+                        # nargs='+', choices=['resnet50', 'resnet152', 'vgg16_bn', 'vit_b_16', 'vit_b_32', 'vit_l_16', 'swin_b'], help='List of training models')
+    parser.add_argument('--target_models', type=str)
+    # , nargs='+', choices=['resnet50', 'resnet152', 'vgg16_bn', 'vit_b_16', 'vit_b_32', 'vit_l_16', 'swin_b'], help='List of target models')    
     parser.add_argument('--patch_size', choices=['48', '64', '80'], help='Size of the adversarial patch', default=64)
     parser.add_argument('--epochs', help='Number of epochs')
     parser.add_argument('--num_of_classes', type=int, help='Number of (random) classes to train the generator on', default=100)
@@ -360,8 +359,8 @@ if __name__ == "__main__":
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
  
     transfer_mode = args.transfer_mode
-    training_model_names = args.training_models
-    target_model_names = args.target_models
+    training_model_names = args.training_models[0].split(',') 
+    target_model_names = args.target_models[0].split(',')
     intra_model_attack = False
     cross_validation = False
     if training_model_names is None:
@@ -418,8 +417,15 @@ if __name__ == "__main__":
     print(f"Generator device: {next(generator.parameters()).device}")
     # print(f"Discriminator device: {next(discriminator.parameters()).device}")
     
-    project_name = f'Random Position Patch_tmp_{ "(br "+str(brightness_factor)+")" if brightness_factor else ""}{ "_col-tr"+color_transfer if color_transfer else ""}'
+    # project_name = f'RPP {transfer_mode}_{f"{x}, " for x in training_model_names""}{ "(br "+str(brightness_factor)+")" if brightness_factor else ""}{ "_col-tr"+color_transfer if color_transfer else ""}'
 
+    project_name = (
+        f'RPP {transfer_mode} ' +
+        f'train: {",".join(training_model_names)} ' + 
+        (f'target: {",".join(target_model_names)}' if target_model_names else '') +
+        (f' (br {brightness_factor})' if brightness_factor else '') + 
+        (f' _col-tr{color_transfer}' if color_transfer else '')
+    )
 
     # Initialize W&B
     wandb.init(project=project_name, entity='takonoselidze-charles-university', config={
@@ -435,6 +441,5 @@ if __name__ == "__main__":
     if target_model_names is not None:
         target_models = get_models(target_model_names, device)
     test_best_patches(dataloader, deployer, discriminators, target_models, num_of_epochs, epoch_patches, target_classes, device)
-        # transfer_to_target_models(target_models, dataloader, epoch_patches, target_class=813, device=device)
 
     wandb.finish()
