@@ -7,6 +7,23 @@ import os
 
 
 
+def load_generator(generator, checkpoint_path):
+    generator.load_state_dict(torch.load(checkpoint_path))
+    generator.eval()  # Set the generator to evaluation mode if testing
+    print(f'Loaded generator from {checkpoint_path}')
+    return generator
+
+
+def save_generator(generator, epoch, output_dir='checkpoints'):
+    if not os.path.exists(output_dir):
+        os.makedirs(output_dir)  # Create the directory if it doesn't exist
+
+    save_path = os.path.join(output_dir, f'generator_epoch_{epoch + 1}.pth')
+    torch.save(generator.state_dict(), save_path)
+    print(f'Saved generator at epoch {epoch + 1} to {save_path}')
+
+
+
 def save_image(original, patched, label, save_dir):
     to_pil = transforms.ToPILImage()
     original_img = to_pil(original)

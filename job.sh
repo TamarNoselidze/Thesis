@@ -26,7 +26,8 @@ TARGET_MODELS_STR="${target_models_array[@]}"
 # TARGET_MODELS=${TARGET_MODELS}
 PATCH_SIZE=${PATCH_SIZE:-64}
 EPOCHS=${EPOCHS:-40}           # Number of epochs
-CLASSES=${CLASSES:-100}
+CLASSES=${CLASSES:-100}        # Number of random classes to load for training
+TARGET_CLASSES=${TARGET_CLASSES:-10}   # Number of random target classes
 BRIGHTNESS=${BRIGHTNESS}
 COL_TRANSFER=${COL_TRANSFER}
 
@@ -60,6 +61,7 @@ singularity exec --nv "$CONTAINER_PATH" bash sing.sh \
 	"$PATCH_SIZE"\
 	"$EPOCHS" \
 	"$CLASSES" \
+	"$TARGET_CLASSES" \
 	"$BRIGHTNESS" \
 	"$COL_TRANSFER" || { echo "Singularity execution failed"; exit 1; }
 

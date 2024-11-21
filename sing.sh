@@ -15,6 +15,7 @@ python3 main.py \
     --target_models "$4" \
     --patch_size "$5" \
     --epochs "$6" \
-    --num_of_classes "$7" \
-    --brightness "$8" \
-    --color_transfer "$9"
+    --num_of_train_classes "$7" \
+    --num_of_target_classes "$8" \
+    --brightness "$9" \
+    --color_transfer "$10"
