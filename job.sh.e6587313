@@ -1,0 +1,7 @@
+
+[notice] A new release of pip is available: 24.2 -> 24.3.1
+[notice] To update, run: python3 -m pip install --upgrade pip
+  File "main.py", line 74
+    patch = adv_patches[random.randint(800, 900) fr _ in range(40)]
+                                                 ^
+SyntaxError: invalid syntax

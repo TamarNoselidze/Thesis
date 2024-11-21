@@ -39,14 +39,15 @@ def start(device, generator, optimizer, deployer, discriminators, dataloader, cl
     target_classes = []
     total_asr = 0
 
-    # possible_targets = [random.randint(800, 900) for _ in range(40)]
-    possible_targets = random.sample([i for i in range(1000) if i not in classes], 40)
+    possible_targets = [random.randint(800, 900) for _ in range(40)]
+    # possible_targets = random.sample([i for i in range(1000) if i not in classes], 40)
 
-    generator.reset_weights()
     optimizer = optim.Adam(generator.parameters(), lr=0.001)
+
     for epoch in range(num_of_epochs):
 
         print(f'@ Processing epoch {epoch+1}')
+        # generator.reset_weights()
         target_class = possible_targets[epoch]
 
         epoch_total_asr = 0
@@ -70,6 +71,7 @@ def start(device, generator, optimizer, deployer, discriminators, dataloader, cl
 
             # deploying 
             patch = adv_patches[0]  # one patch for all images in the batch
+            # patch = adv_patches[random.randint(0, batch_size-1)]
             for i in range(batch_size):
                 # patch = adv_patches[i]
                 # print(f'----------------- The patch is:\n{patch}')
@@ -185,7 +187,7 @@ def start(device, generator, optimizer, deployer, discriminators, dataloader, cl
         #     i+=1    
 
         patch_key = f'epoch_{epoch+1}_best_patch'
-        wandb.log({patch_key : wandb.Image(best_epoch_patch.cpu(), caption=f'Best performing patch of epoch {epoch+1}')})
+        wandb.log({patch_key : wandb.Image(best_epoch_patch.cpu(), caption=f'Best performing patch for target class {target_class}')})
 
         print(f"Epoch [{epoch+1}/{num_of_epochs}], Loss: {loss.item()}, Avg ASR: {avg_epoch_asr * 100:.2f}%")
         print(f'|___ ASR of the best performing batch: {best_batch_asr * 100:.2f}%')
@@ -276,7 +278,7 @@ def test_best_patches(dataloader, deployer, discriminators, target_models, num_o
 
             correct_counts = torch.zeros(batch_size).to(target_class.device)
             for predicted in total_predicted:
-                correct_counts += (predicted == target_class).float()
+                correct_counts += (predicted.to(device) == target_class).float()
 
             majority_threshold = len(total_predicted) // 2
             correct = (correct_counts > majority_threshold).sum().item()
@@ -284,8 +286,8 @@ def test_best_patches(dataloader, deployer, discriminators, target_models, num_o
             batch_asr = correct / batch_size
             epoch_asr += batch_asr
 
-
-        print(f'The best patch of the epoch: {epoch+1} has ASR: {epoch_asr  * 100:.2f}')
+        epoch_asr /= len(dataloader)
+        print(f'The best patch of the epoch {epoch+1} with a target class {target_class} has ASR: {epoch_asr  * 100:.2f}%')
         if target_models is not None:
             print(f'Now transfering the patch to target models')
             transfer_to_target_models(target_models, images, target_class, device)
@@ -359,16 +361,20 @@ if __name__ == "__main__":
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
  
     transfer_mode = args.transfer_mode
-    training_model_names = args.training_models[0].split(',') 
-    target_model_names = args.target_models[0].split(',')
+    training_model_names = args.training_models.split(' ') if args.training_models else None
+    target_model_names = args.target_models.split(' ') if args.target_models else None
     intra_model_attack = False
     cross_validation = False
+
     if training_model_names is None:
         raise ValueError('You should specify training models.')  
     
     if transfer_mode == 'source-to-target':
         if target_model_names is None:
             intra_model_attack = True
+        else: 
+            raise ValueError("For the source-to-target attack you cannot have additional target models.")
+
     else:
         if transfer_mode == 'cross-val':
             cross_validation = True
@@ -415,14 +421,12 @@ if __name__ == "__main__":
 
     print(f'Using device: {device}')
     print(f"Generator device: {next(generator.parameters()).device}")
-    # print(f"Discriminator device: {next(discriminator.parameters()).device}")
     
-    # project_name = f'RPP {transfer_mode}_{f"{x}, " for x in training_model_names""}{ "(br "+str(brightness_factor)+")" if brightness_factor else ""}{ "_col-tr"+color_transfer if color_transfer else ""}'
 
     project_name = (
-        f'RPP {transfer_mode} ' +
-        f'train: {",".join(training_model_names)} ' + 
-        (f'target: {",".join(target_model_names)}' if target_model_names else '') +
+        f'RPP_notreset 1st_patch{transfer_mode} ' +
+        f'train-{",".join(training_model_names)} ' + 
+        (f'target-{",".join(target_model_names)}' if target_model_names else '') +
         (f' (br {brightness_factor})' if brightness_factor else '') + 
         (f' _col-tr{color_transfer}' if color_transfer else '')
     )
@@ -438,7 +442,8 @@ if __name__ == "__main__":
 
 
     target_models = None
-    if target_model_names is not None:
+    if not intra_model_attack: 
+    # if target_model_names is not None:
         target_models = get_models(target_model_names, device)
     test_best_patches(dataloader, deployer, discriminators, target_models, num_of_epochs, epoch_patches, target_classes, device)
 
