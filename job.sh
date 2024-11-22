@@ -10,6 +10,7 @@ PROJECT_DIR="$HOME_DIR/Thesis/Random_Position_Patch"
 DATASET_DIR="$HOME_DIR/Thesis/imagenetv2-top-images"
 CONTAINER_PATH="$HOME_DIR/containers/pytorch_container.sif"
 
+CHECKPOINT_DIR="$SCRATCHDIR/checkpoints"
 set -o allexport; source "$HOME_DIR/Thesis/.env"; set +o allexport
 
 
@@ -24,6 +25,7 @@ TARGET_MODELS_STR="${target_models_array[@]}"
 
 # TRAINING_MODELS=${TRAINING_MODELS}     
 # TARGET_MODELS=${TARGET_MODELS}
+# CHECKPOINT_DIR_NAME=${CHECKPOINT_DIR_NAME}
 PATCH_SIZE=${PATCH_SIZE:-64}
 EPOCHS=${EPOCHS:-40}           # Number of epochs
 CLASSES=${CLASSES:-100}        # Number of random classes to load for training
@@ -45,6 +47,8 @@ cp -r "$DATASET_DIR" "$SCRATCHDIR" || { echo "Dataset copy failed"; exit 1; }
 cp $HOME_DIR/Thesis/sing.sh $SCRATCHDIR
 cp $HOME_DIR/Thesis/.env $SCRATCHDIR
 
+mkdir -p "$CHECKPOINT_DIR"  # Create checkpoint directory in scratch
+
 echo "Files in scratch directory:"
 ls -R $SCRATCHDIR
 
@@ -55,6 +59,7 @@ mkdir -p "$SCRATCH_RESULTS" "$SCRATCH_LOGS" || { echo "Failed to create result/l
 echo "Running singularity container..."
 singularity exec --nv "$CONTAINER_PATH" bash sing.sh \
 	"$SCRATCHDIR/imagenetv2-top-images/imagenetv2-top-images-format-val" \
+	"$CHECKPOINT_DIR" \
 	"$TRANSFER_MODE" \
 	"$TRAINING_MODELS_STR" \
 	"$TARGET_MODELS_STR" \

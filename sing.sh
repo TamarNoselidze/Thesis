@@ -10,12 +10,13 @@ fi
 echo "Running Python script"
 python3 main.py \
     --image_folder_path "$1" \
-    --transfer_mode "$2" \
-    --training_models "$3" \
-    --target_models "$4" \
-    --patch_size "$5" \
-    --epochs "$6" \
-    --num_of_train_classes "$7" \
-    --num_of_target_classes "$8" \
-    --brightness "$9" \
-    --color_transfer "$10"
+    --checkpoint_folder_path "$2" \
+    --transfer_mode "$3" \
+    --training_models "$4" \
+    --target_models "$5" \
+    --patch_size "$6" \
+    --epochs "$7" \
+    --num_of_train_classes "$8" \
+    --num_of_target_classes "$9" \
+    --brightness "$10" \
+    --color_transfer "$11"

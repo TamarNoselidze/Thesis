@@ -2,7 +2,7 @@ import torch
 import torch.nn as nn
 
 class Generator(nn.Module):
-    def __init__(self, patch_size, input_dim, output_dim, k=0.5):
+    def __init__(self, patch_size, input_dim=100, output_dim=3, k=0.5):
         super(Generator, self).__init__()
         # print(f'**************** in generator: patch size is {patch_size}')
         self.k = k

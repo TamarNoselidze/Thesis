@@ -8,17 +8,23 @@ import os
 
 
 def load_generator(generator, checkpoint_path):
+    filename = os.path.basename(checkpoint_path)  # Get the file name
+    parts = filename.split('_')
+    epoch = int(parts[2])  # Assuming format: generator_epoch_{epoch}_{target_class}.pth
+    target_class = int(parts[3].split('.')[0])  # Extract target class
+    
+    # Load the generator state
     generator.load_state_dict(torch.load(checkpoint_path))
-    generator.eval()  # Set the generator to evaluation mode if testing
-    print(f'Loaded generator from {checkpoint_path}')
-    return generator
+    generator.eval()  # Set the generator to evaluation mode for testing
+    
+    print(f'Loaded generator from {checkpoint_path} (Epoch {epoch}, Target Class {target_class})')
+    return generator, epoch, target_class
 
-
-def save_generator(generator, epoch, output_dir='checkpoints'):
+def save_generator(generator, epoch, target_class, output_dir='checkpoints'):
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)  # Create the directory if it doesn't exist
 
-    save_path = os.path.join(output_dir, f'generator_epoch_{epoch + 1}.pth')
+    save_path = os.path.join(output_dir, f'generator_epoch_{epoch + 1}_{target_class}.pth')
     torch.save(generator.state_dict(), save_path)
     print(f'Saved generator at epoch {epoch + 1} to {save_path}')
 
