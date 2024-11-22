@@ -39,23 +39,57 @@ The transferability of adversarial attacks is a critical aspect because an attac
 
 
 
-
 This phenomenon poses significant security risks, especially in applications where image classification is critical, such as autonomous driving, healthcare diagnostics, and surveillance systems. Therefore, it is rather crucial, more than interesting, to research the topic and
 
 2. Theoretical Background
   - CNNs:
     A brief overview
+
+
+    Convolutional Neural Networks (CNNs) are a class of deep learning models mainly used for image processing tasks, such as image classification, object detection, etc. They consist of layers that apply convolutional operations, which detect local patterns and features in an image, followed by pooling layers to down-sample and reduce dimensionality. CNNs are very effective in learning spatial hierarchies and have become the standard for many computer vision tasks, especially image classification, due to their ability to effectively extract relevant features.
+
+
   - ViTs:
+
     Overview of Vision Transformer architecture and their application in image classification.
     Maybe comparing to CNNs? 
+
+    Vision Transformers (ViTs) are quite different from traditional convolution-based approaches, and they are transformer-based architectures for image classification tasks. Unlike CNNs, which use convolutional layers to detect local patterns, ViTs treat an image as a sequence of patches, applying transformer layers (originally designed for natural language processing tasks) to learn dependencies across these patches. The image is split into fixed-size patches, which are then linearly embedded and processed using self-attention mechanisms. ViTs have shown impressive results in image classification tasks, especially when trained on large datasets, and offer advantages in terms of capturing long-range dependencies in images.
+   
+    Comparison to CNNs:
+
+    While CNNs are effective at learning local patterns in images, ViTs excel at modeling global relationships due to their self-attention mechanism. However, ViTs often require larger datasets and computational resources to outperform CNNs. CNNs are still more efficient in scenarios where labeled data is limited, while ViTs can potentially achieve higher performance on large-scale datasets.
+
+    
   - Adversarial Attacks
     Types of existing adversarial attacks: white box, black box. 
-    Cleverhans attacks ?
+
+    Adversarial attacks are methods used to manipulate the input data in a way that causes machine learning models, particularly deep learning models, to make incorrect predictions. These attacks are a significant challenge in the deployment of AI systems, particularly in safety-critical applications.
+
+    White Box Attacks: In white box attacks, the attacker has complete knowledge of the target model, including its architecture, weights, and parameters. This allows the attacker to craft precise perturbations to the input data that are likely to mislead the model. Examples of white box attacks include the Fast Gradient Sign Method (FGSM) and Projected Gradient Descent (PGD).
+
+    Black Box Attacks: In black box attacks, the attacker has no access to the model's internal structure or parameters. Instead, they can only observe the model's outputs for given inputs. Despite this limitation, black box attacks can still be effective, often using techniques like query-based attacks, where the attacker generates adversarial examples by repeatedly querying the model with slightly modified inputs. Examples include the Boundary Attack and the Transfer Attack, where adversarial examples from one model are used to attack another.
+
+
     Briefly about patch attacks.
   - Transferability of Adversarial Attacks
     Challenges and significance of attack transferability across models.
+
+
+
+    The transferability of adversarial attacks refers to the phenomenon where adversarial examples generated for one machine learning model (typically a source model) can also mislead a different model (typically a target model). This is a significant aspect of adversarial robustness, as it implies that an adversarial example crafted for one specific model can still be effective against models with different architectures or training procedures.
+
+    Challenges:
+
+    Model Diversity: Models can vary in terms of their architectures (e.g., CNNs vs. ViTs), training data, hyperparameters, and regularization techniques, making it difficult to create universal adversarial examples that successfully attack all models. The behavior of adversarial examples across models is not always predictable, and the transferability rate may depend on the similarity between the models.
+
+    Robustness Variations: Different models exhibit different levels of robustness to adversarial examples. Some models might be more resistant to certain types of attacks, making the transferability less effective. Understanding and overcoming these variations is an ongoing challenge.
+
+    Optimization Overhead: Generating transferable adversarial examples typically requires iterating through various attack strategies, models, and parameters to ensure that the perturbation works across multiple target models. This can be computationally expensive and time-consuming.
   - Related Work
     Review of related work on adversarial attacks, focusing on patch attacks.
+
+Existing attacks
 
 3. Experimenting with existing attacks
   - Cleverhans
@@ -67,7 +101,7 @@ This phenomenon poses significant security risks, especially in applications whe
   - Existing Patch Attack Methods
     Modifications required to adapt existing patch attacks to Vision Transformers.
   - Random Position Patch attack - overview of the paper 
-       my implementation of the paper + additional features (?)
+          my implementation of the paper + additional features (?)
 
 5. Transferability
 

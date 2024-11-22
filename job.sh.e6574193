@@ -1,9 +1,0 @@
-
-[notice] A new release of pip is available: 24.2 -> 24.3.1
-[notice] To update, run: python3 -m pip install --upgrade pip
-Traceback (most recent call last):
-  File "main.py", line 398, in <module>
-    discriminators = get_models(training_model_names, device)
-  File "main.py", line 217, in get_models
-    model.to(device)
-UnboundLocalError: local variable 'model' referenced before assignment
