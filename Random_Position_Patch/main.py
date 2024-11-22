@@ -233,27 +233,34 @@ def evaluate_saved_generators(checkpoints_dir, fixed_noise, patch_size, dataload
     # List all saved checkpoints
     checkpoint_files = sorted([f for f in os.listdir(checkpoints_dir) if f.endswith('.pth')])
 
+    print(f'\n{"="*38} Evaluating generators {"="*38}')
+
     for checkpoint_file in checkpoint_files:
         checkpoint_path = os.path.join(checkpoints_dir, checkpoint_file)
         generator = Generator(patch_size)  # Initialize the generator architecture
         generator, epoch, target_class = load_generator(generator, checkpoint_path)
-
+        print(f'Results for target class {target_class}')
+        print("-"*100)
         # Generate the patch from fixed noise
         patch = generator(fixed_noise).detach()
         patch = patch.squeeze(0)  # Shape: [3, 64, 64]
         # Evaluate the patch
         asr = evaluate_patch(patch, dataloader, target_class, deployer, discriminators, device)
-        print(f"Epoch {epoch} - Patch ASR: {asr * 100:.2f}%")
+        print(f"Epoch {epoch} -<>- Patch ASR: {asr * 100:.2f}%")
         patch_key = f'epoch_{epoch}_best_patch'
-        wandb.log({patch_key : wandb.Image(patch.cpu(), caption=f'Patch of epoch {epoch+1}')})
 
+        wandb.log({patch_key : wandb.Image(patch.cpu(), caption=f'Patch of epoch {epoch+1} target class {target_class}')})
 
         if asr > best_asr:
             best_asr = asr
             best_epoch = epoch
             best_patch = patch
+        
+        print("-"*100)
 
     print(f"Best generator found at epoch {best_epoch} with ASR: {best_asr * 100:.2f}%")
+    print("="*100)
+
     return best_epoch, best_patch
 
 
@@ -264,7 +271,7 @@ def gan_attack(device, generator, optimizer, deployer, discriminators, dataloade
     # best_asr = 0
 
     for epoch in range(num_of_epochs):
-        print(f'@ Epoch {epoch+1} with a target class: {target_class}')
+        print(f'@ Epoch {epoch+1} for a target class: {target_class}')
         epoch_asr = 0
         batch_i=1
 
@@ -358,33 +365,36 @@ def gan_attack(device, generator, optimizer, deployer, discriminators, dataloade
         #     print(f"Saved new best generator with ASR: {best_asr * 100:.2f}%")
         save_generator(generator, epoch, target_class, checkpoints_dir)
 
-    print(f'\n\n-- Average ASR over all {num_of_epochs} epochs: {total_asr / num_of_epochs * 100:.2f}% --\n\n')
+    print(f'\n\nAverage ASR over all {num_of_epochs} epochs: {total_asr / num_of_epochs * 100:.2f}% \n')
 
 
 
 def start_iteration(device, patch_size, discriminators, dataloader, classes, target_classes, checkpoint_dir, num_of_epochs=40, brightness_factor=None, color_transfer=None, batch_size=32):
 
    
-    generator = Generator(patch_size).to(device)
-    generator.train()
     deployer = Deployer()
 
     optimizer = optim.Adam(generator.parameters(), lr=0.0002, betas=(0.5, 0.999))   ## try different values
 
     print(f'Using device: {device}')
-    print(f"Generator device: {next(generator.parameters()).device}")
+    # print(f"Generator device: {next(generator.parameters()).device}")
 
-    fixed_noise = torch.randn(1, 100, 1, 1).to(device)
     
     for iteration in range(len(target_classes)):
         target_class = target_classes[iteration]
+        print(f'{"-"*30} Iteration {iteration+1} for target class: {target_class} {"-"*30}')
+        generator = Generator(patch_size).to(device)
+        generator.train()
         target_class = torch.tensor(target_class, device=device)
         gan_attack(device, generator, optimizer, deployer, discriminators, dataloader, classes, target_class, num_of_epochs, checkpoint_dir)
+        print(f'{"-"*100}\n\n')
 
 
+    fixed_noise = torch.randn(1, 100, 1, 1).to(device)
     best_epoch, best_patch = evaluate_saved_generators(checkpoint_dir, fixed_noise, patch_size, dataloader, deployer, discriminators, device)
 
-    print(f'Best porforming epoch: {best_epoch}')
+    # use best patch
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Random Position Patch Attack')
@@ -466,6 +476,7 @@ if __name__ == "__main__":
         f'RPP {transfer_mode} ' +
         f'train-{",".join(training_model_names)} ' + 
         (f'target-{",".join(target_model_names)}' if target_model_names else '') +
+        f'{num_of_target_classes} iters' +
         (f' (br {brightness_factor})' if brightness_factor else '') + 
         (f' _col-tr{color_transfer}' if color_transfer else '')
     )
