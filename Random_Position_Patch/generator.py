@@ -23,14 +23,7 @@ class Generator(nn.Module):
         layers.append(nn.BatchNorm2d(1024))
         layers.append(nn.ReLU(inplace=False))
 
-        if patch_size == '48':
-            # Adjusted layers for (4x4) to (48x48)
-            layers.append(self.make_layer(1024, 512, kernel_size=4, stride=2, padding=1))  # (4x4 -> 8x8)
-            layers.append(self.make_layer(512, 256, kernel_size=3, stride=2, padding=1))   # (8x8 -> 16x16)
-            layers.append(self.make_layer(256, 128, kernel_size=3, stride=2, padding=2))   # (16x16 -> 32x32)
-            layers.append(nn.ConvTranspose2d(128, output_dim, kernel_size=2, stride=2, padding=3))  # (32x32 -> 48x48)
-            
-        elif patch_size == '64':
+        if patch_size == '64':
             # Adjusted layers for (4x4) to (64x64)
             layers.append(self.make_layer(1024, 512, kernel_size=4, stride=2, padding=1))  # (4x4 -> 8x8)
             layers.append(self.make_layer(512, 256, kernel_size=4, stride=2, padding=1))   # (8x8 -> 16x16)
@@ -44,7 +37,7 @@ class Generator(nn.Module):
             layers.append(self.make_layer(256, 128, kernel_size=4, stride=2, padding=2))   # (16x16 -> 32x32)
             layers.append(nn.ConvTranspose2d(128, output_dim, kernel_size=4, stride=2, padding=1))  # (128x128 -> 80x80)
         else:
-            raise ValueError("Unsupported patch size! Choose between 48, 64, or 80.")
+            raise ValueError("Unsupported patch size! Choose between 64 or 80.")
 
         return layers
 

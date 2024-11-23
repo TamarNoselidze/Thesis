@@ -26,7 +26,6 @@ def start(device, generator, optimizer, deployer, discriminator, dataloader, num
         epoch_images = {}
         for batch in dataloader:
 
-            # print(f'@  working on batch {temp_count}')
 
             images, true_labels = batch
             images = images.to(device)
@@ -72,8 +71,6 @@ def start(device, generator, optimizer, deployer, discriminator, dataloader, num
             output = discriminator(modified_images)
                 # outputs.append(output)
             print(f"   Discriminator output: {output.data.cpu()}")
-
-
 
 
 

@@ -46,10 +46,10 @@ class Generator(nn.Module):
         self.apply(self.weights_init)
         
         
-    def forward(self, noise, image):
+    def forward(self, noise, target_class_image):
 
         # embed the image
-        image_features = self.image_embedding(image)
+        image_features = self.image_embedding(target_class_image)
         image_features = image_features.view(image_features.size(0), -1)  # Flatten the feature map
         # print(f"Image embedding shape: {image_features.shape}")
         
