@@ -23,9 +23,6 @@ TRAINING_MODELS_STR="${training_models_array[@]}"
 TARGET_MODELS_STR="${target_models_array[@]}"
 
 
-# TRAINING_MODELS=${TRAINING_MODELS}     
-# TARGET_MODELS=${TARGET_MODELS}
-# CHECKPOINT_DIR_NAME=${CHECKPOINT_DIR_NAME}
 PATCH_SIZE=${PATCH_SIZE:-64}
 EPOCHS=${EPOCHS:-40}           # Number of epochs
 CLASSES=${CLASSES:-100}        # Number of random classes to load for training
@@ -50,7 +47,7 @@ cp $HOME_DIR/Thesis/.env $SCRATCHDIR
 mkdir -p "$CHECKPOINT_DIR"  # Create checkpoint directory in scratch
 
 echo "Files in scratch directory:"
-ls -R $SCRATCHDIR
+# ls -R $SCRATCHDIR
 
 # creating directories for results and logs
 mkdir -p "$SCRATCH_RESULTS" "$SCRATCH_LOGS" || { echo "Failed to create result/log directories"; exit 1; }
