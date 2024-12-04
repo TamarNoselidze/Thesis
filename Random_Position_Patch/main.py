@@ -45,8 +45,11 @@ def get_models(model_names, device):
 
 
         
-def test_best_patch(dataloader, target_models, target_model_names, patch, target_class, device):
-    deployer = Deployer()
+def test_best_patch(dataloader, attack_type, target_models, target_model_names, patch, target_class, device):
+    if attack_type == 'mini':
+        deployer = DeployerMini(num_patches=8)
+    else:
+        deployer = Deployer()
     missclassified_counts = {model : 0 for model in target_model_names}
     total_image_count = len(dataloader.dataset)
     
@@ -116,6 +119,7 @@ def evaluate_saved_generators(checkpoint_dir, fixed_noise, patch_size, dataloade
     best_epoch = -1
     best_patch = None
 
+    last_checkpoint  = None
     # Iterate over subfolders in the checkpoints directory
     checkpoint_files = sorted([f for f in os.listdir(checkpoint_dir) if f.endswith('.pth')])
     results = {}
@@ -142,6 +146,8 @@ def evaluate_saved_generators(checkpoint_dir, fixed_noise, patch_size, dataloade
 
             patch_key = f'epoch_{epoch}_best_patch'
             wandb.log({patch_key : wandb.Image(patch.cpu(), caption=f'Patch of epoch {epoch} target class {target_class}')})
+
+            last_checkpoint = checkpoint_file
                 
         print("-"*100)
 
@@ -150,6 +156,9 @@ def evaluate_saved_generators(checkpoint_dir, fixed_noise, patch_size, dataloade
             best_epoch = epoch
             best_patch = patch
         
+        if best_epoch == -1:
+            generator = Generator(patch_size).to(device)
+            generator = load_generator(generator, last_checkpoint)
 
         print(f"Best generator found at epoch {best_epoch} with ASR: {best_asr * 100:.2f}%")
         print("-"*100)
@@ -379,6 +388,6 @@ if __name__ == "__main__":
             # best_epoch = result['best_epoch']
             best_patch = result['best_patch']
             
-            test_best_patch(dataloader, target_models, target_model_names, best_patch, target_class=target, device=device)
+            test_best_patch(dataloader, attack_mode, target_models, target_model_names, best_patch, target_class=target, device=device)
 
     wandb.finish()
