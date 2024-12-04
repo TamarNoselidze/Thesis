@@ -1,6 +1,6 @@
 import torch
 
-class Deployer:
+class DeployerMini:
     def __init__(self, patch_size=16, num_patches=16):
         self.patch_size = patch_size
         self.num_patches = num_patches

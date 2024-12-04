@@ -149,9 +149,6 @@ if __name__ == "__main__":
     optimizer = optim.Adam(generator.parameters(), lr=0.0002, betas=(0.5, 0.999))   ## try different values
 
 
-    image = torch.rand(3, 224, 224)  # Dummy image of shape [C, H, W]
-    patches = torch.rand(16, 3, 16, 16)  # 16 patches of shape [num_patches, C, patch_size, patch_size]
-
     start(device, generator, optimizer, deployer, discriminator, dataloader, num_of_epochs)
 
     wandb.finish()

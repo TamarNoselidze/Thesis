@@ -3,12 +3,13 @@ import wandb
 
 import torch
 import torch.optim as optim
-from torchvision import transforms
 torch.autograd.set_detect_anomaly(True)
 
-from deployer import Deployer
 from loss import AdversarialLoss
+from deployer import Deployer
+from Mini_Patches.deployer_mini import DeployerMini
 from generator import Generator
+from Mini_Patches.generator_mini import GeneratorMini
 from helper import save_generator, load_generator, load_checkpoint_by_target_class, load_random_classes, get_target_classes
 
 from torchvision.models.resnet import resnet50, ResNet50_Weights, resnet152, ResNet152_Weights
@@ -252,16 +253,21 @@ def gan_attack(device, generator, optimizer, deployer, discriminators, dataloade
 
 
 
-def start_iteration(device, patch_size, discriminators, dataloader, classes, target_classes, checkpoint_dir, num_of_epochs=40, brightness_factor=None, color_transfer=None, batch_size=32):
-
-    deployer = Deployer()
-    print(f'Using device: {device}')
+def start_iteration(device, attack_type, patch_size, discriminators, dataloader, classes, target_classes, checkpoint_dir, num_of_epochs=40, num_of_patches=8, brightness_factor=None, color_transfer=None):
+    if attack_type == 'mini':
+        deployer = DeployerMini(patch_size, num_of_patches)
+    else:
+        deployer = Deployer()
 
     for iteration in range(len(target_classes)):
         target_class = target_classes[iteration]
         print(f'{"-"*30} Iteration {iteration+1} for target class: {target_class} {"-"*30}')
-        generator = Generator(patch_size).to(device)
+        if attack_type == 'mini':
+            generator = GeneratorMini(patch_size, num_of_patches).to(device)
+        else:
+            generator = Generator(patch_size).to(device)
         generator.train()
+
         optimizer = optim.Adam(generator.parameters(), lr=0.001, betas=(0.9, 0.999))   ## try different values
         target_class = torch.tensor(target_class, device=device)
         gan_attack(device, generator, optimizer, deployer, discriminators, dataloader, classes, target_class, num_of_epochs, checkpoint_dir)
@@ -277,13 +283,15 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Random Position Patch Attack')
     parser.add_argument('--image_folder_path', help='Image dataset to perturb', default='../imagenetv2-top-images/imagenetv2-top-images-format-val')
     parser.add_argument('--checkpoint_folder_path', help='Path to a folder where generators will be saved', default='./checkpoints')
+    parser.add_argument('--attack_mode', choices=['gpatch', 'mini'], default='gpatch')
+    parser.add_argument('--number_of_patches', type=int, help='Number of patches. 1 for G-patch attack, and more than 1 for mini-patch attack', default=1)
     parser.add_argument('--transfer_mode', choices=['source-to-target', 'ensemble', 'cross-validation'], 
                         help='Choose the transferability approach: source-to-target, ensemble, or cross-validation', default='source-to-target')
     parser.add_argument('--training_models', type=str)
                         # nargs='+', choices=['resnet50', 'resnet152', 'vgg16_bn', 'vit_b_16', 'vit_b_32', 'vit_l_16', 'swin_b'], help='List of training models')
     parser.add_argument('--target_models', type=str)
     # , nargs='+', choices=['resnet50', 'resnet152', 'vgg16_bn', 'vit_b_16', 'vit_b_32', 'vit_l_16', 'swin_b'], help='List of target models')    
-    parser.add_argument('--patch_size', choices=['64', '80'], help='Size of the adversarial patch', default=64)
+    parser.add_argument('--patch_size', help='Size of the adversarial patch', default=64)
     parser.add_argument('--epochs', type=int, help='Number of epochs')
     parser.add_argument('--num_of_train_classes', type=int, help='Number of (random) classes to train the generator on', default=100)
     parser.add_argument('--num_of_target_classes', type=int, help='Number of (random) target classes to misclassify images as', default=10)
@@ -300,6 +308,11 @@ if __name__ == "__main__":
     intra_model_attack = False
     cross_validation = False
 
+    patch_size = args.patch_size
+    attack_mode = args.attack_mode
+    # if attack_mode == 'mini':
+    num_of_patches = args.number_of_patches
+
     if training_model_names is None:
         raise ValueError('You should specify training models.')  
     
@@ -315,7 +328,6 @@ if __name__ == "__main__":
         if target_model_names is None:
             raise ValueError("For the ensemble/cross-validation attack you should specify target models.")
         
-    patch_size = args.patch_size
 
     try:
         brightness_factor = float(args.brightness)
@@ -326,6 +338,7 @@ if __name__ == "__main__":
         color_transfer = float(args.color_transfer)
     except:
         color_transfer = None
+
 
     discriminators = get_models(training_model_names, device)
 
@@ -344,6 +357,7 @@ if __name__ == "__main__":
 
     project_name = (
         f'RPP {transfer_mode} ' +
+        f'{attack_mode}_attack' +
         f'train-{",".join(training_model_names)} ' + 
         (f'target-{",".join(target_model_names)} ' if target_model_names else '') +
         f'{num_of_target_classes} iters ' +
@@ -358,8 +372,7 @@ if __name__ == "__main__":
         'target_classes' : num_of_target_classes,
     })
 
-    results = start_iteration(device, patch_size, discriminators, dataloader, classes, target_classes, checkpoint_dir, num_of_epochs, brightness_factor, color_transfer)
-
+    results = start_iteration(device, attack_mode, patch_size, discriminators, dataloader, classes, target_classes, checkpoint_dir, num_of_epochs, num_of_patches, brightness_factor, color_transfer)
 
 
     target_models = None
