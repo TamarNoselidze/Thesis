@@ -1,55 +1,46 @@
 import torch
-
 class DeployerMini:
-    def __init__(self, patch_size=16, num_patches=16):
-        self.patch_size = patch_size
+    def __init__(self, num_patches=16, allow_overlap=False):
         self.num_patches = num_patches
+        self.allow_overlap = allow_overlap
 
-    def deploy(self, patches, image):
-        # Extract image dimensions
+
+    def deploy(self, patch, image):
         _, H, W = image.shape
-        P_H, P_W = self.patch_size, self.patch_size
+        _, P_H, P_W = patch.shape
 
-        print(f"Image size: {image.shape}")
-        print(f"Patch size: {patches.shape}")
+        # print(f"Image size: {image.shape}")
+        # print(f"Patch size: {patch.shape}")
 
-
-        # Ensure patches has the correct number of patches
-        # assert patches.shape[0] == self.num_patches, "Number of patches does not match expected count."
-
+        mask = torch.zeros_like(image)
         occupied = torch.zeros(H, W, dtype=torch.bool)
         
-        for patch in patches:
+        deployed_count = 0
+        while deployed_count < self. num_patches:
 
-            print(f"Deploying patch size: {patch.shape}")  # Add this line
-            # Try to place patch at a random position without overlap
-
-            if patch.shape[1:] != (P_H, P_W):
-                print(f"Error: Patch size {patch.shape[1:]} does not match expected size ({P_H}, {P_W})")
-            
-            placed = False
-            attempts = 0
-            max_attempts = 100  # Maximum attempts to find a non-overlapping position
-            
-            while not placed and attempts < max_attempts:
-                # Generate random top-left coordinates for the patch placement
+            if self.allow_overlap:
                 k = torch.randint(0, H - P_H + 1, (1,)).item()
                 l = torch.randint(0, W - P_W + 1, (1,)).item()
 
-                # Check if the area is free (not occupied)
-                if not occupied[k:k + P_H, l:l + P_W].any():
-                    # Mark the area as occupied
-                    occupied[k:k + P_H, l:l + P_W] = True
-
-                    # Apply the patch on the image
-                    image[:, k:k + P_H, l:l + P_W] = patch
-                    placed = True
-                
-                attempts += 1
+                mask[:, k:k + P_H, l:l + P_W] = patch  # apply the patch within the mask region
             
-            # If no suitable position is found, stop trying further
-            if not placed:
-                print("Warning: Could not place all patches without overlap.")
-                break
+            else: 
+                placed = False
+                while not placed:
+                    k = torch.randint(0, H - P_H + 1, (1,)).item()
+                    l = torch.randint(0, W - P_W + 1, (1,)).item()
 
-        return image
+                    # Check if the area is free (not occupied)
+                    if not occupied[k:k + P_H, l:l + P_W].any():
+                        # Mark the area as occupied
+                        occupied[k:k + P_H, l:l + P_W] = True
+
+                        # add the patch to the mask
+                        mask[:, k:k + P_H, l:l + P_W] = patch
+                        placed = True
+                
+            deployed_count +=1
+        
+        adversarial_image = mask + (1 - mask) * image  # combine the mask with the original image
+
+        return adversarial_image

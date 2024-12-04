@@ -9,7 +9,6 @@ from loss import AdversarialLoss
 from deployer import Deployer
 from Mini_Patches.deployer_mini import DeployerMini
 from generator import Generator
-from Mini_Patches.generator_mini import GeneratorMini
 from helper import save_generator, load_generator, load_checkpoint_by_target_class, load_random_classes, get_target_classes
 
 from torchvision.models.resnet import resnet50, ResNet50_Weights, resnet152, ResNet152_Weights
@@ -262,10 +261,7 @@ def start_iteration(device, attack_type, patch_size, discriminators, dataloader,
     for iteration in range(len(target_classes)):
         target_class = target_classes[iteration]
         print(f'{"-"*30} Iteration {iteration+1} for target class: {target_class} {"-"*30}')
-        if attack_type == 'mini':
-            generator = GeneratorMini(patch_size, num_of_patches).to(device)
-        else:
-            generator = Generator(patch_size).to(device)
+        generator = Generator(patch_size).to(device)
         generator.train()
 
         optimizer = optim.Adam(generator.parameters(), lr=0.001, betas=(0.9, 0.999))   ## try different values
@@ -291,7 +287,7 @@ if __name__ == "__main__":
                         # nargs='+', choices=['resnet50', 'resnet152', 'vgg16_bn', 'vit_b_16', 'vit_b_32', 'vit_l_16', 'swin_b'], help='List of training models')
     parser.add_argument('--target_models', type=str)
     # , nargs='+', choices=['resnet50', 'resnet152', 'vgg16_bn', 'vit_b_16', 'vit_b_32', 'vit_l_16', 'swin_b'], help='List of target models')    
-    parser.add_argument('--patch_size', help='Size of the adversarial patch', default=64)
+    parser.add_argument('--patch_size', type=int, help='Size of the adversarial patch', default=64)
     parser.add_argument('--epochs', type=int, help='Number of epochs')
     parser.add_argument('--num_of_train_classes', type=int, help='Number of (random) classes to train the generator on', default=100)
     parser.add_argument('--num_of_target_classes', type=int, help='Number of (random) target classes to misclassify images as', default=10)
