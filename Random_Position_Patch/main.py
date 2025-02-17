@@ -9,7 +9,7 @@ from loss import AdversarialLoss
 from deployer import Deployer
 from Mini_Patches.deployer_mini import DeployerMini
 from generator import Generator
-from helper import save_generator, load_generator, load_checkpoint_by_target_class, load_random_classes, get_target_classes
+from helper import save_generator, load_generator, load_checkpoint_by_target_class, load_random_classes, get_target_classes, get_class_name
 
 from torchvision.models.resnet import resnet50, ResNet50_Weights, resnet152, ResNet152_Weights
 from torchvision.models import vit_b_16, ViT_B_16_Weights, vit_l_16, ViT_L_16_Weights, vit_b_32, ViT_B_32_Weights, vgg16_bn, VGG16_BN_Weights, swin_b, Swin_B_Weights
@@ -45,30 +45,53 @@ def get_models(model_names, device):
 
 
         
-def test_best_patch(dataloader, attack_type, target_models, target_model_names, patch, target_class, device):
+def test_best_patch(dataloader, attack_type, target_models, target_model_names, train_model_names, patch, target_class, device):
     if attack_type == 'mini':
         deployer = DeployerMini(num_patches=8)
     else:
         deployer = Deployer()
-    missclassified_counts = {model : 0 for model in target_model_names}
-    total_image_count = len(dataloader.dataset)
+    missclassified_counts = {model : {'misclassified' : 0, 'total' : 0} for model in target_model_names}
+
+    # total_image_count = len(dataloader.dataset)
     
+    image_i = 0
+    total_valid_images = 0  # Keep track of valid images (not skipped)
     for batch in dataloader:
-        images, _ = batch
+        images, true_labels = batch
         images = images.to(device)
+        true_labels = true_labels.to(device)
+        
+        # Filter out images with true_label == target_class
+        valid_indices = true_labels != target_class
+        if not valid_indices.any():
+            continue  # Skip this batch if all images are to be excluded
+
+        images = images[valid_indices]
+        true_labels = true_labels[valid_indices]
+
         batch_size = images.shape[0]
+        total_valid_images += batch_size
+
         for i in range(batch_size):
             modified_image = deployer.deploy(patch, images[i])
             for model, name in zip(target_models, target_model_names):
-                # with torch.no_grad():  # Disable gradients for evaluation
-                output = model(modified_image.unsqueeze(0).to(device))
-                _, predicted = torch.max(output.data, 1)       
-                if predicted.item() == target_class:
-                    missclassified_counts[name] +=1
+                with torch.no_grad():  # Disable gradients for evaluation
+                    output = model(modified_image.unsqueeze(0).to(device))
+                    _, predicted = torch.max(output.data, 1)       
+                    if predicted.item() == target_class:
+                        missclassified_counts[name]["misclassified"] += 1
+                    missclassified_counts[name]["total"] += 1
+                
+            if image_i % 500 == 0:   # displaying one in every 500 modified images
+                wandb.log({f"modified image_{image_i}" : wandb.Image(modified_image.cpu(), caption=f'target class "{get_class_name(target_class)}" ({target_class})')})
+            image_i +=1
 
-    
-    for name, count in missclassified_counts.items():
-        print(f'The patch of taget class {target_class} on model {name} had {count} misclassifications')    
+    for name, results in missclassified_counts.items():
+        count = results["misclassified"]
+        total_image_count = results["total"]
+        print(f'The generator was trained on: {", ".join(train_model_names)}.')
+        print(f'Target class: "{get_class_name(target_class)}" ({target_class})')
+        print(f'The generated adversarial patch on model {name} had {count} misclassifications')    
         asr = count / total_image_count
         print(f'ASR for target model {name}: {asr * 100:.2f}%')    
 
@@ -76,39 +99,54 @@ def test_best_patch(dataloader, attack_type, target_models, target_model_names, 
 
 def evaluate_patch(patch, dataloader, target_class, deployer, discriminators, device):
     total_asr = 0
+    total_valid_images = 0
 
-    for batch in dataloader:
-        images, _ = batch
-        images = images.to(device)
-        batch_size = images.shape[0]
-        adv_images = []
-        for image in images:
-            adv_image = deployer.deploy(patch, image)
-            adv_images.append(adv_image)
+    with torch.no_grad():  # No gradient tracking
+        for batch in dataloader:
+            images, true_labels = batch
+            images = images.to(device)
+            true_labels = true_labels.to(device)
+                    
+            # Filter out images with true_label == target_class
+            valid_indices = true_labels != target_class
+            if not valid_indices.any():
+                continue  # Skip this batch if all images are to be excluded
 
-        adv_images = torch.stack(adv_images).to(device)
+            images = images[valid_indices]
+            true_labels = true_labels[valid_indices]
 
-        outputs = []
-        for discriminator in discriminators:
-            output = discriminator(adv_images)
-            outputs.append(output)
+            batch_size = images.shape[0]
+            total_valid_images += batch_size
+            
+            adv_images = []
+            for image in images:
+                adv_image = deployer.deploy(patch, image)
+                adv_images.append(adv_image)
 
-        total_predicted = []
-        for out in outputs:
-            _, predicted = torch.max(out.data, 1)
-            total_predicted.append(predicted.cpu())
+            adv_images = torch.stack(adv_images).to(device)
 
-        correct_counts = torch.zeros(batch_size).to(device)
-        for predicted in total_predicted:
-            correct_counts += (predicted.to(device) == target_class).float()
+            outputs = []
+            for discriminator in discriminators:
+                output = discriminator(adv_images)
+                outputs.append(output)
 
-        majority_threshold = len(total_predicted) // 2
-        correct = (correct_counts > majority_threshold).sum().item()
+            total_predicted = []
+            for out in outputs:
+                _, predicted = torch.max(out.data, 1)
+                total_predicted.append(predicted.cpu())
 
-        batch_asr = correct / batch_size
-        total_asr += batch_asr
+            correct_counts = torch.zeros(batch_size).to(device)
+            for predicted in total_predicted:
+                correct_counts += (predicted.to(device) == target_class).float()
 
-    total_asr /= len(dataloader)
+            majority_threshold = len(total_predicted) // 2
+            correct = (correct_counts > majority_threshold).sum().item()
+
+            batch_asr = correct / batch_size
+            total_asr += batch_asr
+
+        # total_asr /= len(dataloader)
+        total_asr /= total_valid_images
 
     return total_asr
 
@@ -132,7 +170,7 @@ def evaluate_saved_generators(checkpoint_dir, fixed_noise, patch_size, dataloade
     print(f'by target class: {target_class_checkpoints}')
 
     for target_class, checkpoints in target_class_checkpoints.items():
-        print(f'Results for target class {target_class}')
+        print(f'Results for target class "{get_class_name(target_class)}" ({target_class})')
         print("-"*100)
 
         for epoch, checkpoint_file in checkpoints:
@@ -145,16 +183,17 @@ def evaluate_saved_generators(checkpoint_dir, fixed_noise, patch_size, dataloade
             print(f"Epoch {epoch} -<>- Patch ASR: {asr * 100:.2f}%")
 
             patch_key = f'epoch_{epoch}_best_patch'
-            wandb.log({patch_key : wandb.Image(patch.cpu(), caption=f'Patch of epoch {epoch} target class {target_class}')})
+            wandb.log({patch_key : wandb.Image(patch.cpu(), caption=f'Patch of epoch {epoch} target class "{get_class_name(target_class)}" ({target_class})')})
 
             last_checkpoint = checkpoint_file
                 
+            if asr > best_asr:
+                best_asr = asr
+                best_epoch = epoch
+                best_patch = patch
+
         print("-"*100)
 
-        if asr > best_asr:
-            best_asr = asr
-            best_epoch = epoch
-            best_patch = patch
         
         if best_epoch == -1:
             generator = Generator(patch_size).to(device)
@@ -178,10 +217,12 @@ def evaluate_saved_generators(checkpoint_dir, fixed_noise, patch_size, dataloade
 def gan_attack(device, generator, optimizer, deployer, discriminators, dataloader, classes, target_class, num_of_epochs, checkpoints_dir, input_dim=100):
     
     total_asr = 0
+    # total_valid_images = 0  # Keep track of valid images (not skipped)
 
     for epoch in range(num_of_epochs):
         print(f'@ Epoch {epoch+1} for a target class: {target_class}')
         epoch_asr = 0
+        epoch_valid_images = 0  # Count valid images for this epoch
         batch_i=1
 
         for batch in dataloader:
@@ -190,8 +231,21 @@ def gan_attack(device, generator, optimizer, deployer, discriminators, dataloade
             images = images.to(device)
             true_labels = true_labels.to(device)
 
-            batch_size = images.shape[0]   # might change for the last batch
+            # Filter out images with true_label == target_class
+            valid_indices = true_labels != target_class
+            if not valid_indices.any():
+                print(f"     Batch {batch_i} skipped: all images have true label == target class.")
+                batch_i += 1
+                continue  # Skip this batch if all images are to be excluded
+
+            images = images[valid_indices]
+            true_labels = true_labels[valid_indices]
+            batch_size = images.shape[0]
+            epoch_valid_images += batch_size
+            # total_valid_images += batch_size
+
             noise = torch.randn(batch_size, input_dim, 1, 1).to(device)
+
             modified_images = []
             adv_patches = generator(noise)
 
@@ -245,7 +299,8 @@ def gan_attack(device, generator, optimizer, deployer, discriminators, dataloade
             
             epoch_asr += batch_asr
 
-        avg_epoch_asr = epoch_asr / len(dataloader)
+        # avg_epoch_asr = epoch_asr / len(dataloader)
+        avg_epoch_asr = epoch_asr / epoch_valid_images
         total_asr += avg_epoch_asr
 
         # Log epoch-level metrics to W&B
@@ -267,9 +322,13 @@ def start_iteration(device, attack_type, patch_size, discriminators, dataloader,
     else:
         deployer = Deployer()
 
+    ###########################
+    # target_classes = [104, 407, 579, 630, 932, 949]
+    target_classes = [932, 949]
+
     for iteration in range(len(target_classes)):
         target_class = target_classes[iteration]
-        print(f'{"-"*30} Iteration {iteration+1} for target class: {target_class} {"-"*30}')
+        print(f'{"-"*30} Iteration {iteration+1} for target class: "{get_class_name(target_class)}" ({target_class}) {"-"*30}')
         generator = Generator(patch_size).to(device)
         generator.train()
 
@@ -280,6 +339,10 @@ def start_iteration(device, attack_type, patch_size, discriminators, dataloader,
 
     fixed_noise = torch.randn(1, 100, 1, 1).to(device)
     results = evaluate_saved_generators(checkpoint_dir, fixed_noise, patch_size, dataloader, deployer, discriminators, device)
+    
+    # table = wandb.Table(columns=["Epoch", "ASR", "Loss"])
+    # table.add_data(epoch, avg_epoch_asr, loss.item())
+    # wandb.log({"Results Table": table})
 
     return results
 
@@ -289,13 +352,11 @@ if __name__ == "__main__":
     parser.add_argument('--image_folder_path', help='Image dataset to perturb', default='../imagenetv2-top-images/imagenetv2-top-images-format-val')
     parser.add_argument('--checkpoint_folder_path', help='Path to a folder where generators will be saved', default='./checkpoints')
     parser.add_argument('--attack_mode', choices=['gpatch', 'mini'], default='gpatch')
-    parser.add_argument('--number_of_patches', type=int, help='Number of patches. 1 for G-patch attack, and more than 1 for mini-patch attack', default=1)
-    parser.add_argument('--transfer_mode', choices=['source-to-target', 'ensemble', 'cross-validation'], 
+    parser.add_argument('--num_of_patches', type=int, help='Number of patches. 1 for G-patch attack, and more than 1 for mini-patch attack', default=1)
+    parser.add_argument('--transfer_mode', choices=['src-tar', 'ensemble', 'cross-val'],  
                         help='Choose the transferability approach: source-to-target, ensemble, or cross-validation', default='source-to-target')
     parser.add_argument('--training_models', type=str)
-                        # nargs='+', choices=['resnet50', 'resnet152', 'vgg16_bn', 'vit_b_16', 'vit_b_32', 'vit_l_16', 'swin_b'], help='List of training models')
     parser.add_argument('--target_models', type=str)
-    # , nargs='+', choices=['resnet50', 'resnet152', 'vgg16_bn', 'vit_b_16', 'vit_b_32', 'vit_l_16', 'swin_b'], help='List of target models')    
     parser.add_argument('--patch_size', type=int, help='Size of the adversarial patch', default=64)
     parser.add_argument('--epochs', type=int, help='Number of epochs')
     parser.add_argument('--num_of_train_classes', type=int, help='Number of (random) classes to train the generator on', default=100)
@@ -315,18 +376,14 @@ if __name__ == "__main__":
 
     patch_size = args.patch_size
     attack_mode = args.attack_mode
-    # if attack_mode == 'mini':
-    num_of_patches = args.number_of_patches
+    num_of_patches = args.num_of_patches
 
     if training_model_names is None:
         raise ValueError('You should specify training models.')  
     
-    if transfer_mode == 'source-to-target':
+    if transfer_mode == 'src-tar':
         if target_model_names is None:
             intra_model_attack = True
-        else: 
-            raise ValueError("For the source-to-target attack you cannot have additional target models.")
-
     else:
         if transfer_mode == 'cross-val':
             cross_validation = True
@@ -347,22 +404,20 @@ if __name__ == "__main__":
 
     discriminators = get_models(training_model_names, device)
 
-
     dataloader, classes = load_random_classes(args.image_folder_path, args.num_of_train_classes)
     num_of_classes = len(classes)
-    print(f'CLASSES: {classes}')
-    print(f'IN TOTAL: {len(classes)}')
+    # print(f'CLASSES: {classes}')
+    # print(f'IN TOTAL: {len(classes)}')
     num_of_epochs = args.epochs
     num_of_target_classes = args.num_of_target_classes
 
     target_classes = get_target_classes(classes, 1000, num_of_target_classes)
-    print(f'TARGET CLASSES: {target_classes}')
-
+    # print(f'TARGET CLASSES: {target_classes}')
     
 
     project_name = (
         f'RPP {transfer_mode} ' +
-        f'{attack_mode}_attack' +
+        f'{attack_mode}_attack ' +
         f'train-{",".join(training_model_names)} ' + 
         (f'target-{",".join(target_model_names)} ' if target_model_names else '') +
         f'{num_of_target_classes} iters ' +
@@ -379,15 +434,19 @@ if __name__ == "__main__":
 
     results = start_iteration(device, attack_mode, patch_size, discriminators, dataloader, classes, target_classes, checkpoint_dir, num_of_epochs, num_of_patches, brightness_factor, color_transfer)
 
-
-    target_models = None
-    if not intra_model_attack: 
+    print(f'RESULTS:{results}')
+    if intra_model_attack: 
+        target_models = discriminators
+        target_model_names = training_model_names
+    else:
         target_models = get_models(target_model_names, device)
-        for target, result in results.items():
-            # best_asr = result['best_asr']
-            # best_epoch = result['best_epoch']
-            best_patch = result['best_patch']
-            
-            test_best_patch(dataloader, attack_mode, target_models, target_model_names, best_patch, target_class=target, device=device)
+
+    for target, result in results.items():
+        # best_asr = result['best_asr']
+        # best_epoch = result['best_epoch']
+        best_patch = result['best_patch']
+        print(f'BEST PATCH: {best_patch}')
+        test_best_patch(dataloader, attack_mode, target_models, target_model_names, training_model_names, best_patch, target_class=target, device=device)
+
 
     wandb.finish()  

@@ -2,6 +2,7 @@ import torch, os, random, numpy
 from torch.utils.data import DataLoader
 from torchvision import datasets, transforms
 
+import json
 
 def load_random_classes(image_folder_path, num_of_classes):
 
@@ -88,6 +89,21 @@ def adjust_brightness(image, brightness_factor):
     brightness_transform = transforms.ColorJitter(brightness=brightness_factor, contrast=0.3)
     adjusted_image = brightness_transform(image)
     return adjusted_image
+
+
+
+def get_class_name(number, json_file='class_mapping.json'):
+    try:
+        with open(json_file, 'r') as file:
+            class_mapping = json.load(file)
+        
+        class_name = class_mapping.get(str(number), "Class not found")
+        return class_name
+    
+    except FileNotFoundError:
+        return "JSON file not found. Make sure the file exists and the path is correct."
+    except json.JSONDecodeError:
+        return "Error decoding JSON file. Ensure the file contains valid JSON."
 
 
 # def display_images(images):
