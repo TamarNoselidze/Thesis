@@ -1,5 +1,6 @@
 import torch
 import random
+import matplotlib.pyplot as plt
 
 class DeployerMini:
     def __init__(self, num_patches=16, critical_points=False, allow_overlap=False):
@@ -13,9 +14,7 @@ class DeployerMini:
         _, P_H, P_W = patch.shape
         mask = torch.zeros_like(image)
 
-        # print(f"Image size: {image.shape}")
-        # print(f"Patch size: {patch.shape}")    return random.sample(all_areas, min(numOfPoints, len(all_areas)))
-        
+       
         if self.critical_points:
             # Get random critical areas
             critical_areas = get_random_critical_areas(self.num_patches, (H, W), (P_H, P_W))
@@ -55,22 +54,44 @@ class DeployerMini:
                 deployed_count += 1
 
         adversarial_image = mask + (1 - mask) * image  # Combine mask with original image
+
         return adversarial_image
 
 
 def get_random_critical_areas(numOfPoints, image_dim, patch_dim):
     all_areas = get_critical_centroids(image_dim, patch_dim)
-    return random.sample(all_areas, min(numOfPoints, len(all_areas)))
+    random_areas = random.sample(all_areas, min(numOfPoints, len(all_areas)))
 
+    print(f'randomly chosen: {random_areas}')
+    return random_areas
 
 def get_critical_centroids(image_dim, patch_dim):
-    x_offset = y_offset = patch_dim
-    # x_range, y_range = image_dim // patch_dim 
-    
-    centr_coordinates = []
-    for x in range(x_offset, image_dim, x_offset):
-        for y in range(y_offset, image_dim, y_offset):
-            centr_coordinates.append((x,y))
+    image_H, image_W = image_dim
+    patch_H, patch_W = patch_dim
 
-    print(len(centr_coordinates))
+    print(f'patch dimension: {patch_dim}')
+    print(f'image dimension: {image_dim}')
+
+    centr_coordinates = []
+    for x in range(patch_H, image_H, patch_H):
+        for y in range(patch_W, image_W, patch_W):
+            centr_coordinates.append((x, y))
+    # print(f'critical areas: {centr_coordinates}')
+
     return centr_coordinates
+
+
+
+
+# image_size = (1, 12, 12)  
+# patch_size = (1, 4, 4)   
+
+# image = torch.zeros(image_size)  
+# patch = torch.ones(patch_size) 
+
+# deployer = DeployerMini(num_patches=1, critical_points=True)
+# adversarial_image = deployer.deploy(patch, image)
+
+# print(image)
+# print('-----------------------')
+# print(adversarial_image)
