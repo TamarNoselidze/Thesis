@@ -47,7 +47,7 @@ def get_models(model_names, device):
         
 def test_best_patch(dataloader, attack_type, target_models, target_model_names, train_model_names, patch, target_class, device):
     if attack_type == 'mini':
-        deployer = DeployerMini(num_patches=8)
+        deployer = DeployerMini(num_patches=8, critical_points=True)
     else:
         deployer = Deployer()
     missclassified_counts = {model : {'misclassified' : 0, 'total' : 0} for model in target_model_names}
@@ -350,12 +350,12 @@ def start_iteration(device, attack_type, patch_size, discriminators, dataloader,
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Random Position Patch Attack')
     parser.add_argument('--image_folder_path', help='Image dataset to perturb', default='../imagenetv2-top-images/imagenetv2-top-images-format-val')
-    parser.add_argument('--checkpoint_folder_path', help='Path to a folder where generators will be saved', default='./checkpoints')
+    parser.add_argument('--checkpoint_folder_path', help='Path to a folder where generators will be saved.', default='./checkpoints')
     parser.add_argument('--attack_mode', choices=['gpatch', 'mini'], default='gpatch')
     parser.add_argument('--num_of_patches', type=int, help='Number of patches. 1 for G-patch attack, and more than 1 for mini-patch attack', default=1)
     parser.add_argument('--transfer_mode', choices=['src-tar', 'ensemble', 'cross-val'],  
-                        help='Choose the transferability approach: source-to-target, ensemble, or cross-validation', default='source-to-target')
-    parser.add_argument('--training_models', type=str)
+                        help='Choose the transferability approach: src-tar (for source-to-target), ensemble, or cross-val (for cross-validation)', default='src-tar')
+    parser.add_argument('--training_models', type=str, help='Name(s) of the models the generator will be trained on.')
     parser.add_argument('--target_models', type=str)
     parser.add_argument('--patch_size', type=int, help='Size of the adversarial patch', default=64)
     parser.add_argument('--epochs', type=int, help='Number of epochs')
@@ -379,7 +379,7 @@ if __name__ == "__main__":
     num_of_patches = args.num_of_patches
 
     if training_model_names is None:
-        raise ValueError('You should specify training models.')  
+        raise ValueError('Please, specify training models.')  
     
     if transfer_mode == 'src-tar':
         if target_model_names is None:
@@ -388,18 +388,18 @@ if __name__ == "__main__":
         if transfer_mode == 'cross-val':
             cross_validation = True
         if target_model_names is None:
-            raise ValueError("For the ensemble/cross-validation attack you should specify target models.")
+            raise ValueError("For the ensemble/cross-validation attack please, specify target models.")
         
 
-    try:
-        brightness_factor = float(args.brightness)
-    except:
-        brightness_factor = None
+    # try:
+    #     brightness_factor = float(args.brightness)
+    # except:
+    #     brightness_factor = None
 
-    try:
-        color_transfer = float(args.color_transfer)
-    except:
-        color_transfer = None
+    # try:
+    #     color_transfer = float(args.color_transfer)
+    # except:
+    #     color_transfer = None
 
 
     discriminators = get_models(training_model_names, device)
@@ -418,11 +418,13 @@ if __name__ == "__main__":
     project_name = (
         f'RPP {transfer_mode} ' +
         f'{attack_mode}_attack ' +
+        f'critical ' + 
         f'train-{",".join(training_model_names)} ' + 
         (f'target-{",".join(target_model_names)} ' if target_model_names else '') +
-        f'{num_of_target_classes} iters ' +
-        (f'(br {brightness_factor}) ' if brightness_factor else '') + 
-        (f'_col-tr{color_transfer}' if color_transfer else '')
+        f'{num_of_target_classes} iters ' 
+        # +
+        # (f'(br {brightness_factor}) ' if brightness_factor else '') + 
+        # (f'_col-tr{color_transfer}' if color_transfer else '')
     )
 
     # Initialize W&B
@@ -432,9 +434,12 @@ if __name__ == "__main__":
         'target_classes' : num_of_target_classes,
     })
 
-    results = start_iteration(device, attack_mode, patch_size, discriminators, dataloader, classes, target_classes, checkpoint_dir, num_of_epochs, num_of_patches, brightness_factor, color_transfer)
+    # results = start_iteration(device, attack_mode, patch_size, discriminators, dataloader, classes, target_classes, checkpoint_dir, num_of_epochs, num_of_patches, brightness_factor, color_transfer)
+    results = start_iteration(device, attack_mode, patch_size, discriminators, dataloader, classes, target_classes, checkpoint_dir, num_of_epochs, num_of_patches)
+
 
     print(f'RESULTS:{results}')
+    
     if intra_model_attack: 
         target_models = discriminators
         target_model_names = training_model_names
@@ -445,7 +450,7 @@ if __name__ == "__main__":
         # best_asr = result['best_asr']
         # best_epoch = result['best_epoch']
         best_patch = result['best_patch']
-        print(f'BEST PATCH: {best_patch}')
+        # print(f'BEST PATCH: {best_patch}')
         test_best_patch(dataloader, attack_mode, target_models, target_model_names, training_model_names, best_patch, target_class=target, device=device)
 
 

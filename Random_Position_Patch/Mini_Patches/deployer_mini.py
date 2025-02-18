@@ -62,15 +62,15 @@ def get_random_critical_areas(numOfPoints, image_dim, patch_dim):
     all_areas = get_critical_centroids(image_dim, patch_dim)
     random_areas = random.sample(all_areas, min(numOfPoints, len(all_areas)))
 
-    print(f'randomly chosen: {random_areas}')
+    # print(f'randomly chosen: {random_areas}')
     return random_areas
 
 def get_critical_centroids(image_dim, patch_dim):
     image_H, image_W = image_dim
     patch_H, patch_W = patch_dim
 
-    print(f'patch dimension: {patch_dim}')
-    print(f'image dimension: {image_dim}')
+    # print(f'patch dimension: {patch_dim}')
+    # print(f'image dimension: {image_dim}')
 
     centr_coordinates = []
     for x in range(patch_H, image_H, patch_H):

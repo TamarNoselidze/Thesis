@@ -9,7 +9,8 @@ wandb: Run `wandb offline` to turn off syncing.
 wandb: Syncing run young-firefly-1
 wandb: ⭐️ View project at https://wandb.ai/takonoselidze-charles-university/RPP%20src-tar%20mini_attack%20train-vit_b_16%201%20iters%20
 wandb: 🚀 View run at https://wandb.ai/takonoselidze-charles-university/RPP%20src-tar%20mini_attack%20train-vit_b_16%201%20iters%20/runs/lg8410un
-wandb: - 0.861 MB of 0.861 MB uploadedwandb:                                                                                
+wandb: - 0.861 MB of 0.861 MB uploaded
+wandb:                                                                                
 wandb: 
 wandb: Run history:
 wandb: epoch_avg_asr █▆▁▃
