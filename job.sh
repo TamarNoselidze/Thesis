@@ -1,6 +1,6 @@
 #!/bin/bash
 #PBS -q gpu@pbs-m1.metacentrum.cz
-#PBS -l walltime=20:00:00
+#PBS -l walltime=24:00:00
 #PBS -l select=1:ncpus=1:ngpus=1:mem=30gb:scratch_local=100gb
 
 trap 'clean_scratch' TERM EXIT
@@ -30,10 +30,9 @@ NUMBER_OF_PATCHES=${NUMBER_OF_PATCHES:-1}
 TRANSFER_MODE=${TRANSFER_MODE}
 PATCH_SIZE=${PATCH_SIZE:-64}
 EPOCHS=${EPOCHS:-40}           # Number of epochs
-CLASSES=${CLASSES:-100}        # Number of random classes to load for training
-TARGET_CLASSES=${TARGET_CLASSES:-10}   # Number of random target classes
-BRIGHTNESS=${BRIGHTNESS}
-COL_TRANSFER=${COL_TRANSFER}
+CLASSES=${CLASSES:-1000}        # Number of classes to load for training
+TARGET_CLASS=${TARGET_CLASS}
+MINI_TYPE=${MINI_TYPE}
 
 SCRATCH_RESULTS="$SCRATCHDIR/results"
 SCRATCH_LOGS="$SCRATCHDIR/logs"
@@ -70,9 +69,8 @@ singularity exec --nv "$CONTAINER_PATH" bash sing.sh \
 	"$PATCH_SIZE"\
 	"$EPOCHS" \
 	"$CLASSES" \
-	"$TARGET_CLASSES" \
-	"$BRIGHTNESS" \
-	"$COL_TRANSFER" || { echo "Singularity execution failed"; exit 1; }
+	"$TARGET_CLASS" \
+	"$MINI_TYPE" || { echo "Singularity execution failed"; exit 1; }
 
 # archive the results
 echo "Archiving results..."

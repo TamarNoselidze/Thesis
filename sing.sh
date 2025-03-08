@@ -19,6 +19,5 @@ python3 main.py \
     --patch_size "$8" \
     --epochs "$9" \
     --num_of_train_classes "${10}" \
-    --num_of_target_classes "${11}" \
-    --brightness "${12}" \
-    --color_transfer "${13}"
+    --target_class "${11}" \
+    --mini_type "${12}"

@@ -45,11 +45,14 @@ def get_models(model_names, device):
 
 
         
-def test_best_patch(dataloader, attack_type, target_models, target_model_names, train_model_names, patch, target_class, device):
-    if attack_type == 'mini':
-        deployer = DeployerMini(num_patches=8, critical_points=True)
-    else:
+def test_best_patch(dataloader, attack_mode, target_models, target_model_names, train_model_names, patch, target_class, device):
+    
+    attack_type = attack_mode.split('_')
+    if attack_type[0] == 'gpatch':
         deployer = Deployer()
+    else:
+        deployer = DeployerMini(num_patches=8, critical_points=int(attack_type[1]))
+
     missclassified_counts = {model : {'misclassified' : 0, 'total' : 0} for model in target_model_names}
 
     # total_image_count = len(dataloader.dataset)
@@ -98,7 +101,7 @@ def test_best_patch(dataloader, attack_type, target_models, target_model_names, 
 
 
 def evaluate_patch(patch, dataloader, target_class, deployer, discriminators, device):
-    total_asr = 0
+    total_correct_count = 0
     total_valid_images = 0
 
     with torch.no_grad():  # No gradient tracking
@@ -142,11 +145,9 @@ def evaluate_patch(patch, dataloader, target_class, deployer, discriminators, de
             majority_threshold = len(total_predicted) // 2
             correct = (correct_counts > majority_threshold).sum().item()
 
-            batch_asr = correct / batch_size
-            total_asr += batch_asr
+            total_correct_count += correct
 
-        # total_asr /= len(dataloader)
-        total_asr /= total_valid_images
+        total_asr = total_correct_count / total_valid_images
 
     return total_asr
 
@@ -221,12 +222,12 @@ def gan_attack(device, generator, optimizer, deployer, discriminators, dataloade
 
     for epoch in range(num_of_epochs):
         print(f'@ Epoch {epoch+1} for a target class: {target_class}')
-        epoch_asr = 0
+        epoch_correct_count = 0
         epoch_valid_images = 0  # Count valid images for this epoch
         batch_i=1
 
         for batch in dataloader:
-            print(f'@  Batch {batch_i}')
+
             images, true_labels = batch
             images = images.to(device)
             true_labels = true_labels.to(device)
@@ -286,26 +287,31 @@ def gan_attack(device, generator, optimizer, deployer, discriminators, dataloade
             # majority vote (more than half of the discriminators)
             majority_threshold = len(total_predicted) // 2
             correct = (correct_counts > majority_threshold).sum().item()
-
-            print(f"     Loss: {loss.item()}")
-            print(f"     True labels: {true_labels.cpu()}")
-            print(f"     Predicted labels: {total_predicted}")
-            print(f"     Correctly misclassified: {correct}")
-
             batch_asr = correct / batch_size
-            print(f'@    Batch (number {batch_i}) has ASR: {batch_asr}')
             batch_i+=1
-
             
-            epoch_asr += batch_asr
+            # epoch_asr += batch_asr
+            epoch_correct_count += correct
+
+            wandb.log({  'batch_asr': batch_asr   })
+
+            if (batch_i-1) % 50 == 0:     # ONLY PRINT EVERY 50 BATCHES
+                print(f'@  Batch {batch_i}')
+                print(f"    Loss: {loss.item()}")
+                print(f"    True labels: {true_labels.cpu()}")
+                print(f"    Predicted labels: {total_predicted}")
+                print(f"    Correctly misclassified: {correct}")
+
+                print(f'@   Batch {batch_i} has ASR: {batch_asr}')
 
         # avg_epoch_asr = epoch_asr / len(dataloader)
-        avg_epoch_asr = epoch_asr / epoch_valid_images
+        # avg_epoch_asr = epoch_asr / epoch_valid_images
+        avg_epoch_asr = epoch_correct_count / epoch_valid_images
         total_asr += avg_epoch_asr
 
         # Log epoch-level metrics to W&B
         wandb.log({
-            'epoch_avg_asr': avg_epoch_asr,
+            'epoch_avg_asr': avg_epoch_asr
         })
       
         print(f"Epoch [{epoch+1}/{num_of_epochs}], Loss: {loss.item()}, Avg ASR: {avg_epoch_asr * 100:.2f}%")
@@ -316,26 +322,24 @@ def gan_attack(device, generator, optimizer, deployer, discriminators, dataloade
 
 
 
-def start_iteration(device, attack_type, patch_size, discriminators, dataloader, classes, target_classes, checkpoint_dir, num_of_epochs=40, num_of_patches=8, brightness_factor=None, color_transfer=None):
-    if attack_type == 'mini':
-        deployer = DeployerMini(patch_size, num_of_patches)
-    else:
+def start_iteration(device, attack_mode, patch_size, discriminators, dataloader, classes, target_class, checkpoint_dir, num_of_epochs=40, num_of_patches=8, brightness_factor=None, color_transfer=None):
+    attack_type = attack_mode.split('_')
+    if attack_type[0] == 'gpatch':
         deployer = Deployer()
+    else:
+        deployer = DeployerMini(num_patches=8, critical_points=int(attack_type[1]))
 
     ###########################
-    # target_classes = [104, 407, 579, 630, 932, 949]
-    target_classes = [932, 949]
+    # for iteration in range(len(target_classes)):
+        # target_class = target_classes[iteration]
+    # print(f'{"-"*30} Iteration {iteration+1} for target class: "{get_class_name(target_class)}" ({target_class}) {"-"*30}')
+    generator = Generator(patch_size).to(device)
+    generator.train()
 
-    for iteration in range(len(target_classes)):
-        target_class = target_classes[iteration]
-        print(f'{"-"*30} Iteration {iteration+1} for target class: "{get_class_name(target_class)}" ({target_class}) {"-"*30}')
-        generator = Generator(patch_size).to(device)
-        generator.train()
-
-        optimizer = optim.Adam(generator.parameters(), lr=0.001, betas=(0.9, 0.999))   ## try different values
-        target_class = torch.tensor(target_class, device=device)
-        gan_attack(device, generator, optimizer, deployer, discriminators, dataloader, classes, target_class, num_of_epochs, checkpoint_dir)
-        print(f'{"-"*100}\n\n')
+    optimizer = optim.Adam(generator.parameters(), lr=0.001, betas=(0.9, 0.999))   ## try different values
+    target_class = torch.tensor(target_class, device=device)
+    gan_attack(device, generator, optimizer, deployer, discriminators, dataloader, classes, target_class, num_of_epochs, checkpoint_dir)
+    # print(f'{"-"*100}\n\n')
 
     fixed_noise = torch.randn(1, 100, 1, 1).to(device)
     results = evaluate_saved_generators(checkpoint_dir, fixed_noise, patch_size, dataloader, deployer, discriminators, device)
@@ -360,9 +364,8 @@ if __name__ == "__main__":
     parser.add_argument('--patch_size', type=int, help='Size of the adversarial patch', default=64)
     parser.add_argument('--epochs', type=int, help='Number of epochs')
     parser.add_argument('--num_of_train_classes', type=int, help='Number of (random) classes to train the generator on', default=100)
-    parser.add_argument('--num_of_target_classes', type=int, help='Number of (random) target classes to misclassify images as', default=10)
-    parser.add_argument('--brightness', help='Brightness level for the patch')
-    parser.add_argument('--color_transfer', help='Color transfer value for the patch')
+    parser.add_argument('--target_class', type=int, help='Target class to misclassify images as', default=932)
+    parser.add_argument('--mini_type', type=int, default=0, help='Type of mini-attack: 0 is for normal, 1&2 are for critical, but crosspoints and within the patches correspondingly.' )
 
     args = parser.parse_args()
 
@@ -375,8 +378,11 @@ if __name__ == "__main__":
     cross_validation = False
 
     patch_size = args.patch_size
-    attack_mode = args.attack_mode
     num_of_patches = args.num_of_patches
+    attack_mode = args.attack_mode
+
+    if attack_mode == 'mini':
+        attack_mode += f'_{args.mini_type}'
 
     if training_model_names is None:
         raise ValueError('Please, specify training models.')  
@@ -391,54 +397,34 @@ if __name__ == "__main__":
             raise ValueError("For the ensemble/cross-validation attack please, specify target models.")
         
 
-    # try:
-    #     brightness_factor = float(args.brightness)
-    # except:
-    #     brightness_factor = None
-
-    # try:
-    #     color_transfer = float(args.color_transfer)
-    # except:
-    #     color_transfer = None
-
-
     discriminators = get_models(training_model_names, device)
 
     dataloader, classes = load_random_classes(args.image_folder_path, args.num_of_train_classes)
     num_of_classes = len(classes)
-    # print(f'CLASSES: {classes}')
-    # print(f'IN TOTAL: {len(classes)}')
     num_of_epochs = args.epochs
-    num_of_target_classes = args.num_of_target_classes
 
-    target_classes = get_target_classes(classes, 1000, num_of_target_classes)
-    # print(f'TARGET CLASSES: {target_classes}')
-    
+    target_class = args.target_class 
 
     project_name = (
         f'RPP {transfer_mode} ' +
-        f'{attack_mode}_attack ' +
-        f'critical ' + 
+        f'{attack_mode} ' +
+        f'={target_class}= ' +
         f'train-{",".join(training_model_names)} ' + 
-        (f'target-{",".join(target_model_names)} ' if target_model_names else '') +
-        f'{num_of_target_classes} iters ' 
-        # +
-        # (f'(br {brightness_factor}) ' if brightness_factor else '') + 
-        # (f'_col-tr{color_transfer}' if color_transfer else '')
+        (f'target-{",".join(target_model_names)} ' if target_model_names else '')
     )
 
+    print(f'PROJECT: {project_name}')
+    
     # Initialize W&B
     wandb.init(project=project_name, entity='takonoselidze-charles-university', config={
         'epochs': num_of_epochs,
         'classes' : num_of_classes,
-        'target_classes' : num_of_target_classes,
+        'target_class' : target_class,
     })
 
-    # results = start_iteration(device, attack_mode, patch_size, discriminators, dataloader, classes, target_classes, checkpoint_dir, num_of_epochs, num_of_patches, brightness_factor, color_transfer)
-    results = start_iteration(device, attack_mode, patch_size, discriminators, dataloader, classes, target_classes, checkpoint_dir, num_of_epochs, num_of_patches)
+    results = start_iteration(device, attack_mode, patch_size, discriminators, dataloader, classes, target_class, checkpoint_dir, num_of_epochs, num_of_patches)
 
 
-    print(f'RESULTS:{results}')
     
     if intra_model_attack: 
         target_models = discriminators
