@@ -1,0 +1,16 @@
+
+[notice] A new release of pip is available: 24.2 -> 25.0.1
+[notice] To update, run: python3 -m pip install --upgrade pip
+/usr/local/lib/python3.8/dist-packages/torchvision/models/_utils.py:223: UserWarning: Arguments other than a weight enum or `None` for 'weights' are deprecated since 0.13 and may be removed in the future. The current behavior is equivalent to passing `weights=ViT_L_16_Weights.IMAGENET1K_V1`. You can also use `weights=ViT_L_16_Weights.DEFAULT` to get the most up-to-date weights.
+  warnings.warn(msg)
+wandb: Using wandb-core as the SDK backend. Please refer to https://wandb.me/wandb-core for more information.
+wandb: Currently logged in as: takonoselidze (takonoselidze-charles-university). Use `wandb login --relogin` to force relogin
+wandb: Tracking run with wandb version 0.18.3
+wandb: Run data is saved locally in /scratch.ssd/takonoselidze/job_9221204.pbs-m1.metacentrum.cz/wandb/run-20250301_233019-15psnfk5
+wandb: Run `wandb offline` to turn off syncing.
+wandb: Syncing run divine-darkness-1
+wandb: ⭐️ View project at https://wandb.ai/takonoselidze-charles-university/RPP%20src-tar%20mini_1%20%3D481%3D%20train-vit_l_16%20
+wandb: 🚀 View run at https://wandb.ai/takonoselidze-charles-university/RPP%20src-tar%20mini_1%20%3D481%3D%20train-vit_l_16%20/runs/15psnfk5
+Terminated
+/var/spool/pbs/mom_priv/jobs/9221204.pbs-m1.metacentrum.cz.SC: line 1: clean_scratch: command not found
+/var/spool/pbs/mom_priv/jobs/9221204.pbs-m1.metacentrum.cz.SC: line 1: clean_scratch: command not found

@@ -1,0 +1,10 @@
+
+[notice] A new release of pip is available: 24.2 -> 25.0.1
+[notice] To update, run: python3 -m pip install --upgrade pip
+Traceback (most recent call last):
+  File "main.py", line 10, in <module>
+    from Mini_Patches.deployer_mini import DeployerMini
+  File "/scratch.ssd/takonoselidze/job_9230412.pbs-m1.metacentrum.cz/Mini_Patches/deployer_mini.py", line 79
+    offset = 
+            ^
+SyntaxError: invalid syntax
