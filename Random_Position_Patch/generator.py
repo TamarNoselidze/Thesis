@@ -9,7 +9,8 @@ class Generator(nn.Module):
 
         layers = self.build_layers(input_dim, output_dim, patch_size)
         self.model = nn.Sequential(*layers)
-        
+        print(F'layers: {layers}')
+        print(self.model.shape)
         self.apply(self.weights_init)
         
 
@@ -36,10 +37,16 @@ class Generator(nn.Module):
             layers.append(nn.ConvTranspose2d(128, output_dim, kernel_size=4, stride=2, padding=1))  # (128x128 -> 80x80)
 
         elif patch_size == 16:
-            layers.append(self.make_layer(1024, 512, kernel_size=3, stride=1, padding=1))  # (4x4 -> 4x4)
-            layers.append(self.make_layer(512, 256, kernel_size=4, stride=2, padding=1))   # (4x4 -> 8x8)
-            layers.append(self.make_layer(256, 128, kernel_size=3, stride=1, padding=1))   # (8x8 -> 8x8)
-            layers.append(nn.ConvTranspose2d(128, output_dim, kernel_size=4, stride=2, padding=1))  # (8x8 -> 16x16)
+            layers.append(self.make_layer(1024, 512, kernel_size=3, stride=1, padding=1))  
+            layers.append(self.make_layer(512, 256, kernel_size=4, stride=2, padding=1))   
+            layers.append(self.make_layer(256, 128, kernel_size=3, stride=1, padding=1))   
+            layers.append(nn.ConvTranspose2d(128, output_dim, kernel_size=4, stride=2, padding=1))  
+
+        elif patch_size == 32:
+            layers.append(self.make_layer(1024, 512, kernel_size=3, stride=1, padding=1))  
+            layers.append(self.make_layer(512, 256, kernel_size=4, stride=2, padding=1))   
+            layers.append(self.make_layer(256, 128, kernel_size=4, stride=2, padding=1))   
+            layers.append(nn.ConvTranspose2d(128, output_dim, kernel_size=4, stride=2, padding=1))
 
         else:
             raise ValueError("Unsupported patch size!")

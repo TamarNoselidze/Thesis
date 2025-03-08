@@ -11,7 +11,7 @@ from Mini_Patches.deployer_mini import DeployerMini
 from generator import Generator
 from helper import save_generator, load_generator, load_checkpoint_by_target_class, load_random_classes, get_target_classes, get_class_name
 
-from torchvision.models.resnet import resnet50, ResNet50_Weights, resnet152, ResNet152_Weights
+from torchvision.models.resnet import resnet50, ResNet50_Weights, resnet152, ResNet152_Weights, resnet101, ResNet101_Weights
 from torchvision.models import vit_b_16, ViT_B_16_Weights, vit_l_16, ViT_L_16_Weights, vit_b_32, ViT_B_32_Weights, vgg16_bn, VGG16_BN_Weights, swin_b, Swin_B_Weights
 
 
@@ -23,6 +23,8 @@ def get_models(model_names, device):
     for model_name in model_names:
         if model_name == 'resnet50':
             model = resnet50(weights=ResNet50_Weights.DEFAULT)
+        elif model_name == 'resnet101':
+            model = resnet101(weights=ResNet101_Weights.DEFAULT)
         elif model_name == 'resnet152':
             model = resnet152(weights=ResNet152_Weights.DEFAULT)
         elif model_name == 'vgg16_bn':
@@ -295,7 +297,7 @@ def gan_attack(device, generator, optimizer, deployer, discriminators, dataloade
 
             wandb.log({  'batch_asr': batch_asr   })
 
-            if (batch_i-1) % 50 == 0:     # ONLY PRINT EVERY 50 BATCHES
+            if (batch_i-1) % 100 == 0:     # ONLY PRINT EVERY 100 BATCHES
                 print(f'@  Batch {batch_i}')
                 print(f"    Loss: {loss.item()}")
                 print(f"    True labels: {true_labels.cpu()}")

@@ -28,3 +28,9 @@ and place them strategically at the crosspoints of the patches used for linear p
 
 
     qsub -v "ATTACK_MODE=mini,NUMBER_OF_PATCHES=8,TRANSFER_MODE=src-tar,TRAINING_MODELS='vit_b_16 resnet50',PATCH_SIZE=16,EPOCHS=2,CLASSES=200,TARGET_CLASSES=1" job.sh
+
+
+
+20 random classes as targets
+
+place the patches inside the transformer patches instead of the intersections
