@@ -42,7 +42,7 @@ class Generator(nn.Module):
 
         elif patch_size == 32:
             layers.append(self.make_layer(1024, 512, kernel_size=3, stride=1, padding=1))  
-            layers.append(self.make_layer(512, 256, kernel_size=4, stride=1, padding=1))   
+            layers.append(self.make_layer(512, 256, kernel_size=4, stride=2, padding=1))   
             layers.append(self.make_layer(256, 128, kernel_size=4, stride=2, padding=1))   
             layers.append(nn.ConvTranspose2d(128, output_dim, kernel_size=4, stride=2, padding=1))
 

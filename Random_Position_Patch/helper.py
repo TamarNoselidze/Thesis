@@ -60,13 +60,15 @@ def load_generator(generator, checkpoint_filename, output_dir='checkpoints'):
     return generator
 
 
-def save_generator(generator, epoch, target_class, output_dir='checkpoints'):
+def save_generator(generator_name, generator, output_dir='checkpoints'):
+
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)  # Create the target-specific directory if it doesn't exist
 
-    save_path = os.path.join(output_dir, f'generator_epoch_{epoch + 1}_target_{target_class}.pth')
+    # f'generator_epoch_{epoch + 1}_target_{target_class}_iter_{iter}'
+    save_path = os.path.join(output_dir, f'{generator_name}.pth')
     torch.save(generator.state_dict(), save_path)
-    print(f'  > Saved generator at epoch {epoch + 1} to {save_path}')
+    print(f'  > Saved generator to {save_path}')
 
 
 def load_checkpoint_by_target_class(checkpoint_files):
@@ -75,7 +77,7 @@ def load_checkpoint_by_target_class(checkpoint_files):
     for checkpoint_file in checkpoint_files:
         parts = checkpoint_file.split('_')
         epoch = int(parts[2])  # Extract epoch number
-        target_class = int(parts[4].split('.')[0])  # Extract target class
+        target_class = int(parts[4])  # Extract target class
         if target_class not in target_class_checkpoints:
             target_class_checkpoints[target_class] = []
         target_class_checkpoints[target_class].append((epoch, checkpoint_file))

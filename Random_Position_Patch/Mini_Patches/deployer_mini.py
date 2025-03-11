@@ -1,6 +1,5 @@
 import torch
 import random
-import matplotlib.pyplot as plt
 
 class DeployerMini:
     def __init__(self, num_patches=16, critical_points=0, allow_overlap=False):
@@ -13,8 +12,6 @@ class DeployerMini:
         _, H, W = image.shape
         _, P_H, P_W = patch.shape
         mask = torch.zeros_like(image)
-
-       
 
         if self.critical_points == 0:
             deployed_count = 0

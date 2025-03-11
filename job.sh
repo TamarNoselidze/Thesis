@@ -50,7 +50,7 @@ cp $HOME_DIR/Thesis/.env $SCRATCHDIR
 
 mkdir -p "$CHECKPOINT_DIR"  # Create checkpoint directory in scratch
 
-echo "Files in scratch directory:"
+# echo "Files in scratch directory:"
 # ls -R $SCRATCHDIR
 
 # creating directories for results and logs
@@ -72,13 +72,27 @@ singularity exec --nv "$CONTAINER_PATH" bash sing.sh \
 	"$TARGET_CLASS" \
 	"$MINI_TYPE" || { echo "Singularity execution failed"; exit 1; }
 
-# archive the results
-echo "Archiving results..."
-tar -czf "$RESULTS_TAR" "$SCRATCH_RESULTS" "$SCRATCH_LOGS" || { echo "Failed to create results archive"; exit 1; }
 
-# copy results back to home directory
-echo "Copying results to home directory..."
-cp "$RESULTS_TAR" "$HOME_DIR/results" || { echo "Failed to copy results, keeping scratch"; export CLEAN_SCRATCH=false; exit 1; }
-# cp -r $SCRATCHDIR/pics $HOME_DIR/result_images/$PBS_JOBID || export CLEAN_SCRATCH=false
+# archive the results
+# echo "Archiving results..."
+# tar -czf "$RESULTS_TAR" "$SCRATCH_RESULTS" "$SCRATCH_LOGS" || { echo "Failed to create results archive"; exit 1; }
+
+# # copy results back to home directory
+# echo "Copying results to home directory..."
+# cp "$RESULTS_TAR" "$HOME_DIR/results" || { echo "Failed to copy results, keeping scratch"; export CLEAN_SCRATCH=false; exit 1; }
+# # cp -r $SCRATCHDIR/pics $HOME_DIR/result_images/$PBS_JOBID || export CLEAN_SCRATCH=false
+# ------------------------------------------------------------
+
+
+
+# Copy saved generators from scratch to home directory
+echo "Copying the best generator(s) to home directory..."
+mkdir -p "$HOME_DIR/generators/$PBS_JOBID"
+cp -r "$CHECKPOINT_DIR"/best_generators/* "$HOME_DIR/generators/$PBS_JOBID" || { echo "Failed to copy generators"; exit 1; }
+
+echo "Generator saved to $HOME_DIR/generators/$PBS_JOBID"
+
+
 
 echo "Job completed successfully!"
+
