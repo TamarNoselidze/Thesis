@@ -341,7 +341,7 @@ def start_iteration(device, attack_mode, patch_size, discriminators, dataloader,
 
     results_list = []  # Store results from all 5 generators
 
-    for i in range(5):  # Train 5 generators separately
+    for i in range(2):  # Train 5 generators separately
         iter = i+1
         print(f'{"-"*30} Training Generator {iter}/5 {"-"*30}')
 
@@ -419,7 +419,7 @@ if __name__ == "__main__":
     project_name = (
         f'RPP {transfer_mode} ' +
         f'{attack_mode} ' +
-        f'{num_of_patches} patches ' + 
+        f'{num_of_patches}_patches ' + 
         f'={target_class}= ' +
         f'train-{",".join(training_model_names)} ' + 
         (f'target-{",".join(target_model_names)} ' if target_model_names else '')
