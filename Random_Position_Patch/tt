@@ -1,17 +1,6 @@
-brightness restriction and color transfer in randm patch attack 
-save results for both gen approaches
-
-
 python main.py --attack=HOP-SKIP --image_folder_path=../imagenetv2-top-images/imagenetv2-top-images-format-val --models=vit_b_16 --epochs=0
 qsub -v ATTACK='HOP-SKIP',MODEL='vit_b_16' cleverhans_job.sh 
 qsub -v ATTACK_TYPE='1',MODEL='vit_b_16',EPOCHS=40 job.sh
-
-
-
-
-get started on your own attack
-
-add more models, 4 -> 5th model
 
 
 
@@ -29,6 +18,7 @@ and place them strategically at the crosspoints of the patches used for linear p
 
     qsub -v "ATTACK_MODE=mini,NUMBER_OF_PATCHES=8,TRANSFER_MODE=src-tar,TRAINING_MODELS='vit_b_16 resnet50',PATCH_SIZE=16,EPOCHS=2,CLASSES=200,TARGET_CLASSES=1" job.sh
 
+qsub -v "ATTACK_MODE=mini,NUMBER_OF_PATCHES=8,TRANSFER_MODE=src-tar,TRAINING_MODELS='swin_b',PATCH_SIZE=16,EPOCHS=20,CLASSES=700,TARGET_CLASS=932,MINI_TYPE=0" job.sh
 
 
 20 random classes as targets

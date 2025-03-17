@@ -1,5 +1,4 @@
-import os, argparse, random, numpy
-import wandb
+import os, argparse
 
 import torch
 import torch.optim as optim
@@ -10,6 +9,7 @@ from deployer import Deployer
 from Mini_Patches.deployer_mini import DeployerMini
 from generator import Generator
 from helper import save_generator, load_generator, load_checkpoint_by_target_class, load_random_classes, get_target_classes, get_class_name
+from wandb_logger import WandbLogger
 
 from torchvision.models.resnet import resnet50, ResNet50_Weights, resnet152, ResNet152_Weights, resnet101, ResNet101_Weights
 from torchvision.models import vit_b_16, ViT_B_16_Weights, vit_l_16, ViT_L_16_Weights, vit_b_32, ViT_B_32_Weights, vgg16_bn, VGG16_BN_Weights, swin_b, Swin_B_Weights
@@ -47,7 +47,7 @@ def get_models(model_names, device):
 
 
         
-def test_best_patch(dataloader, attack_mode, target_models, target_model_names, train_model_names, patch, target_class, device):
+def test_best_patch(dataloader, attack_mode, target_models, target_model_names, train_model_names, patch, target_class, device, logger, iteration):
     
     attack_type = attack_mode.split('_')
     if attack_type[0] == 'gpatch':
@@ -88,7 +88,9 @@ def test_best_patch(dataloader, attack_mode, target_models, target_model_names, 
                     missclassified_counts[name]["total"] += 1
                 
             if image_i % 500 == 0:   # displaying one in every 500 modified images
-                wandb.log({f"modified image_{image_i}" : wandb.Image(modified_image.cpu(), caption=f'target class "{get_class_name(target_class)}" ({target_class})')})
+                # wandb.log({f"modified image_{image_i}" : wandb.Image(modified_image.cpu(), caption=f'target class "{get_class_name(target_class)}" ({target_class})')})
+                logger.log_modified_image(iteration, image_i, modified_image, target_class)
+
             image_i +=1
 
     for name, results in missclassified_counts.items():
@@ -101,6 +103,12 @@ def test_best_patch(dataloader, attack_mode, target_models, target_model_names, 
         print(f'ASR for target model {name}: {asr * 100:.2f}%')    
 
 
+                # Log to wandb
+        logger.log_target_model_results(
+            iteration, target_class, name, train_model_names, count, total_image_count, asr
+        )
+    
+    return missclassified_counts
 
 def evaluate_patch(patch, dataloader, target_class, deployer, discriminators, device):
     total_correct_count = 0
@@ -155,7 +163,7 @@ def evaluate_patch(patch, dataloader, target_class, deployer, discriminators, de
 
 
 
-def evaluate_saved_generators(iter, checkpoint_dir, fixed_noise, patch_size, dataloader, deployer, discriminators, device):
+def evaluate_saved_generators(iter, checkpoint_dir, fixed_noise, patch_size, dataloader, deployer, discriminators, device, logger):
     best_asr = 0
     best_epoch = -1
     best_patch = None
@@ -186,17 +194,21 @@ def evaluate_saved_generators(iter, checkpoint_dir, fixed_noise, patch_size, dat
             asr = evaluate_patch(patch, dataloader, target_class, deployer, discriminators, device)
             print(f"Epoch {epoch} -<>- Patch ASR: {asr * 100:.2f}%")
 
-            patch_key = f'epoch_{epoch}_best_patch'
-            wandb.log({patch_key : wandb.Image(patch.cpu(), caption=f'Patch of epoch {epoch} target class "{get_class_name(target_class)}" ({target_class})')})
+            # patch_key = f'epoch_{epoch}_best_patch'
+            # wandb.log({patch_key : wandb.Image(patch.cpu(), caption=f'Patch of epoch {epoch} target class "{get_class_name(target_class)}" ({target_class})')})
 
-            last_checkpoint = checkpoint_file
-                
+            is_best = False
             if asr > best_asr:
                 best_asr = asr
                 best_epoch = epoch
                 best_patch = patch
                 best_generator = generator
+                is_best = True
 
+            logger.log_generator_evaluation(iter, target_class, epoch, asr, is_best)
+            logger.log_patch_image(iter, target_class, epoch, patch, is_best)
+
+            last_checkpoint = checkpoint_file
         print("-"*100)
 
         
@@ -206,6 +218,8 @@ def evaluate_saved_generators(iter, checkpoint_dir, fixed_noise, patch_size, dat
             save_generator("best_iter_-1", generator, f'{checkpoint_dir}/best_generators')
         else:
             save_generator(f"best_iter_{iter}", best_generator, f'{checkpoint_dir}/best_generators')
+            logger.log_best_generator(iter, target_class, best_epoch, best_asr)
+
 
         print(f"Best generator found at epoch {best_epoch} with ASR: {best_asr * 100:.2f}%")
         print("-"*100)
@@ -223,7 +237,7 @@ def evaluate_saved_generators(iter, checkpoint_dir, fixed_noise, patch_size, dat
 
 
 
-def gan_attack(iter, device, generator, optimizer, deployer, discriminators, dataloader, classes, target_class, num_of_epochs, checkpoints_dir, input_dim=100):
+def gan_attack(iter, device, generator, optimizer, deployer, discriminators, dataloader, classes, target_class, num_of_epochs, checkpoints_dir, logger, input_dim=100):
     
     total_asr = 0
     # total_valid_images = 0  # Keep track of valid images (not skipped)
@@ -233,6 +247,7 @@ def gan_attack(iter, device, generator, optimizer, deployer, discriminators, dat
         epoch_correct_count = 0
         epoch_valid_images = 0  # Count valid images for this epoch
         batch_i=1
+        batch_loss = 0
 
         for batch in dataloader:
 
@@ -296,12 +311,17 @@ def gan_attack(iter, device, generator, optimizer, deployer, discriminators, dat
             majority_threshold = len(total_predicted) // 2
             correct = (correct_counts > majority_threshold).sum().item()
             batch_asr = correct / batch_size
+            batch_loss += loss.item()
+
+
+            logger.log_batch_metrics(iter, epoch+1, batch_i, loss.item(), batch_asr)
+
             batch_i+=1
             
             # epoch_asr += batch_asr
             epoch_correct_count += correct
 
-            wandb.log({  'batch_asr': batch_asr   })
+            # wandb.log({  'batch_asr': batch_asr   })
 
             # _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
             # if (batch_i-1) % 100 == 0:     # ONLY PRINT EVERY 100 BATCHES
@@ -315,14 +335,16 @@ def gan_attack(iter, device, generator, optimizer, deployer, discriminators, dat
 
 
         avg_epoch_asr = epoch_correct_count / epoch_valid_images
+        avg_epoch_loss = batch_loss / (batch_i - 1) if batch_i > 1 else 0
         total_asr += avg_epoch_asr
 
         # Log epoch-level metrics to W&B
-        wandb.log({
-            'epoch_avg_asr': avg_epoch_asr
-        })
+        # wandb.log({
+        #     'epoch_avg_asr': avg_epoch_asr
+        # })
+        logger.log_epoch_metrics(iter, epoch+1, avg_epoch_loss, avg_epoch_asr)
       
-        print(f"Epoch [{epoch+1}/{num_of_epochs}], Loss: {loss.item()}, Avg ASR: {avg_epoch_asr * 100:.2f}%")
+        print(f"Epoch [{epoch+1}/{num_of_epochs}], Avg loss: {avg_epoch_loss}, Avg ASR: {avg_epoch_asr * 100:.2f}%")
 
         generator_name = f'generator_epoch_{epoch + 1}_target_{target_class}_iter_{iter}'
         save_generator(generator_name, generator, checkpoints_dir)
@@ -332,7 +354,7 @@ def gan_attack(iter, device, generator, optimizer, deployer, discriminators, dat
 
 
 
-def start_iteration(device, attack_mode, patch_size, discriminators, dataloader, classes, target_class, checkpoint_dir, num_of_epochs, num_of_patches):
+def start_iteration(device, attack_mode, patch_size, discriminators, dataloader, classes, target_class, checkpoint_dir, num_of_epochs, num_of_patches, logger):
     attack_type = attack_mode.split('_')
     if attack_type[0] == 'gpatch':
         deployer = Deployer()
@@ -341,7 +363,7 @@ def start_iteration(device, attack_mode, patch_size, discriminators, dataloader,
 
     results_list = []  # Store results from all 5 generators
 
-    for i in range(2):  # Train 5 generators separately
+    for i in range(2):  # Train generators separately
         iter = i+1
         print(f'{"-"*30} Training Generator {iter}/5 {"-"*30}')
 
@@ -350,12 +372,12 @@ def start_iteration(device, attack_mode, patch_size, discriminators, dataloader,
 
         optimizer = optim.Adam(generator.parameters(), lr=0.001, betas=(0.9, 0.999))   ## try different values
         target_class = torch.tensor(target_class, device=device)
-        gan_attack(iter, device, generator, optimizer, deployer, discriminators, dataloader, classes, target_class, num_of_epochs, checkpoint_dir)
+        gan_attack(iter, device, generator, optimizer, deployer, discriminators, dataloader, classes, target_class, num_of_epochs, checkpoint_dir, logger)
 
         fixed_noise = torch.randn(1, 100, 1, 1).to(device)
         # fixed_noises = [torch.randn(1, 100, 1, 1).to(device) for _ in range(5)]
 
-        results = evaluate_saved_generators(iter, checkpoint_dir, fixed_noise, patch_size, dataloader, deployer, discriminators, device)
+        results = evaluate_saved_generators(iter, checkpoint_dir, fixed_noise, patch_size, dataloader, deployer, discriminators, device, logger)
         
         results_list.append(results) 
 
@@ -428,13 +450,26 @@ if __name__ == "__main__":
     print(f'PROJECT: {project_name}')
     
     # Initialize W&B
-    wandb.init(project=project_name, entity='takonoselidze-charles-university', config={
+    # wandb.init(project=project_name, entity='takonoselidze-charles-university', config={
+    #     'epochs': num_of_epochs,
+    #     'classes' : num_of_classes,
+    #     'target_class' : target_class,
+    # })
+
+    logger = WandbLogger(project_name, {
         'epochs': num_of_epochs,
-        'classes' : num_of_classes,
-        'target_class' : target_class,
+        'classes': num_of_classes,
+        'target_class': target_class,
+        'attack_mode': attack_mode,
+        'patch_size': patch_size,
+        'num_of_patches': num_of_patches,
+        'transfer_mode': transfer_mode,
+        'training_models': training_model_names,
+        'target_models': target_model_names
     })
 
-    results_list = start_iteration(device, attack_mode, patch_size, discriminators, dataloader, classes, target_class, checkpoint_dir, num_of_epochs, num_of_patches)
+
+    results_list = start_iteration(device, attack_mode, patch_size, discriminators, dataloader, classes, target_class, checkpoint_dir, num_of_epochs, num_of_patches, logger)
 
 
     
@@ -444,13 +479,11 @@ if __name__ == "__main__":
     else:
         target_models = get_models(target_model_names, device)
 
-    for results in results_list:
+    # for results in results_list:
+    for i, results in enumerate(results_list):
+        iter = i+1
         for target, result in results.items():
-            # best_asr = result['best_asr']
-            # best_epoch = result['best_epoch']
             best_patch = result['best_patch']
-            # print(f'BEST PATCH: {best_patch}')
-            test_best_patch(dataloader, attack_mode, target_models, target_model_names, training_model_names, best_patch, target_class=target, device=device)
+            test_best_patch(dataloader, attack_mode, target_models, target_model_names, training_model_names, best_patch, target_class=target, device=device, logger=logger, iteration=iter)
 
-
-    wandb.finish()  
+    logger.finalize()
