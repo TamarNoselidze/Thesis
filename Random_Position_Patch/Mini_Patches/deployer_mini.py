@@ -2,7 +2,7 @@ import torch
 import random
 
 class DeployerMini:
-    def __init__(self, num_patches=16, critical_points=0, allow_overlap=False):
+    def __init__(self, num_patches, critical_points=0, allow_overlap=False):
         self.num_patches = num_patches
         self.allow_overlap = allow_overlap
         self.critical_points = critical_points
