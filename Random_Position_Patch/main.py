@@ -8,7 +8,7 @@ from loss import AdversarialLoss
 from deployer import Deployer
 from Mini_Patches.deployer_mini import DeployerMini
 from generator import Generator
-from helper import save_generator, load_generator, load_checkpoints, load_random_classes, get_class_name
+from helper import save_generator, load_generator, load_checkpoints, load_random_classes, get_class_name, fetch_patches_from_wandb
 from wandb_logger import WandbLogger
 
 from torchvision.models.resnet import resnet50, ResNet50_Weights, resnet152, ResNet152_Weights, resnet101, ResNet101_Weights
@@ -356,9 +356,11 @@ def start_testing(device, dataloader, target_class, num_of_patches, patches, tar
 
     # for target_model in target_models:
     for target_model, name in zip(target_models, target_model_names):
-        for i, patch in enumerate(patches):
-            logger.log_best_patch(i, patch)
-            test_best_patch(patch, i, dataloader, target_class, deployer, target_model, name, device, logger)
+        for iter, results in patches.items():
+            for noise_i, patch in results.items():
+        # for i, patch in enumerate(patches):
+                logger.log_best_patch(f'{noise_i} (iter {iter})', patch, testing=True)
+                test_best_patch(patch, f'{noise_i} (iter {iter})', dataloader, target_class, deployer, target_model, name, device, logger)
            
     
 
@@ -423,9 +425,10 @@ if __name__ == "__main__":
     if run_mode == 'train':
         start_training(device, attack_mode, patch_size, discriminators, dataloader, target_class, checkpoint_dir, num_of_epochs, num_of_patches, logger)
     else:
-        train_project_name = f'RPP train ' + f'{attack_mode} ' + f'={target_class}= ' + f' {",".join(training_model_names)} ' + f' > {",".join(target_model_names)}'
-        patches = fetch_patches_from_wandb()
+        train_project_name = f'RPP train ' + f'{attack_mode} ' + f'={target_class}= ' + f' {",".join(training_model_names)} '
         target_models = get_models(target_model_names, device)
+
+        patches = fetch_patches_from_wandb(train_project_name, noises=1)
         start_testing(device, dataloader, target_class, num_of_patches, patches, target_models, target_model_names, attack_mode, logger)
         
     

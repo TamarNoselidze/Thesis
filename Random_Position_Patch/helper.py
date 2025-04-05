@@ -121,61 +121,43 @@ def load_best_patch(project_name):
     return patches
 
 
-def fetch_patches_from_recent_runs(project_path, noises, save_dir='downloads', max_runs=5):
+
+def fetch_patches_from_wandb(project, noises, save_dir='downloads', max_runs=5):
 
     os.makedirs(save_dir, exist_ok=True)
-    
+    entity = "takonoselidze-charles-university"
     api = wandb.Api()
-    runs = api.runs(project_path, order="-created_at")
+    runs = api.runs(f'{entity}/{project}', order="-created_at")
     results_dict = {}
+
 
     for iter, run in enumerate(runs[:max_runs]):
         run_id = run.id
         run_save_dir = os.path.join(save_dir, run_id)
         os.makedirs(run_save_dir, exist_ok=True)
 
-        # --- Fetch image from history ---
+        # # --- Fetch image from history ---
         results = {}
         for i in range(noises):
             noise_i = i+1
-            image_key = f"best_patches/noise_{noise_i}"
-            patch_img = None
-            try:
-                history = run.history(keys=[image_key])
-                for row in history:
-                    if image_key in row:
-                        img_url = row[image_key]["path"]
-                        img_response = requests.get(img_url)
-                        patch_img = Image.open(BytesIO(img_response.content))
-                        break
-            except Exception as e:
-                print(f"[{run_id}] Failed to fetch image: {e}")
-
             # --- Fetch tensor artifact ---
             patch_tensor = None
             try:
                 artifact_name = f"patch_{noise_i}:latest"
-                entity = project_path.split('/')[0]
-                artifact = api.artifact(f"{entity}/{artifact_name}", type="patch_tensor")
+                artifact = api.artifact(f"{entity}/{project}/{artifact_name}", type="patch_tensor")
+
                 artifact_dir = artifact.download(root=run_save_dir)
                 tensor_path = os.path.join(artifact_dir, f"best_patch_{noise_i}.pt")
                 patch_tensor = torch.load(tensor_path, map_location='cpu')
             except Exception as e:
                 print(f"[{run_id}] Failed to fetch tensor: {e}")
 
-            if patch_img is not None and patch_tensor is not None:
-                results[noise_i] = ((patch_img, patch_tensor))
+            if patch_tensor is not None:
+                results[noise_i] = patch_tensor
+            else:
+                print('Failed to fetch both image and tensor')
 
         results_dict[iter] = results
 
     return results_dict
 
-
-
-results_dict = fetch_patches_from_recent_runs("takonoselidze-charles-university/RPP train gpatch =932= vgg16_bn", noises=1, max_runs=1)
-
-for iter, results in results_dict.items():
-    print(f'Results for iteration {iter}:')
-    for noise_i, patches in results.items():
-        print(f" Tensor shape: {patches[1].shape}")
-        patches[0].show()

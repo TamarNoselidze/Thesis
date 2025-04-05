@@ -104,24 +104,23 @@ class WandbLogger:
         artifact.add_file(generator_path)
         self.run.log_artifact(artifact)
 
-        # wandb.log_artifact() ??? 
-
         print(f"Generator saved to W&B as {generator_name}!")    
 
 
 
-    def log_best_patch(self, noise_i, patch):
+    def log_best_patch(self, noise_i, patch, testing=False):
         wandb.log({
             f"best_patches/noise_{noise_i}": 
                 wandb.Image(patch.cpu(), caption=f'Best patch for noise #{noise_i}')
         })
 
-        tensor_path = os.path.join('checkpoints', f"best_patch_{noise_i}.pt")
-        torch.save(patch.cpu(), tensor_path)
+        if not testing:
+            tensor_path = os.path.join('checkpoints', f"best_patch_{noise_i}.pt")
+            torch.save(patch.cpu(), tensor_path)
 
-        artifact = wandb.Artifact(name=f"patch_{noise_i}", type="patch_tensor")
-        artifact.add_file(tensor_path)
-        self.run.log_artifact(artifact)    
+            artifact = wandb.Artifact(name=f"patch_{noise_i}", type="patch_tensor")
+            artifact.add_file(tensor_path)
+            self.run.log_artifact(artifact)    
         
     
     def finalize(self):
