@@ -8,7 +8,7 @@ from loss import AdversarialLoss
 from deployer import Deployer
 from Mini_Patches.deployer_mini import DeployerMini
 from generator import Generator
-from helper import save_generator, load_generator, load_checkpoint_by_iteration, load_random_classes, get_class_name
+from helper import save_generator, load_generator, load_checkpoints, load_random_classes, get_class_name
 from wandb_logger import WandbLogger
 
 from torchvision.models.resnet import resnet50, ResNet50_Weights, resnet152, ResNet152_Weights, resnet101, ResNet101_Weights
@@ -47,66 +47,53 @@ def get_models(model_names, device):
 
 
         
-def test_best_patch(iter, noise_i, dataloader, attack_mode, target_models, target_model_names, train_model_names, patch, target_class, device, logger, iteration):
+def test_best_patch(patch, patch_i, dataloader, target_class, deployer, target_model, target_model_name, device, logger):
     
-    attack_type = attack_mode.split('_')
-    if attack_type[0] == 'gpatch':
-        deployer = Deployer()
-    else:
-        deployer = DeployerMini(num_of_patches, critical_points=int(attack_type[1]))
-
-    misclassified_counts = {model : {'misclassified' : 0, 'total' : 0} for model in target_model_names}
-
-    # total_image_count = len(dataloader.dataset)
-    
+    misclassified_counts = 0
     image_i = 0
     total_valid_images = 0  # Keep track of valid images (not skipped)
-    for batch in dataloader:
-        images, true_labels = batch
-        images = images.to(device)
-        true_labels = true_labels.to(device)
-        
-        # Filter out images with true_label == target_class
-        valid_indices = true_labels != target_class
-        if not valid_indices.any():
-            continue  # Skip this batch if all images are to be excluded
 
-        images = images[valid_indices]
-        true_labels = true_labels[valid_indices]
+    with torch.no_grad():  # Disable gradients for evaluation
+        for batch in dataloader:
+            images, true_labels = batch
+            images = images.to(device)
+            true_labels = true_labels.to(device)
+            
+            # Filter out images with true_label == target_class
+            valid_indices = true_labels != target_class
+            if not valid_indices.any():
+                continue  # Skip this batch if all images are to be excluded
 
-        batch_size = images.shape[0]
-        total_valid_images += batch_size
+            images = images[valid_indices]
+            true_labels = true_labels[valid_indices]
 
-        for i in range(batch_size):
-            misclassified = False
-            modified_image = deployer.deploy(patch, images[i])
-            for model, name in zip(target_models, target_model_names):
-                with torch.no_grad():  # Disable gradients for evaluation
-                    output = model(modified_image.unsqueeze(0).to(device))
-                    _, predicted = torch.max(output.data, 1)       
-                    if predicted.item() == target_class:
-                        misclassified_counts[name]["misclassified"] += 1
-                        misclassified = True
-                    misclassified_counts[name]["total"] += 1
-                
-            if image_i % 500 == 0:   # displaying one in every 500 modified images
-                # wandb.log({f"modified image_{image_i}" : wandb.Image(modified_image.cpu(), caption=f'target class "{get_class_name(target_class)}" ({target_class})')})
-                logger.log_modified_image(iter, noise_i, image_i, modified_image, misclassified)
+            batch_size = images.shape[0]
+            total_valid_images += batch_size
 
-            image_i +=1
-    print(f'WE ARE TESTING THE BEST GENERATOR OF ITERATION {iter}, PATCH GENERATED FROM RANDOM NOISE NUBMER {noise_i}')
-    print(f'The generator was trained on: {", ".join(train_model_names)}.')
-    for name, results in misclassified_counts.items():
-        count = results["misclassified"]
-        total_image_count = results["total"]
+            for i in range(batch_size):
+                misclassified = False
+                modified_image = deployer.deploy(patch, images[i])
+                # for model, name in zip(target_models, target_model_names):
+                output = target_model(modified_image.unsqueeze(0).to(device))
+                _, predicted = torch.max(output.data, 1)       
+                if predicted.item() == target_class:
+                    misclassified_counts += 1
+                    misclassified = True
+                    
+                if image_i % 500 == 0:   # displaying one in every 500 modified images
+                    logger.log_modified_image(patch_i, image_i, modified_image, misclassified)
+
+                image_i +=1
+
+  
         print(f'Target class: "{get_class_name(target_class)}" ({target_class})')
-        print(f'The generated adversarial patch on model {name} had {count} misclassifications')    
-        asr = count / total_image_count
-        print(f'ASR for target model {name}: {asr * 100:.2f}%')    
+        print(f'The generated adversarial patch on target model had {misclassified_counts} misclassifications')    
+        asr = misclassified_counts / total_valid_images
+        print(f'ASR for target model: {asr * 100:.2f}%')    
 
         # Log to wandb
         logger.log_target_model_results(
-            iter, noise_i, target_model_names, train_model_names, count, total_image_count, asr
+            patch_i, target_model_name, misclassified_counts, total_valid_images, asr
         )
     
     return misclassified_counts
@@ -133,7 +120,7 @@ def evaluate_patch(patch, dataloader, target_class, deployer, discriminators, de
             total_valid_images += batch_size
             
             adv_images = []
-            for image in images:
+            for idx, image in enumerate(images):
                 adv_image = deployer.deploy(patch, image)
                 adv_images.append(adv_image)
 
@@ -158,13 +145,16 @@ def evaluate_patch(patch, dataloader, target_class, deployer, discriminators, de
 
             total_correct_count += correct
 
+            # if idx % 1000 == 0:  # display every 1000th image
+            #     logger.log_modified_image(patch_i=, idx, adv_image, )
+
         total_asr = total_correct_count / total_valid_images
 
     return total_asr
 
 
 
-def evaluate_saved_generators(iter, target_class, checkpoint_dir, fixed_noises, patch_size, dataloader, deployer, discriminators, device, logger):
+def evaluate_saved_generators(target_class, checkpoint_dir, fixed_noises, patch_size, dataloader, deployer, discriminators, device, logger):
     best_avg_asr = 0
     best_epoch = -1
     best_patches = []
@@ -175,16 +165,13 @@ def evaluate_saved_generators(iter, target_class, checkpoint_dir, fixed_noises, 
     checkpoint_files = sorted([f for f in os.listdir(checkpoint_dir) if f.endswith('.pth')])
     results = {}
 
-    print(f'\n{"="*30} Evaluating generators for iteration {iter}/5 {"="*30}')
-    # Group checkpoints by the iteration number
-    iter_checkpoints = load_checkpoint_by_iteration(checkpoint_files, iter)
+    print(f'\n{"="*30} Evaluating generators {"="*30}')
+    checkpoints = load_checkpoints(checkpoint_files)
 
-    # for epoch, checkpoints in iter_checkpoints:
-
-    for epoch, checkpoint_file in iter_checkpoints:
+    for epoch, checkpoint_file in checkpoints:
             
-        generator = Generator(patch_size).to(device)
-        generator = load_generator(generator, checkpoint_file)
+        gen = Generator(patch_size).to(device)
+        generator = load_generator(gen, checkpoint_file)
 
         total_asr = 0
         patches = []
@@ -198,8 +185,8 @@ def evaluate_saved_generators(iter, target_class, checkpoint_dir, fixed_noises, 
             total_asr += asr
             patches.append(patch)
 
-            logger.log_generator_evaluation(iter, noise_i, epoch, asr)
-            logger.log_patch_image(iter, noise_i, epoch, patch)
+            logger.log_generator_evaluation(noise_i, epoch, asr)
+            logger.log_patch_image(noise_i, epoch, patch)
 
         avg_asr = total_asr / len(fixed_noises)
         last_checkpoint = checkpoint_file
@@ -214,13 +201,15 @@ def evaluate_saved_generators(iter, target_class, checkpoint_dir, fixed_noises, 
     if best_epoch == -1:
         generator = Generator(patch_size).to(device)
         generator = load_generator(generator, last_checkpoint)
-        save_generator("best_iter_-1", generator, f'{checkpoint_dir}/best_generators')
+        save_generator("best_-1", generator, f'{checkpoint_dir}/best_generators')
     else:
-        save_generator(f"best_iter_{iter}", best_generator, f'{checkpoint_dir}/best_generators')
-        logger.log_best_generator(iter, best_epoch, best_avg_asr)
-        # logger.log_best_patch(iter, noise_i, best_epoch, best_patch)
+        generator_name = f"best"
+        save_generator(generator_name, best_generator, f'{checkpoint_dir}/best_generators')
+        logger.log_best_generator(generator_name, best_epoch, best_avg_asr)
+        for noise_i, patch in enumerate(best_patches):
+            logger.log_best_patch(noise_i, patch)
 
-    print(f"At iteration {iter}, best generator found at epoch {best_epoch} with avg ASR: {best_avg_asr * 100:.2f}%")
+    print(f"Best generator found at epoch {best_epoch} with avg ASR: {best_avg_asr * 100:.2f}%")
 
     results = {
         'best_avg_asr': best_avg_asr,
@@ -234,20 +223,19 @@ def evaluate_saved_generators(iter, target_class, checkpoint_dir, fixed_noises, 
 
 
 
-def gan_attack(iter, device, generator, optimizer, deployer, discriminators, dataloader, classes, target_class, num_of_epochs, checkpoint_dir, logger, input_dim=100):
+def gan_attack(device, generator, optimizer, deployer, discriminators, dataloader, target_class, num_of_epochs, checkpoint_dir, logger, input_dim=100):
+    print(f'{"-"*30} Training Generator {"-"*30}')
     
     total_asr = 0
-    # total_valid_images = 0  # Keep track of valid images (not skipped)
-
     for epoch in range(num_of_epochs):
         print(f'@ Epoch {epoch+1} for a target class: {target_class}')
         epoch_correct_count = 0
         epoch_valid_images = 0  # Count valid images for this epoch
+
         batch_i=1
         batch_loss = 0
 
         for batch in dataloader:
-
             images, true_labels = batch
             images = images.to(device)
             true_labels = true_labels.to(device)
@@ -263,7 +251,6 @@ def gan_attack(iter, device, generator, optimizer, deployer, discriminators, dat
             true_labels = true_labels[valid_indices]
             batch_size = images.shape[0]
             epoch_valid_images += batch_size
-            # total_valid_images += batch_size
 
             noise = torch.randn(batch_size, input_dim, 1, 1).to(device)
 
@@ -310,12 +297,8 @@ def gan_attack(iter, device, generator, optimizer, deployer, discriminators, dat
             batch_asr = correct / batch_size
             batch_loss += loss.item()
 
-
-            logger.log_batch_metrics(iter, epoch+1, loss.item(), batch_asr)
-
+            logger.log_batch_metrics(epoch+1, loss.item(), batch_asr)
             batch_i+=1
-            
-            # epoch_asr += batch_asr
             epoch_correct_count += correct
 
         avg_epoch_asr = epoch_correct_count / epoch_valid_images
@@ -323,143 +306,127 @@ def gan_attack(iter, device, generator, optimizer, deployer, discriminators, dat
         total_asr += avg_epoch_asr
 
         # Log epoch-level metrics to W&B
-        logger.log_epoch_metrics(iter, avg_epoch_loss, avg_epoch_asr)
+        logger.log_epoch_metrics(avg_epoch_loss, avg_epoch_asr)
       
         print(f"Epoch [{epoch+1}/{num_of_epochs}], Avg loss: {avg_epoch_loss}, Avg ASR: {avg_epoch_asr * 100:.2f}%")
 
-        generator_name = f'generator_epoch_{epoch + 1}_iter_{iter}'
+        generator_name = f'generator_epoch_{epoch + 1}'
         save_generator(generator_name, generator, checkpoint_dir)
         
-
     print(f'\n\nAverage ASR over all {num_of_epochs} epochs: {total_asr / num_of_epochs * 100:.2f}% \n')
+    print(f'{"-"*26} Finished Training Generator {"-"*26}')
 
 
 
-def start_iteration(device, attack_mode, patch_size, discriminators, dataloader, classes, target_class, checkpoint_dir, num_of_epochs, num_of_patches, logger):
+
+def start_training(device, attack_mode, patch_size, discriminators, dataloader, target_class, checkpoint_dir, num_of_epochs, num_of_patches, logger):
     attack_type = attack_mode.split('_')
     if attack_type[0] == 'gpatch':
         deployer = Deployer()
     else:
         deployer = DeployerMini(num_of_patches, critical_points=int(attack_type[1]))
 
-    # results_list = []  # Store results from all 5 generators
-    results_dict = {}
+    # results_list = []  # Store results from all 2 generators
+
     # fixed_noise = torch.randn(1, 100, 1, 1).to(device)
     fixed_noises = [torch.randn(1, 100, 1, 1).to(device) for _ in range(2)]
 
-    for i in range(2):  # Train generators separately
-        iter = i+1
-        print(f'{"-"*30} Training Generator {iter}/5 {"-"*30}')
+    # for i in range(2):  # Train generators separately
+    #     iter = i+1
 
-        generator = Generator(patch_size).to(device)
-        generator.train()
+    generator = Generator(patch_size).to(device)
+    generator.train()
 
-        optimizer = optim.Adam(generator.parameters(), lr=0.001, betas=(0.9, 0.999))   ## try different values
-        target_class = torch.tensor(target_class, device=device)
-        gan_attack(iter, device, generator, optimizer, deployer, discriminators, dataloader, classes, target_class, num_of_epochs, checkpoint_dir, logger)
-        print(f'{"-"*26} Finished Training Generator {iter}/5 {"-"*26}')
+    optimizer = optim.Adam(generator.parameters(), lr=0.001, betas=(0.9, 0.999))   ## try different values
+    target_class = torch.tensor(target_class, device=device)
+    gan_attack(device, generator, optimizer, deployer, discriminators, dataloader, target_class, num_of_epochs, checkpoint_dir, logger)
 
     # for noise_i, fixed_noise in enumerate(fixed_noises):
-        results = evaluate_saved_generators(iter, target_class, checkpoint_dir, fixed_noises, patch_size, dataloader, deployer, discriminators, device, logger)
-        results_dict[iter] = results
+    results = evaluate_saved_generators(target_class, checkpoint_dir, fixed_noises, patch_size, dataloader, deployer, discriminators, device, logger)
 
-    return results_dict
+    return results
+
+
+def start_testing(device, dataloader, target_class, num_of_patches, patches, target_models, target_model_names, attack_mode, logger):
+    attack_type = attack_mode.split('_')
+    if attack_type[0] == 'gpatch':
+        deployer = Deployer()
+    else:
+        deployer = DeployerMini(num_of_patches, critical_points=int(attack_type[1]))
+
+    # for target_model in target_models:
+    for target_model, name in zip(target_models, target_model_names):
+        for i, patch in enumerate(patches):
+            logger.log_best_patch(i, patch)
+            test_best_patch(patch, i, dataloader, target_class, deployer, target_model, name, device, logger)
+           
+    
+
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Random Position Patch Attack')
     parser.add_argument('--image_folder_path', help='Image dataset to perturb', default='../imagenetv2-top-images/imagenetv2-top-images-format-val')
     parser.add_argument('--checkpoint_folder_path', help='Path to a folder where generators will be saved.', default='./checkpoints')
-    parser.add_argument('--attack_mode', choices=['gpatch', 'mini'], default='gpatch')
-    parser.add_argument('--num_of_patches', type=int, help='Number of patches. 1 for G-patch attack, and more than 1 for mini-patch attack', default=1)
-    parser.add_argument('--transfer_mode', choices=['src-tar', 'ensemble', 'cross-val'],  
-                        help='Choose the transferability approach: src-tar (for source-to-target), ensemble, or cross-val (for cross-validation)', default='src-tar')
+    parser.add_argument('--run_mode', choices=['train', 'test'])
+    parser.add_argument('--attack_mode', choices=['gpatch', 'mini_0', 'mini_1', 'mini_2'], default='gpatch')
     parser.add_argument('--training_models', type=str, help='Name(s) of the models the generator will be trained on.')
     parser.add_argument('--target_models', type=str)
-    parser.add_argument('--patch_size', type=int, help='Size of the adversarial patch', default=64)
-    parser.add_argument('--epochs', type=int, help='Number of epochs')
-    parser.add_argument('--num_of_train_classes', type=int, help='Number of (random) classes to train the generator on', default=100)
     parser.add_argument('--target_class', type=int, help='Target class to misclassify images as', default=932)
-    parser.add_argument('--mini_type', type=int, default=0, help='Type of mini-attack: 0 is for normal, 1&2 are for critical, but crosspoints and within the patches correspondingly.' )
+    parser.add_argument('--patch_size', type=int, help='Size of the adversarial patch', default=64)
+    parser.add_argument('--num_of_patches', type=int, help='Number of patches. 1 for G-patch attack, and more than 1 for mini-patch attack', default=1)
+    parser.add_argument('--epochs', type=int, help='Number of epochs', default=40)
+    parser.add_argument('--num_of_train_classes', type=int, help='Number of (random) classes to train the generator on', default=100)
 
     args = parser.parse_args()
 
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     checkpoint_dir = args.checkpoint_folder_path
-    transfer_mode = args.transfer_mode
+    run_mode = args.run_mode
+    attack_mode = args.attack_mode
     training_model_names = args.training_models.split(' ') if args.training_models else None
     target_model_names = args.target_models.split(' ') if args.target_models else None
-    intra_model_attack = False
-    cross_validation = False
-
+    target_class = args.target_class 
     patch_size = args.patch_size
     num_of_patches = args.num_of_patches
-    attack_mode = args.attack_mode
+    num_of_epochs = args.epochs
 
-    if attack_mode == 'mini':
-        attack_mode += f'_{args.mini_type}'
 
-    if training_model_names is None:
-        raise ValueError('Please, specify training models.')  
-    
-    if transfer_mode == 'src-tar':
-        if target_model_names is None:
-            intra_model_attack = True
-    else:
-        if transfer_mode == 'cross-val':
-            cross_validation = True
-        if target_model_names is None:
-            raise ValueError("For the ensemble/cross-validation attack please, specify target models.")
-        
+    project_name = (
+        f'RPP {run_mode} ' +
+        f'{attack_mode} ' +
+        # f'{num_of_patches}_patches ' + 
+        f'={target_class}= ' +  
+        f' {",".join(training_model_names)} ' + 
+        (f' > {",".join(target_model_names)}' if target_model_names else '')
+    )
+
+    logger = WandbLogger(run_mode, project_name, target_class, {
+        'run_mode' : run_mode,
+        'epochs': num_of_epochs,
+        # 'classes': num_of_classes,
+        'target_class': target_class,
+        'attack_mode': attack_mode,
+        'patch_size': patch_size,
+        'num_of_patches': num_of_patches,
+        'training_models': training_model_names,
+        'target_models': target_model_names
+    })
 
     discriminators = get_models(training_model_names, device)
 
     dataloader, classes = load_random_classes(args.image_folder_path, args.num_of_train_classes)
     num_of_classes = len(classes)
-    num_of_epochs = args.epochs
-
-    target_class = args.target_class 
-
-    project_name = (
-        f't>RPP {transfer_mode} ' +
-        f'{attack_mode} ' +
-        f'{num_of_patches}_patches ' + 
-        f'={target_class}= ' +
-        f'train-{",".join(training_model_names)} ' + 
-        (f'target-{",".join(target_model_names)} ' if target_model_names else '')
-    )
 
     print(f'PROJECT: {project_name}')
     
-    # Initialize W&B
-    logger = WandbLogger(project_name, target_class, {
-        'epochs': num_of_epochs,
-        'classes': num_of_classes,
-        'target_class': target_class,
-        'attack_mode': attack_mode,
-        'patch_size': patch_size,
-        'num_of_patches': num_of_patches,
-        'transfer_mode': transfer_mode,
-        'training_models': training_model_names,
-        'target_models': target_model_names
-    })
-
-
-    results_dict = start_iteration(device, attack_mode, patch_size, discriminators, dataloader, classes, target_class, checkpoint_dir, num_of_epochs, num_of_patches, logger)
-    
-    if intra_model_attack: 
-        target_models = discriminators
-        target_model_names = training_model_names
+    if run_mode == 'train':
+        start_training(device, attack_mode, patch_size, discriminators, dataloader, target_class, checkpoint_dir, num_of_epochs, num_of_patches, logger)
     else:
+        train_project_name = f'RPP train ' + f'{attack_mode} ' + f'={target_class}= ' + f' {",".join(training_model_names)} ' + f' > {",".join(target_model_names)}'
+        patches = fetch_patches_from_wandb()
         target_models = get_models(target_model_names, device)
-
-    # for results in results_list:
-    for iter, results in results_dict.items():
-        # for result in results.items():
-            # best_patch = result['best_patch']
-        best_patches = results["best_patches"]
-        for i, patch in enumerate(best_patches):
-            noise_i = i+1
-            test_best_patch(iter, noise_i, dataloader, attack_mode, target_models, target_model_names, training_model_names, patch, target_class, device=device, logger=logger, iteration=iter)
-
+        start_testing(device, dataloader, target_class, num_of_patches, patches, target_models, target_model_names, attack_mode, logger)
+        
+    
     logger.finalize()
