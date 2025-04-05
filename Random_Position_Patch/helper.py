@@ -1,4 +1,6 @@
-import torch, os, random, json
+import torch, os, random, json, wandb, requests
+from PIL import Image
+from io import BytesIO
 from torch.utils.data import DataLoader
 from torchvision import datasets, transforms
 
@@ -42,7 +44,7 @@ def load_generator(generator, checkpoint_filename, output_dir='checkpoints'):
 
     # Load the generator state
     generator.load_state_dict(torch.load(checkpoint_path))
-    # generator.eval()  
+    generator.eval()  
     
     print(f'  > Loaded generator from {checkpoint_path} ')
     return generator
@@ -54,38 +56,27 @@ def save_generator(generator_name, generator, output_dir='checkpoints'):
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)  # Create the target-specific directory if it doesn't exist
 
-
-    # f"best_iter_{iter}", best_generator, f'{checkpoint_dir}/best_generators'
-    # f'generator_epoch_{epoch + 1}_iter_{iter}'
+    # f"best_generator", best_generator, f'{checkpoint_dir}/best_generators'
+    # f'generator_epoch_{epoch + 1}'
     save_path = os.path.join(output_dir, f'{generator_name}.pth')
     torch.save(generator.state_dict(), save_path)
     print(f'  > Saved generator to {save_path}')
 
 
 
-def load_checkpoint_by_iteration(checkpoint_files, iter):
-    # iter_checkpoints = {}
+def load_checkpoints(checkpoint_files):
 
-    # for checkpoint_file in checkpoint_files:
-    #     epoch = int(checkpoint_file.split('_')[2])
-    #     # iter = int(parts[4])  
-    #     if iter not in iter_checkpoints:
-    #         iter_checkpoints[iter] = []
-    #     iter_checkpoints[iter].append((epoch, checkpoint_file))
-
-    # return iter_checkpoints
-
-    iter_checkpoints = []
+    checkpoints = []
 
     for checkpoint_file in checkpoint_files:
         parts = checkpoint_file.split('_')
-        epoch = int(parts[2])
-        checkpoint_iter = int(parts[4].split('.')[0])  
+        epoch = int(parts[2].split('.')[0])
+        # checkpoint_iter = int(parts[4].split('.')[0])  
 
-        if checkpoint_iter == iter:
-            iter_checkpoints.append((epoch, checkpoint_file))
+        # if checkpoint_iter == iter: 
+        checkpoints.append((epoch, checkpoint_file))
 
-    return iter_checkpoints
+    return checkpoints
 
 
 
@@ -102,3 +93,89 @@ def get_class_name(number, json_file='class_mapping.json'):
     except json.JSONDecodeError:
         return "Error decoding JSON file. Ensure the file contains valid JSON."
 
+
+
+def load_best_patch(project_name):
+
+    api = wandb.Api()
+    entity_name = "takonoselidze-charles-university"
+
+    runs = api.runs(f"{entity_name}/{project_name}")  # Fetch all runs in the project
+    patches = {}
+    recent_runs = sorted(runs, key=lambda x: x.created_at, reverse=True)[:5]  # 5 most recent runs
+
+
+    for run in recent_runs:
+        run_id = run.id  # Get the unique run ID
+        artifact_name = f"patch_*"  # Wildcard to match all patch artifacts in the run
+
+        for artifact in run.logged_artifacts():
+            if artifact.type == "patch_tensor" and artifact.name.startswith("patch_"):
+                artifact_dir = artifact.download()
+                noise_i = artifact.name.split("_")[-1]  # Extract noise_i from name
+                tensor_path = os.path.join(artifact_dir, f"best_patch_{noise_i}.pt")
+
+                if os.path.exists(tensor_path):
+                    patches[f"{run_id}_noise_{noise_i}"] = torch.load(tensor_path)
+
+    return patches
+
+
+def fetch_patches_from_recent_runs(project_path, noises, save_dir='downloads', max_runs=5):
+
+    os.makedirs(save_dir, exist_ok=True)
+    
+    api = wandb.Api()
+    runs = api.runs(project_path, order="-created_at")
+    results_dict = {}
+
+    for iter, run in enumerate(runs[:max_runs]):
+        run_id = run.id
+        run_save_dir = os.path.join(save_dir, run_id)
+        os.makedirs(run_save_dir, exist_ok=True)
+
+        # --- Fetch image from history ---
+        results = {}
+        for i in range(noises):
+            noise_i = i+1
+            image_key = f"best_patches/noise_{noise_i}"
+            patch_img = None
+            try:
+                history = run.history(keys=[image_key])
+                for row in history:
+                    if image_key in row:
+                        img_url = row[image_key]["path"]
+                        img_response = requests.get(img_url)
+                        patch_img = Image.open(BytesIO(img_response.content))
+                        break
+            except Exception as e:
+                print(f"[{run_id}] Failed to fetch image: {e}")
+
+            # --- Fetch tensor artifact ---
+            patch_tensor = None
+            try:
+                artifact_name = f"patch_{noise_i}:latest"
+                entity = project_path.split('/')[0]
+                artifact = api.artifact(f"{entity}/{artifact_name}", type="patch_tensor")
+                artifact_dir = artifact.download(root=run_save_dir)
+                tensor_path = os.path.join(artifact_dir, f"best_patch_{noise_i}.pt")
+                patch_tensor = torch.load(tensor_path, map_location='cpu')
+            except Exception as e:
+                print(f"[{run_id}] Failed to fetch tensor: {e}")
+
+            if patch_img is not None and patch_tensor is not None:
+                results[noise_i] = ((patch_img, patch_tensor))
+
+        results_dict[iter] = results
+
+    return results_dict
+
+
+
+results_dict = fetch_patches_from_recent_runs("takonoselidze-charles-university/RPP train gpatch =932= vgg16_bn", noises=1, max_runs=1)
+
+for iter, results in results_dict.items():
+    print(f'Results for iteration {iter}:')
+    for noise_i, patches in results.items():
+        print(f" Tensor shape: {patches[1].shape}")
+        patches[0].show()
