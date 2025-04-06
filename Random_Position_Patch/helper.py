@@ -3,7 +3,7 @@ from PIL import Image
 from io import BytesIO
 from torch.utils.data import DataLoader
 from torchvision import datasets, transforms
-
+from generator import Generator 
 
 def load_random_classes(image_folder_path, num_of_classes):
 
@@ -122,7 +122,7 @@ def load_best_patch(project_name):
 
 
 
-def fetch_patches_from_wandb(project, noises, save_dir='downloads', max_runs=5):
+def fetch_generators_from_wandb(generator_class, project, noises, save_dir='downloads', max_runs=5):
 
     os.makedirs(save_dir, exist_ok=True)
     entity = "takonoselidze-charles-university"
@@ -133,31 +133,45 @@ def fetch_patches_from_wandb(project, noises, save_dir='downloads', max_runs=5):
 
     for iter, run in enumerate(runs[:max_runs]):
         run_id = run.id
-        run_save_dir = os.path.join(save_dir, run_id)
-        os.makedirs(run_save_dir, exist_ok=True)
-
-        # # --- Fetch image from history ---
-        results = {}
-        for i in range(noises):
-            noise_i = i+1
-            # --- Fetch tensor artifact ---
-            patch_tensor = None
-            try:
-                artifact_name = f"patch_{noise_i}:latest"
-                artifact = api.artifact(f"{entity}/{project}/{artifact_name}", type="patch_tensor")
-
-                artifact_dir = artifact.download(root=run_save_dir)
-                tensor_path = os.path.join(artifact_dir, f"best_patch_{noise_i}.pt")
-                patch_tensor = torch.load(tensor_path, map_location='cpu')
-            except Exception as e:
-                print(f"[{run_id}] Failed to fetch tensor: {e}")
-
-            if patch_tensor is not None:
-                results[noise_i] = patch_tensor
-            else:
-                print('Failed to fetch both image and tensor')
-
-        results_dict[iter] = results
-
+        gen = fetch_best_generator_from_run(generator_class, entity, project, run_id)
+        results_dict[iter] = gen
     return results_dict
 
+
+def fetch_best_generator_from_run(generator_class, entity, project, run_id, save_dir="downloads"):
+    os.makedirs(save_dir, exist_ok=True)
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
+    try:
+        api = wandb.Api()
+        run = api.run(f"{entity}/{project}/{run_id}")
+        
+        for artifact_ref in run.logged_artifacts():
+            if artifact_ref.type == "model":
+                print(f"Found model artifact: {artifact_ref.name}")
+                artifact_dir = artifact_ref.download(root=save_dir)
+
+                model_files = os.listdir(artifact_dir)
+                generator_path = os.path.join(artifact_dir, model_files[0])
+                
+                # Instantiate & load model on the right device
+                generator = generator_class().to(device)
+                generator.load_state_dict(torch.load(generator_path, map_location=device))
+                generator.eval()
+                return generator
+
+        print("No model artifact found in this run.")
+        return None
+
+    except Exception as e:
+        print(f"Error fetching generator from run {run_id}: {e}")
+        return None
+    
+
+# device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+
+# # gener = Generator(64).to(device)
+# project="RPP train gpatch =932=  vgg16_bn "
+# g = fetch_generators_from_wandb(lambda: Generator(64), project, None, max_runs=1)
+# for k,l in g.items():
+#     print(f'iter: {k}, item: {type(l)}')
