@@ -282,18 +282,33 @@ def gan_attack(device, generator, optimizer, deployer, discriminators, dataloade
             loss.backward()
             optimizer.step()
 
-            total_predicted = []
+            # soft voting
+            sum_probs = None
             for out in outputs:
-                _, predicted = torch.max(out.data, 1)
-                total_predicted.append(predicted.cpu())
+                probs = torch.softmax(out, dim=1)  # Convert logits to probabilities
+                if sum_probs is None:
+                    sum_probs = probs
+                else:
+                    sum_probs += probs
+            ensemble_predicted = torch.argmax(sum_probs, dim=1)
 
-            correct_counts = torch.zeros(batch_size).to(device)
-            for predicted in total_predicted:
-                correct_counts += (predicted.to(device) == target_class).float()
+            correct = (ensemble_predicted == target_class).sum().item()
 
-            # majority vote (more than half of the discriminators)
-            majority_threshold = len(total_predicted) // 2
-            correct = (correct_counts > majority_threshold).sum().item()
+
+            # # majority voting (more than half of the discriminators)
+            # total_predicted = []
+            # for out in outputs:
+            #     _, predicted = torch.max(out.data, 1)
+            #     total_predicted.append(predicted.cpu())
+
+            # correct_counts = torch.zeros(batch_size).to(device)
+            # for predicted in total_predicted:
+            #     correct_counts += (predicted.to(device) == target_class).float()
+
+            # majority_threshold = len(total_predicted) // 2
+            # correct = (correct_counts > majority_threshold).sum().item()
+
+
             batch_asr = correct / batch_size
             batch_loss += loss.item()
 
@@ -306,7 +321,7 @@ def gan_attack(device, generator, optimizer, deployer, discriminators, dataloade
         total_asr += avg_epoch_asr
 
         # Log epoch-level metrics to W&B
-        logger.log_epoch_metrics(avg_epoch_loss, avg_epoch_asr)
+        logger.log_epoch_metrics(avg_epoch_loss, avg_epoch_asr, epoch)
       
         print(f"Epoch [{epoch+1}/{num_of_epochs}], Avg loss: {avg_epoch_loss}, Avg ASR: {avg_epoch_asr * 100:.2f}%")
 
