@@ -126,27 +126,40 @@ def evaluate_patch(patch, dataloader, target_class, deployer, discriminators, de
 
             adv_images = torch.stack(adv_images).to(device)
 
-            outputs = []
+
+            # === Majority Voting ===
+            # outputs = []
+            # for discriminator in discriminators:
+            #     output = discriminator(adv_images)
+            #     outputs.append(output)
+
+            # total_predicted = []
+            # for out in outputs:
+            #     _, predicted = torch.max(out.data, 1)
+            #     total_predicted.append(predicted.cpu())
+
+            # correct_counts = torch.zeros(batch_size).to(device)
+            # for predicted in total_predicted:
+            #     correct_counts += (predicted.to(device) == target_class).float()
+
+            # majority_threshold = len(total_predicted) // 2
+            # correct = (correct_counts > majority_threshold).sum().item()
+
+
+            # === Soft Voting ===
+            sum_probs = None
             for discriminator in discriminators:
                 output = discriminator(adv_images)
-                outputs.append(output)
+                probs = torch.softmax(output, dim=1)  # Convert logits to probabilities
+                if sum_probs is None:
+                    sum_probs = probs
+                else:
+                    sum_probs += probs
 
-            total_predicted = []
-            for out in outputs:
-                _, predicted = torch.max(out.data, 1)
-                total_predicted.append(predicted.cpu())
-
-            correct_counts = torch.zeros(batch_size).to(device)
-            for predicted in total_predicted:
-                correct_counts += (predicted.to(device) == target_class).float()
-
-            majority_threshold = len(total_predicted) // 2
-            correct = (correct_counts > majority_threshold).sum().item()
-
+            ensemble_predicted = torch.argmax(sum_probs, dim=1)
+            # Count how many were predicted as the target class (i.e., "successful attack")
+            correct = (ensemble_predicted == target_class).sum().item()
             total_correct_count += correct
-
-            # if idx % 1000 == 0:  # display every 1000th image
-            #     logger.log_modified_image(patch_i=, idx, adv_image, )
 
         total_asr = total_correct_count / total_valid_images
 
@@ -250,7 +263,7 @@ def gan_attack(device, generator, optimizer, deployer, discriminators, dataloade
             images = images[valid_indices]
             true_labels = true_labels[valid_indices]
             batch_size = images.shape[0]
-            epoch_valid_images += batch_size
+            epoch_valid_images += batch_size    
 
             noise = torch.randn(batch_size, input_dim, 1, 1).to(device)
 
@@ -312,7 +325,7 @@ def gan_attack(device, generator, optimizer, deployer, discriminators, dataloade
             batch_asr = correct / batch_size
             batch_loss += loss.item()
 
-            logger.log_batch_metrics(epoch+1, loss.item(), batch_asr)
+            logger.log_batch_metrics(epoch+1, loss.item(), batch_asr, batch_i)
             batch_i+=1
             epoch_correct_count += correct
 
@@ -341,13 +354,8 @@ def start_training(device, attack_mode, patch_size, discriminators, dataloader, 
     else:
         deployer = DeployerMini(num_of_patches, critical_points=int(attack_type[1]))
 
-    # results_list = []  # Store results from all 2 generators
-
-    # fixed_noise = torch.randn(1, 100, 1, 1).to(device)
-    fixed_noises = [torch.randn(1, 100, 1, 1).to(device) for _ in range(2)]
-
-    # for i in range(2):  # Train generators separately
-    #     iter = i+1
+    fixed_noises = torch.load("fixed_noises.pt")
+    fixed_noises = [noise.to(device) for noise in fixed_noises]
 
     generator = Generator(patch_size).to(device)
     generator.train()
@@ -360,7 +368,6 @@ def start_training(device, attack_mode, patch_size, discriminators, dataloader, 
     results = evaluate_saved_generators(target_class, checkpoint_dir, fixed_noises, patch_size, dataloader, deployer, discriminators, device, logger)
 
     return results
-
 
 def start_testing(device, dataloader, target_class, num_of_patches, patches, target_models, target_model_names, attack_mode, logger):
     attack_type = attack_mode.split('_')
@@ -411,10 +418,12 @@ if __name__ == "__main__":
     num_of_patches = args.num_of_patches
     num_of_epochs = args.epochs
 
+    att = f'{attack_mode} ' if patch_size!=80 else f'{attack_mode}-80 '
+
 
     project_name = (
-        f'RPP {run_mode} ' +
-        f'{attack_mode} ' +
+        f'F {run_mode} ' +
+        att +
         # f'{num_of_patches}_patches ' + 
         f'={target_class}= ' +  
         f' {",".join(training_model_names)} ' + 
@@ -443,7 +452,7 @@ if __name__ == "__main__":
     if run_mode == 'train':
         start_training(device, attack_mode, patch_size, discriminators, dataloader, target_class, checkpoint_dir, num_of_epochs, num_of_patches, logger)
     else:
-        train_project_name = f'RPP train ' + f'{attack_mode} ' + f'={target_class}= ' + f' {",".join(training_model_names)} '
+        train_project_name = f'F train ' + f'{attack_mode} ' + f'={target_class}= ' + f' {",".join(training_model_names)} '
         target_models = get_models(target_model_names, device)
 
         

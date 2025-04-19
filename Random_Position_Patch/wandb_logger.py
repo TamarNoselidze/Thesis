@@ -41,7 +41,7 @@ class WandbLogger:
         self.generator_eval_table.add_data(self.target_class_name, noise_i, epoch, f'{asr * 100:.2f}%')
         # Also log as metrics for easier time-series visualization
         wandb.log({
-            f"eval//noise_{noise_i}/epoch_ASR": asr * 100,
+            f"eval/noise_{noise_i}/epoch_ASR": asr * 100,
         })
         
     
@@ -61,19 +61,25 @@ class WandbLogger:
         })
     
 
-    def log_batch_metrics(self, epoch, loss, batch_asr):
+    def log_batch_metrics(self, epoch, loss, batch_asr, batch):
         """Log batch-level metrics"""
-        wandb.log({
+        log_dict = {
             f"training_detailed/epoch_{epoch}/loss": loss,
             f"training_detailed/epoch_{epoch}/ASR": batch_asr * 100,
-        })
+        }
 
-    
-    def log_epoch_metrics(self, loss, avg_asr):
+        if batch == 1:
+            log_dict["batch"] = batch
+
+        wandb.log(log_dict)    
+
+
+    def log_epoch_metrics(self, loss, avg_asr, epoch):
         """Log epoch-level metrics"""
         wandb.log({
             f"training/avg_loss": loss,
             f"training/avg_ASR": avg_asr * 100,
+            "epoch" : epoch
         })
 
     
@@ -109,12 +115,18 @@ class WandbLogger:
 
 
     def log_best_patch(self, noise_i, patch, testing=False):
-        wandb.log({
-            f"best_patches/noise_{noise_i}": 
-                wandb.Image(patch.cpu(), caption=f'Best patch for noise #{noise_i}')
-        })
+        if testing:
+            wandb.log({
+                f"best_patches/{noise_i}": 
+                    wandb.Image(patch.cpu(), caption=f'Best patch for {noise_i}')
+            })
+            
+        else:
+            wandb.log({
+                f"best_patches/noise_{noise_i}": 
+                    wandb.Image(patch.cpu(), caption=f'Best patch for noise #{noise_i}')
+            })
 
-        if not testing:
             tensor_path = os.path.join('checkpoints', f"best_patch_{noise_i}.pt")
             torch.save(patch.cpu(), tensor_path)
 
