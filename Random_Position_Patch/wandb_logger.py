@@ -53,11 +53,11 @@ class WandbLogger:
         })
     
 
-    def log_modified_image(self, patch_i, image_idx, modified_image, is_misclassified):
+    def log_modified_image(self, patch_i, image_idx, modified_image, is_misclassified, original_label):
         """Log modified image with adversarial patch"""
         wandb.log({
             f"images/image_{image_idx}": 
-                wandb.Image(modified_image.cpu(), caption=f'Patch {patch_i} {"misclassified" if is_misclassified else "not misclassified"}')
+                wandb.Image(modified_image.cpu(), caption=f'Patch {patch_i}, {"misclassified" if is_misclassified else "not misclassified"}, original {original_label}')
         })
     
 
@@ -117,7 +117,7 @@ class WandbLogger:
     def log_best_patch(self, noise_i, patch, testing=False):
         if testing:
             wandb.log({
-                f"best_patches/{noise_i}": 
+                f"{noise_i}": 
                     wandb.Image(patch.cpu(), caption=f'Best patch for {noise_i}')
             })
             

@@ -122,7 +122,8 @@ def load_best_patch(project_name):
 
 
 
-def fetch_generators_from_wandb(generator_class, project, noises, save_dir='downloads', max_runs=5):
+def fetch_generators_from_wandb(generator_class, project, patch_size, save_dir='downloads', max_runs=5):
+    save_dir = f'{save_dir}/{project}'
 
     os.makedirs(save_dir, exist_ok=True)
     entity = "takonoselidze-charles-university"
@@ -133,12 +134,13 @@ def fetch_generators_from_wandb(generator_class, project, noises, save_dir='down
 
     for iter, run in enumerate(runs[:max_runs]):
         run_id = run.id
-        gen = fetch_best_generator_from_run(generator_class, entity, project, run_id)
+        gen = fetch_best_generator_from_run(generator_class, patch_size, entity, project, run_id)
         results_dict[iter] = gen
     return results_dict
 
 
-def fetch_best_generator_from_run(generator_class, entity, project, run_id, save_dir="downloads"):
+def fetch_best_generator_from_run(generator_class, patch_size, entity, project, run_id, save_dir="downloads"):
+    save_dir = f'{save_dir}/{project}'
     os.makedirs(save_dir, exist_ok=True)
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
@@ -154,8 +156,9 @@ def fetch_best_generator_from_run(generator_class, entity, project, run_id, save
                 model_files = os.listdir(artifact_dir)
                 generator_path = os.path.join(artifact_dir, model_files[0])
                 
+                print(f'------ generator path: {generator_path}')
                 # Instantiate & load model on the right device
-                generator = generator_class().to(device)
+                generator = generator_class(patch_size).to(device)
                 generator.load_state_dict(torch.load(generator_path, map_location=device))
                 generator.eval()
                 return generator

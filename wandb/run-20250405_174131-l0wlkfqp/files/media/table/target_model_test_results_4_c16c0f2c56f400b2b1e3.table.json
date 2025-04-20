@@ -1,1 +1,0 @@
-{"columns": ["target class name", "target model(s)", "patch #", "misclassified", "total", "ASR"], "data": [["pretzel", "resnet50", "2 (iter 0)", 0, 3, "0.00%"], ["pretzel", "resnet50", "2 (iter 1)", 0, 3, "0.00%"]]}

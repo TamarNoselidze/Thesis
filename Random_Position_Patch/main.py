@@ -48,7 +48,8 @@ def get_models(model_names, device):
 
         
 def test_best_patch(patch, patch_i, dataloader, target_class, deployer, target_model, target_model_name, device, logger):
-    
+    # print(f'---------------------------- tc: {target_class}')
+    # print(type(target_class))
     misclassified_counts = 0
     image_i = 0
     total_valid_images = 0  # Keep track of valid images (not skipped)
@@ -69,6 +70,8 @@ def test_best_patch(patch, patch_i, dataloader, target_class, deployer, target_m
 
             batch_size = images.shape[0]
             total_valid_images += batch_size
+            # print(f'plus {batch_size}')
+            # print(f'so total is: {total_valid_images}')
 
             for i in range(batch_size):
                 misclassified = False
@@ -81,12 +84,14 @@ def test_best_patch(patch, patch_i, dataloader, target_class, deployer, target_m
                     misclassified = True
                     
                 if image_i % 500 == 0:   # displaying one in every 500 modified images
-                    logger.log_modified_image(patch_i, image_i, modified_image, misclassified)
+                    # print(f'+ + + + + true label was: {true_labels[i]} {get_class_name(true_labels[i])}')
+
+                    logger.log_modified_image(patch_i, image_i, modified_image, misclassified, true_labels[i])
 
                 image_i +=1
 
   
-        print(f'Target class: "{get_class_name(target_class)}" ({target_class})')
+        # print(f'Target class: "{get_class_name(target_class)}" ({target_class})')
         print(f'The generated adversarial patch on target model had {misclassified_counts} misclassifications')    
         asr = misclassified_counts / total_valid_images
         print(f'ASR for target model: {asr * 100:.2f}%')    
@@ -377,15 +382,15 @@ def start_testing(device, dataloader, target_class, num_of_patches, patches, tar
         deployer = DeployerMini(num_of_patches, critical_points=int(attack_type[1]))
 
     # for target_model in target_models:
-    for target_model, name in zip(target_models, target_model_names):
+    for target_model, target_model_name in zip(target_models, target_model_names):
         for iter, generator in patches.items():
             # for noise_i, patch in results.items():
         # for i, patch in enumerate(patches):
             noise = torch.randn(1, 100, 1, 1).to(device)
             patch = generator(noise).detach().squeeze(0)
-
-            logger.log_best_patch(f'iter {iter}', patch, testing=True)
-            test_best_patch(patch, f'iter {iter}', dataloader, target_class, deployer, target_model, name, device, logger)
+            # print(f'------------------- target_model is: {target_model_name}')
+            logger.log_best_patch(f'{target_model_name}/iter {iter+1}', patch, testing=True)
+            test_best_patch(patch, f'iter {iter+1}', dataloader, target_class, deployer, target_model, target_model_name, device, logger)
            
     
 
@@ -448,15 +453,16 @@ if __name__ == "__main__":
     num_of_classes = len(classes)
 
     print(f'PROJECT: {project_name}')
-    
+    # print(f'CLASSES: {classes}')
     if run_mode == 'train':
         start_training(device, attack_mode, patch_size, discriminators, dataloader, target_class, checkpoint_dir, num_of_epochs, num_of_patches, logger)
     else:
-        train_project_name = f'F train ' + f'{attack_mode} ' + f'={target_class}= ' + f' {",".join(training_model_names)} '
+        train_project_name = f'F train ' + att + f'={target_class}= ' + f' {",".join(training_model_names)} '
+        print(f'train project name: {train_project_name}')
         target_models = get_models(target_model_names, device)
 
-        
-        generators = fetch_generators_from_wandb(lambda: Generator(patch_size), train_project_name, noises=1)
+        # generators = fetch_generators_from_wandb(lambda: Generator(patch_size), train_project_name, patch_size=patch_size)
+        generators = fetch_generators_from_wandb(Generator, train_project_name, patch_size=patch_size)
         start_testing(device, dataloader, target_class, num_of_patches, generators, target_models, target_model_names, attack_mode, logger)
         
     
