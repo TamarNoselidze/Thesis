@@ -56,7 +56,7 @@ def test_best_patch(training_model_names, patch, patch_i, dataloader, target_cla
 
     with torch.no_grad():  # Disable gradients for evaluation
         for batch in dataloader:
-            images, true_labels, indices = batch
+            images, true_labels = batch
             images = images.to(device)
             true_labels = true_labels.to(device)
             
@@ -83,11 +83,9 @@ def test_best_patch(training_model_names, patch, patch_i, dataloader, target_cla
                     misclassified_counts += 1
                     misclassified = True
 
-                original_index = indices[valid_indices][i]  
-
                 if image_i % 200 == 0:   # displaying one in every 200 modified images
 
-                    logger.log_modified_image(patch_i, image_i, modified_image, misclassified, true_labels[original_index], target_model_name)
+                    logger.log_modified_image(patch_i, image_i, modified_image, misclassified, target_model_name)
 
                 image_i +=1
 
