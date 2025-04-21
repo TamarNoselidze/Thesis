@@ -30,8 +30,8 @@ class WandbLogger:
         else:
             # Table for tracking test results on target models
             self.target_model_results_table = wandb.Table(
-                columns=["target class name", "target model(s)",
-                        "patch #" , "misclassified", "total", "ASR"]
+                columns=["train model(s)", "target class", "target model",
+                        "patch from" , "misclassified", "total", "ASR"]
             )
         
     
@@ -53,10 +53,10 @@ class WandbLogger:
         })
     
 
-    def log_modified_image(self, patch_i, image_idx, modified_image, is_misclassified, original_label):
+    def log_modified_image(self, patch_i, image_idx, modified_image, is_misclassified, original_label, target_model):
         """Log modified image with adversarial patch"""
         wandb.log({
-            f"images/image_{image_idx}": 
+            f"{target_model}_images/image_{image_idx}": 
                 wandb.Image(modified_image.cpu(), caption=f'Patch {patch_i}, {"misclassified" if is_misclassified else "not misclassified"}, original {original_label}')
         })
     
@@ -83,13 +83,13 @@ class WandbLogger:
         })
 
     
-    def log_target_model_results(self, patch_i, target_model_name, misclassified, total, asr):
+    def log_target_model_results(self, train_model_names, patch_i, target_model_name, misclassified, total, asr):
         """Log test results on target models"""
         # train_models_str = ", ".join(train_model_names)
         # target_models_str = ", ".join(target_models)
         
         self.target_model_results_table.add_data(
-            self.target_class_name, target_model_name, patch_i, misclassified, total, f'{asr * 100:.2f}%'
+            train_model_names, self.target_class_name, target_model_name, patch_i, misclassified, total, f'{asr * 100:.2f}%'
         )
  
     

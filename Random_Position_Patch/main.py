@@ -47,7 +47,7 @@ def get_models(model_names, device):
 
 
         
-def test_best_patch(patch, patch_i, dataloader, target_class, deployer, target_model, target_model_name, device, logger):
+def test_best_patch(training_model_names, patch, patch_i, dataloader, target_class, deployer, target_model, target_model_name, device, logger):
     # print(f'---------------------------- tc: {target_class}')
     # print(type(target_class))
     misclassified_counts = 0
@@ -56,7 +56,7 @@ def test_best_patch(patch, patch_i, dataloader, target_class, deployer, target_m
 
     with torch.no_grad():  # Disable gradients for evaluation
         for batch in dataloader:
-            images, true_labels = batch
+            images, true_labels, indices = batch
             images = images.to(device)
             true_labels = true_labels.to(device)
             
@@ -82,11 +82,12 @@ def test_best_patch(patch, patch_i, dataloader, target_class, deployer, target_m
                 if predicted.item() == target_class:
                     misclassified_counts += 1
                     misclassified = True
-                    
-                if image_i % 500 == 0:   # displaying one in every 500 modified images
-                    # print(f'+ + + + + true label was: {true_labels[i]} {get_class_name(true_labels[i])}')
 
-                    logger.log_modified_image(patch_i, image_i, modified_image, misclassified, true_labels[i])
+                original_index = indices[valid_indices][i]  
+
+                if image_i % 200 == 0:   # displaying one in every 200 modified images
+
+                    logger.log_modified_image(patch_i, image_i, modified_image, misclassified, true_labels[original_index], target_model_name)
 
                 image_i +=1
 
@@ -98,7 +99,7 @@ def test_best_patch(patch, patch_i, dataloader, target_class, deployer, target_m
 
         # Log to wandb
         logger.log_target_model_results(
-            patch_i, target_model_name, misclassified_counts, total_valid_images, asr
+            training_model_names, patch_i, target_model_name, misclassified_counts, total_valid_images, asr
         )
     
     return misclassified_counts
@@ -374,23 +375,21 @@ def start_training(device, attack_mode, patch_size, discriminators, dataloader, 
 
     return results
 
-def start_testing(device, dataloader, target_class, num_of_patches, patches, target_models, target_model_names, attack_mode, logger):
+def start_testing(train_model_names, device, dataloader, target_class, num_of_patches, patches, target_models, target_model_names, attack_mode, logger):
     attack_type = attack_mode.split('_')
     if attack_type[0] == 'gpatch':
         deployer = Deployer()
     else:
         deployer = DeployerMini(num_of_patches, critical_points=int(attack_type[1]))
 
-    # for target_model in target_models:
-    for target_model, target_model_name in zip(target_models, target_model_names):
-        for iter, generator in patches.items():
-            # for noise_i, patch in results.items():
-        # for i, patch in enumerate(patches):
-            noise = torch.randn(1, 100, 1, 1).to(device)
-            patch = generator(noise).detach().squeeze(0)
-            # print(f'------------------- target_model is: {target_model_name}')
-            logger.log_best_patch(f'{target_model_name}/iter {iter+1}', patch, testing=True)
-            test_best_patch(patch, f'iter {iter+1}', dataloader, target_class, deployer, target_model, target_model_name, device, logger)
+
+    for iter, generator in patches.items():
+        noise = torch.randn(1, 100, 1, 1).to(device)
+        patch = generator(noise).detach().squeeze(0)
+        logger.log_best_patch(f'{train_model_names}/iter {iter+1}', patch, testing=True)
+
+        for target_model, target_model_name in zip(target_models, target_model_names):
+            test_best_patch(train_model_names, patch, f'iter {iter+1}', dataloader, target_class, deployer, target_model, target_model_name, device, logger)
            
     
 
@@ -463,7 +462,7 @@ if __name__ == "__main__":
 
         # generators = fetch_generators_from_wandb(lambda: Generator(patch_size), train_project_name, patch_size=patch_size)
         generators = fetch_generators_from_wandb(Generator, train_project_name, patch_size=patch_size)
-        start_testing(device, dataloader, target_class, num_of_patches, generators, target_models, target_model_names, attack_mode, logger)
+        start_testing(args.training_models, device, dataloader, target_class, num_of_patches, generators, target_models, target_model_names, attack_mode, logger)
         
     
     logger.finalize()
