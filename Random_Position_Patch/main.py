@@ -73,10 +73,13 @@ def test_best_patch(training_model_names, patch, patch_i, dataloader, target_cla
             # print(f'plus {batch_size}')
             # print(f'so total is: {total_valid_images}')
 
+            patches = patch.unsqueeze(0).repeat(images.size(0), 1, 1, 1)
+            modified_images = deployer.deploy(patches, images)
+
             for i in range(batch_size):
                 misclassified = False
-                modified_image = deployer.deploy(patch, images[i])
-                # for model, name in zip(target_models, target_model_names):
+                # modified_image = deployer.deploy(patch, images[i])
+                modified_image = modified_images[i]
                 output = target_model(modified_image.unsqueeze(0).to(device))
                 _, predicted = torch.max(output.data, 1)       
                 if predicted.item() == target_class:
@@ -123,12 +126,16 @@ def evaluate_patch(patch, dataloader, target_class, deployer, discriminators, de
             batch_size = images.shape[0]
             total_valid_images += batch_size
             
-            adv_images = []
-            for idx, image in enumerate(images):
-                adv_image = deployer.deploy(patch, image)
-                adv_images.append(adv_image)
+            # adv_images = []
+            # for idx, image in enumerate(images):
+            #     adv_image = deployer.deploy(patch, image)
+            #     adv_images.append(adv_image)
 
-            adv_images = torch.stack(adv_images).to(device)
+            # adv_images = torch.stack(adv_images).to(device)
+
+
+            patches = patch.unsqueeze(0).repeat(images.size(0), 1, 1, 1)  # Repeat same patch for the batch
+            adv_images = deployer.deploy(patches, images)
 
 
             # === Majority Voting ===
@@ -271,16 +278,19 @@ def gan_attack(device, generator, optimizer, deployer, discriminators, dataloade
 
             noise = torch.randn(batch_size, input_dim, 1, 1).to(device)
 
-            modified_images = []
-            adv_patches = generator(noise)
-
             # deploying 
-            for i in range(batch_size):
-                patch = adv_patches[i]
-                modified_image = deployer.deploy(patch, images[i])
-                modified_images.append(modified_image)
 
-            modified_images = torch.stack(modified_images).to(device)
+            # modified_images = []
+            # adv_patches = generator(noise)
+            # for i in range(batch_size):
+            #     patch = adv_patches[i]
+            #     modified_image = deployer.deploy(patch, images[i])
+            #     modified_images.append(modified_image)
+
+            # modified_images = torch.stack(modified_images).to(device)
+
+            adv_patches = generator(noise)
+            modified_images = deployer.deploy(adv_patches, images)
 
             # multiple discriminators
             outputs = []
