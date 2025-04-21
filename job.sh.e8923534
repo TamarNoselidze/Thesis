@@ -1,24 +1,0 @@
-
-[notice] A new release of pip is available: 24.2 -> 25.0.1
-[notice] To update, run: python3 -m pip install --upgrade pip
-wandb: Using wandb-core as the SDK backend. Please refer to https://wandb.me/wandb-core for more information.
-wandb: Currently logged in as: takonoselidze (takonoselidze-charles-university). Use `wandb login --relogin` to force relogin
-wandb: - Waiting for wandb.init()...wandb: \ Waiting for wandb.init()...wandb: | Waiting for wandb.init()...wandb: Tracking run with wandb version 0.18.3
-wandb: Run data is saved locally in /scratch.ssd/takonoselidze/job_8923534.pbs-m1.metacentrum.cz/wandb/run-20250218_165451-dar962ie
-wandb: Run `wandb offline` to turn off syncing.
-wandb: Syncing run celestial-firebrand-2
-wandb: ⭐️ View project at https://wandb.ai/takonoselidze-charles-university/RPP%20src-tar%20mini_attack%20train-vit_b_16%2Cresnet50%201%20iters%20
-wandb: 🚀 View run at https://wandb.ai/takonoselidze-charles-university/RPP%20src-tar%20mini_attack%20train-vit_b_16%2Cresnet50%201%20iters%20/runs/dar962ie
-wandb: - 0.884 MB of 0.884 MB uploadedwandb:                                                                                
-wandb: 
-wandb: Run history:
-wandb: epoch_avg_asr ██▁▁
-wandb: 
-wandb: Run summary:
-wandb: epoch_avg_asr 3e-05
-wandb: 
-wandb: 🚀 View run celestial-firebrand-2 at: https://wandb.ai/takonoselidze-charles-university/RPP%20src-tar%20mini_attack%20train-vit_b_16%2Cresnet50%201%20iters%20/runs/dar962ie
-wandb: ⭐️ View project at: https://wandb.ai/takonoselidze-charles-university/RPP%20src-tar%20mini_attack%20train-vit_b_16%2Cresnet50%201%20iters%20
-wandb: Synced 5 W&B file(s), 0 media file(s), 0 artifact file(s) and 12 other file(s)
-wandb: Find logs at: ./wandb/run-20250218_165451-dar962ie/logs
-tar: Removing leading `/' from member names

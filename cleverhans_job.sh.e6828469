@@ -1,9 +1,0 @@
-
-[notice] A new release of pip is available: 24.2 -> 24.3.1
-[notice] To update, run: python3 -m pip install --upgrade pip
-usage: main.py [-h] [--model {resnet50,resnet152,vgg16_bn,vit_b_16,vit_l_32}]
-               [--attack {FGSM,CWl2,HOP-SKIP,PGD,Sl1D}] [--epsilon EPSILON]
-               [--brightness BRIGHTNESS]
-               [--image_folder_path IMAGE_FOLDER_PATH]
-               [--additional ADDITIONAL]
-main.py: error: argument --brightness: invalid float value: ''

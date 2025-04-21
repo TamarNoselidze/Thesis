@@ -1,9 +1,0 @@
-
-[notice] A new release of pip is available: 24.2 -> 24.3.1
-[notice] To update, run: python3 -m pip install --upgrade pip
-Traceback (most recent call last):
-  File "main.py", line 378, in <module>
-    dataloader, classes = load_random_classes(args.image_folder_path, args.num_of_train_classes)
-  File "/scratch.ssd/takonoselidze/job_7227459.pbs-m1.metacentrum.cz/helper.py", line 50, in load_random_classes
-    dataset = datasets.ImageFolder(image_folder_path, transform=transform)
-NameError: name 'transform' is not defined
