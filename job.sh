@@ -1,14 +1,14 @@
 #!/bin/bash
-#PBS -q gpu@pbs-m1.metacentrum.cz
-#PBS -l walltime=24:00:00
-#PBS -l select=1:ncpus=1:ngpus=1:mem=30gb:scratch_local=100gb
+#PBS -q gpu
+#PBS -l walltime=15:00:00
+#PBS -l select=1:ncpus=1:ngpus=1:mem=8gb:gpu_mem=10gb:scratch_local=100gb
 
 trap 'clean_scratch' TERM EXIT
 
 HOME_DIR=${1:-'/storage/brno2/home/takonoselidze'}
 PROJECT_DIR="$HOME_DIR/Thesis/Random_Position_Patch"
 DATASET_DIR="$HOME_DIR/imagenetv2-top-images"
-CONTAINER_PATH="$HOME_DIR/containers/pytorch_container.sif"
+CONTAINER_PATH="$HOME_DIR/containers/my_container.sif"
 
 CHECKPOINT_DIR="$SCRATCHDIR/checkpoints"
 set -o allexport; source "$HOME_DIR/Thesis/.env"; set +o allexport
@@ -18,21 +18,22 @@ set -o allexport; source "$HOME_DIR/Thesis/.env"; set +o allexport
 IFS=',' read -r -a training_models_array <<< "$TRAINING_MODELS"
 IFS=',' read -r -a target_models_array <<< "$TARGET_MODELS"
 
-# Convert arrays to space-separated strings for logging
+# Convert arrays to space-separated strings for loggings
 TRAINING_MODELS_STR="${training_models_array[@]}"
 TARGET_MODELS_STR="${target_models_array[@]}"
 
 TRAINING_MODELS_STR=$(echo "${training_models_array[@]}" | xargs)
 TARGET_MODELS_STR=$(echo "${target_models_array[@]}" | xargs)
 
+RUN_MODE=${RUN_MODE}
 ATTACK_MODE=${ATTACK_MODE}
-NUMBER_OF_PATCHES=${NUMBER_OF_PATCHES:-1}
-TRANSFER_MODE=${TRANSFER_MODE}
+
+TARGET_CLASS=${TARGET_CLASS}
 PATCH_SIZE=${PATCH_SIZE:-64}
+PATCHES=${PATCHES:-1}
+
 EPOCHS=${EPOCHS:-40}           # Number of epochs
 CLASSES=${CLASSES:-1000}        # Number of classes to load for training
-TARGET_CLASS=${TARGET_CLASS}
-MINI_TYPE=${MINI_TYPE}
 
 SCRATCH_RESULTS="$SCRATCHDIR/results"
 SCRATCH_LOGS="$SCRATCHDIR/logs"
@@ -61,16 +62,15 @@ echo "Running singularity container..."
 singularity exec --nv "$CONTAINER_PATH" bash sing.sh \
 	"$SCRATCHDIR/imagenetv2-top-images/imagenetv2-top-images-format-val" \
 	"$CHECKPOINT_DIR" \
+	"$RUN_MODE" \
 	"$ATTACK_MODE" \
-	"$NUMBER_OF_PATCHES" \
-	"$TRANSFER_MODE" \
 	"$TRAINING_MODELS_STR" \
 	"$TARGET_MODELS_STR" \
-	"$PATCH_SIZE"\
-	"$EPOCHS" \
-	"$CLASSES" \
 	"$TARGET_CLASS" \
-	"$MINI_TYPE" || { echo "Singularity execution failed"; exit 1; }
+	"$PATCH_SIZE"\
+	"$PATCHES" \
+	"$EPOCHS" \
+	"$CLASSES" || { echo "Singularity execution failed"; exit 1; }
 
 
 # archive the results
@@ -86,13 +86,11 @@ singularity exec --nv "$CONTAINER_PATH" bash sing.sh \
 
 
 # Copy saved generators from scratch to home directory
-echo "Copying the best generator(s) to home directory..."
-mkdir -p "$HOME_DIR/generators/$PBS_JOBID"
-cp -r "$CHECKPOINT_DIR"/best_generators/* "$HOME_DIR/generators/$PBS_JOBID" || { echo "Failed to copy generators"; exit 1; }
+# echo "Copying the best generator(s) to home directory..."
+# mkdir -p "$HOME_DIR/generators/$PBS_JOBID"
+# cp -r "$CHECKPOINT_DIR"/best_generators/* "$HOME_DIR/generators/$PBS_JOBID" || { echo "Failed to copy generators"; exit 1; }
 
-echo "Generator saved to $HOME_DIR/generators/$PBS_JOBID"
-
+# echo "Generator saved to $HOME_DIR/generators/$PBS_JOBID"
 
 
 echo "Job completed successfully!"
-
