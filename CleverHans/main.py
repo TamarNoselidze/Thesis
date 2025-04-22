@@ -196,12 +196,12 @@ def get_model(model_name):
 if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(description='CleverHans Attacks')
+    parser.add_argument('--image_folder_path', help='Image dataset to perturb', default='../imgs')
     parser.add_argument('--attack', choices=['FGSM', 'CWl2', 'HOP-SKIP', 'PGD', 'Sl1D'], help='The attack to perform.')
     parser.add_argument('--model', choices=['resnet50', 'resnet152', 'vgg16_bn', 'vit_b_16', 'vit_l_32'], help='Model to attack')
     parser.add_argument('--target', help='The target class.')
     parser.add_argument('--epsilon', type=float, help='The perturbation budget, controlling the maximum amount of change allowed to the input. In the range [0,1]', default=0.05)
     parser.add_argument('--brightness', type=float, help='Brightness value, between 0 (black image) and 2', default=0)
-    parser.add_argument('--image_folder_path', help='Image dataset to perturb', default='../imgs')
     parser.add_argument('--additional', help='Any additional comment that will be added to the project name for logging in wandb')
     args = parser.parse_args()
 

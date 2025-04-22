@@ -8,8 +8,8 @@ fi
 
 echo "Running Python script"
 python3 main.py \
-    --attack "$1" \
-    --image_folder_path "$2" \
+    --image_folder_path "$1" \
+    --attack "$2" \
     --model "$3" \
-    --brightness "$4" \
-    --additional "$5"
+    --target "$4" \
+    --epsilon "$5"
