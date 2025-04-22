@@ -11,13 +11,12 @@ echo "Running Python script"
 python3 main.py \
     --image_folder_path "$1" \
     --checkpoint_folder_path "$2" \
-    --attack_mode "$3" \
-    --num_of_patches "$4" \
-    --transfer_mode "$5" \
-    --training_models "$6" \
-    --target_models "$7" \
-    --patch_size "$8" \
-    --epochs "$9" \
-    --num_of_train_classes "${10}" \
-    --target_class "${11}" \
-    --mini_type "${12}"
+    --run_mode "$3" \
+    --attack_mode "$4" \
+    --training_models "$5" \
+    --target_models "$6" \
+    --target_class "$7" \
+    --patch_size "${8}" \
+    --num_of_patches "${9}" \
+    --epochs "${10}" \
+    --num_of_train_classes "${11}"
