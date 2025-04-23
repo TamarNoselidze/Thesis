@@ -73,13 +73,13 @@ def test_best_patch(training_model_names, patch, patch_i, dataloader, target_cla
             # print(f'plus {batch_size}')
             # print(f'so total is: {total_valid_images}')
 
-            patches = patch.unsqueeze(0).repeat(images.size(0), 1, 1, 1)
-            modified_images = deployer.deploy(patches, images)
+            # patches = patch.unsqueeze(0).repeat(images.size(0), 1, 1, 1)
+            # modified_images = deployer.deploy(patches, images)
 
             for i in range(batch_size):
                 misclassified = False
-                # modified_image = deployer.deploy(patch, images[i])
-                modified_image = modified_images[i]
+                modified_image = deployer.deploy(patch, images[i])
+                # modified_image = modified_images[i]
                 output = target_model(modified_image.unsqueeze(0).to(device))
                 _, predicted = torch.max(output.data, 1)       
                 if predicted.item() == target_class:
@@ -91,6 +91,13 @@ def test_best_patch(training_model_names, patch, patch_i, dataloader, target_cla
                     logger.log_modified_image(patch_i, image_i, modified_image, misclassified, target_model_name)
 
                 image_i +=1
+
+                del image, modified_image, output, predicted
+                torch.cuda.empty_cache()
+
+
+            del images, true_labels
+            torch.cuda.empty_cache()
 
   
         # print(f'Target class: "{get_class_name(target_class)}" ({target_class})')
@@ -104,6 +111,7 @@ def test_best_patch(training_model_names, patch, patch_i, dataloader, target_cla
         )
     
     return misclassified_counts
+
 
 def evaluate_patch(patch, dataloader, target_class, deployer, discriminators, device):
     total_correct_count = 0
@@ -126,16 +134,16 @@ def evaluate_patch(patch, dataloader, target_class, deployer, discriminators, de
             batch_size = images.shape[0]
             total_valid_images += batch_size
             
-            # adv_images = []
-            # for idx, image in enumerate(images):
-            #     adv_image = deployer.deploy(patch, image)
-            #     adv_images.append(adv_image)
+            adv_images = []
+            for idx, image in enumerate(images):
+                adv_image = deployer.deploy(patch, image)
+                adv_images.append(adv_image)
 
-            # adv_images = torch.stack(adv_images).to(device)
+            adv_images = torch.stack(adv_images).to(device)
 
 
-            patches = patch.unsqueeze(0).repeat(images.size(0), 1, 1, 1)  # Repeat same patch for the batch
-            adv_images = deployer.deploy(patches, images)
+            # patches = patch.unsqueeze(0).repeat(images.size(0), 1, 1, 1)  # Repeat same patch for the batch
+            # adv_images = deployer.deploy(patches, images)
 
 
             # === Majority Voting ===
@@ -171,6 +179,10 @@ def evaluate_patch(patch, dataloader, target_class, deployer, discriminators, de
             # Count how many were predicted as the target class (i.e., "successful attack")
             correct = (ensemble_predicted == target_class).sum().item()
             total_correct_count += correct
+
+
+            del adv_images, images
+            torch.cuda.empty_cache()
 
         total_asr = total_correct_count / total_valid_images
 
@@ -280,17 +292,17 @@ def gan_attack(device, generator, optimizer, deployer, discriminators, dataloade
 
             # deploying 
 
-            # modified_images = []
-            # adv_patches = generator(noise)
-            # for i in range(batch_size):
-            #     patch = adv_patches[i]
-            #     modified_image = deployer.deploy(patch, images[i])
-            #     modified_images.append(modified_image)
-
-            # modified_images = torch.stack(modified_images).to(device)
-
+            modified_images = []
             adv_patches = generator(noise)
-            modified_images = deployer.deploy(adv_patches, images)
+            for i in range(batch_size):
+                patch = adv_patches[i]
+                modified_image = deployer.deploy(patch, images[i])
+                modified_images.append(modified_image)
+
+            modified_images = torch.stack(modified_images).to(device)
+
+            # adv_patches = generator(noise)
+            # modified_images = deployer.deploy(adv_patches, images)
 
             # multiple discriminators
             outputs = []
@@ -342,6 +354,10 @@ def gan_attack(device, generator, optimizer, deployer, discriminators, dataloade
             logger.log_batch_metrics(epoch+1, loss.item(), batch_asr, batch_i)
             batch_i+=1
             epoch_correct_count += correct
+
+
+            del images, true_labels, noise, adv_patches, modified_images, outputs, sum_probs, ensemble_predicted, target_class_y_prime, loss
+            torch.cuda.empty_cache()
 
         avg_epoch_asr = epoch_correct_count / epoch_valid_images
         avg_epoch_loss = batch_loss / (batch_i - 1) if batch_i > 1 else 0
