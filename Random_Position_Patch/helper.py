@@ -5,7 +5,7 @@ from torch.utils.data import DataLoader
 from torchvision import datasets, transforms
 from generator import Generator 
 
-def load_random_classes(image_folder_path, num_of_classes):
+def load_classes(image_folder_path, num_of_classes):
 
     transform = transforms.Compose([
         transforms.Resize((224, 224)),
@@ -14,24 +14,24 @@ def load_random_classes(image_folder_path, num_of_classes):
 
     dataset = datasets.ImageFolder(image_folder_path, transform=transform)
     
-    selected_classes = set(random.sample(dataset.classes, num_of_classes))
+    # selected_classes = set(random.sample(dataset.classes, num_of_classes))
     
-    # Filter samples based on the selected class names
-    dataset.samples = [(path, target) for path, target in dataset.samples if dataset.classes[target] in selected_classes]
+    # # Filter samples based on the selected class names
+    # dataset.samples = [(path, target) for path, target in dataset.samples if dataset.classes[target] in selected_classes]
     
-    # Update dataset.targets to match the filtered samples
-    dataset.targets = [target for _, target in dataset.samples]
+    # # Update dataset.targets to match the filtered samples
+    # dataset.targets = [target for _, target in dataset.samples]
 
-    # Update dataset.classes and dataset.class_to_idx to reflect the selected classes
-    dataset.classes = sorted(selected_classes)
-    dataset.class_to_idx = {cls: idx for idx, cls in enumerate(dataset.classes)}
+    # # Update dataset.classes and dataset.class_to_idx to reflect the selected classes
+    # dataset.classes = sorted(selected_classes)
+    # dataset.class_to_idx = {cls: idx for idx, cls in enumerate(dataset.classes)}
 
     # Create a DataLoader for the filtered dataset
-    dataloader = DataLoader(dataset, batch_size=32, shuffle=True)
-    
-    classes = (set(int(class_name) for class_name in dataset.classes))
+    dataloader = DataLoader(dataset, batch_size=16, shuffle=True)
+    # 
+    # classes = (set(int(class_name) for class_name in dataset.classes))
 
-    return dataloader, classes
+    return dataloader
 
 
 

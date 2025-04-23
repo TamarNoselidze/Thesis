@@ -8,7 +8,7 @@ from loss import AdversarialLoss
 from deployer import Deployer
 from Mini_Patches.deployer_mini import DeployerMini
 from generator import Generator
-from helper import save_generator, load_generator, load_checkpoints, load_random_classes, get_class_name, fetch_generators_from_wandb
+from helper import save_generator, load_generator, load_checkpoints, load_classes, get_class_name, fetch_generators_from_wandb
 from wandb_logger import WandbLogger
 
 from torchvision.models.resnet import resnet50, ResNet50_Weights, resnet152, ResNet152_Weights, resnet101, ResNet101_Weights
@@ -456,8 +456,10 @@ if __name__ == "__main__":
 
     discriminators = get_models(training_model_names, device)
 
-    dataloader, classes = load_random_classes(args.image_folder_path, args.num_of_train_classes)
-    num_of_classes = len(classes)
+    # dataset = datasets.ImageFolder(image_folder, transform=transform())
+    # dataloader = DataLoader(dataset, batch_size=32, shuffle=True)
+    dataloader = load_classes(args.image_folder_path, args.num_of_train_classes)
+    # num_of_classes = len(classes)
 
     print(f'PROJECT: {project_name}')
     # print(f'CLASSES: {classes}')
