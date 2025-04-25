@@ -387,6 +387,8 @@ def start_training(device, attack_mode, patch_size, discriminators, dataloader, 
     fixed_noises = torch.load("fixed_noises.pt")
     fixed_noises = [noise.to(device) for noise in fixed_noises]
 
+    fixed_noises = fixed_noises[2:]
+
     generator = Generator(patch_size).to(device)
     generator.train()
 

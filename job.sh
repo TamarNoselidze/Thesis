@@ -1,11 +1,11 @@
 #!/bin/bash
 #PBS -q gpu
-#PBS -l walltime=15:00:00
-#PBS -l select=1:ncpus=1:ngpus=1:mem=8gb:gpu_mem=10gb:scratch_local=100gb
+#PBS -l walltime=10:00:00
+#PBS -l select=1:ncpus=1:ngpus=1:mem=8gb:gpu_mem=12gb:scratch_local=100gb
 
 trap 'clean_scratch' TERM EXIT
 
-HOME_DIR=${1:-'/storage/brno2/home/takonoselidze'}
+HOME_DIR=${1:-'/storage/brno2/home/olliewakeford'}
 PROJECT_DIR="$HOME_DIR/Thesis/Random_Position_Patch"
 DATASET_DIR="$HOME_DIR/imagenetv2-top-images"
 CONTAINER_PATH="$HOME_DIR/containers/my_container.sif"
@@ -56,6 +56,9 @@ mkdir -p "$CHECKPOINT_DIR"  # Create checkpoint directory in scratch
 
 # creating directories for results and logs
 mkdir -p "$SCRATCH_RESULTS" "$SCRATCH_LOGS" || { echo "Failed to create result/log directories"; exit 1; }
+
+export PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True
+
 
 # run the singularity container
 echo "Running singularity container..."
