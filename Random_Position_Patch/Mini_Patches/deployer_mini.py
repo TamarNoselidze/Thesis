@@ -1,89 +1,89 @@
-# import torch
-# import random
+import torch
+import random
 
-# class DeployerMini:
-#     def __init__(self, num_patches, critical_points=0, allow_overlap=False):
-#         self.num_patches = num_patches
-#         self.allow_overlap = allow_overlap
-#         self.critical_points = critical_points
-
-
-#     def deploy(self, patch, image):
-#         _, H, W = image.shape
-#         _, P_H, P_W = patch.shape
-#         mask = torch.zeros_like(image)
-
-#         if self.critical_points == 0:
-#             deployed_count = 0
-#             occupied = torch.zeros(H, W, dtype=torch.bool)
-
-#             while deployed_count < self.num_patches:
-#                 if self.allow_overlap:
-#                     k = torch.randint(0, H - P_H + 1, (1,)).item()
-#                     l = torch.randint(0, W - P_W + 1, (1,)).item()
-#                     mask[:, k:k + P_H, l:l + P_W] = patch
-#                 else:
-#                     placed = False
-#                     while not placed:
-#                         k = torch.randint(0, H - P_H + 1, (1,)).item()
-#                         l = torch.randint(0, W - P_W + 1, (1,)).item()
-
-#                         if not occupied[k:k + P_H, l:l + P_W].any():
-#                             occupied[k:k + P_H, l:l + P_W] = True
-#                             mask[:, k:k + P_H, l:l + P_W] = patch
-#                             placed = True
-
-#                 deployed_count += 1
-#         else: 
-#             # Get random critical areas
-#             critical_areas = get_random_critical_areas(self.critical_points, self.num_patches, (H, W), (P_H, P_W))
-
-#             for (center_x, center_y) in critical_areas:
-#                 # Compute top-left corner of patch placement
-#                 top_left_x = max(0, center_x - P_H // 2)
-#                 top_left_y = max(0, center_y - P_W // 2)
-
-#                 # Ensure patch does not go beyond image boundaries
-#                 bottom_right_x = min(H, top_left_x + P_H)
-#                 bottom_right_y = min(W, top_left_y + P_W)
-
-#                 # Apply the patch
-#                 mask[:, top_left_x:bottom_right_x, top_left_y:bottom_right_y] = patch[:, :bottom_right_x - top_left_x, :bottom_right_y - top_left_y]
+class DeployerMini:
+    def __init__(self, num_patches, critical_points=0, allow_overlap=False):
+        self.num_patches = num_patches
+        self.allow_overlap = allow_overlap
+        self.critical_points = critical_points
 
 
-#         adversarial_image = mask + (1 - mask) * image  # Combine mask with original image
+    def deploy(self, patch, image):
+        _, H, W = image.shape
+        _, P_H, P_W = patch.shape
+        mask = torch.zeros_like(image)
 
-#         return adversarial_image
+        if self.critical_points == 0:
+            deployed_count = 0
+            occupied = torch.zeros(H, W, dtype=torch.bool)
+
+            while deployed_count < self.num_patches:
+                if self.allow_overlap:
+                    k = torch.randint(0, H - P_H + 1, (1,)).item()
+                    l = torch.randint(0, W - P_W + 1, (1,)).item()
+                    mask[:, k:k + P_H, l:l + P_W] = patch
+                else:
+                    placed = False
+                    while not placed:
+                        k = torch.randint(0, H - P_H + 1, (1,)).item()
+                        l = torch.randint(0, W - P_W + 1, (1,)).item()
+
+                        if not occupied[k:k + P_H, l:l + P_W].any():
+                            occupied[k:k + P_H, l:l + P_W] = True
+                            mask[:, k:k + P_H, l:l + P_W] = patch
+                            placed = True
+
+                deployed_count += 1
+        else: 
+            # Get random critical areas
+            critical_areas = get_random_critical_areas(self.critical_points, self.num_patches, (H, W), (P_H, P_W))
+
+            for (center_x, center_y) in critical_areas:
+                # Compute top-left corner of patch placement
+                top_left_x = max(0, center_x - P_H // 2)
+                top_left_y = max(0, center_y - P_W // 2)
+
+                # Ensure patch does not go beyond image boundaries
+                bottom_right_x = min(H, top_left_x + P_H)
+                bottom_right_y = min(W, top_left_y + P_W)
+
+                # Apply the patch
+                mask[:, top_left_x:bottom_right_x, top_left_y:bottom_right_y] = patch[:, :bottom_right_x - top_left_x, :bottom_right_y - top_left_y]
 
 
-# def get_random_critical_areas(critical_type, numOfPoints, image_dim, patch_dim):
-#     all_areas = get_critical_centroids(critical_type, image_dim, patch_dim)
-#     random_areas = random.sample(all_areas, min(numOfPoints, len(all_areas)))
+        adversarial_image = mask + (1 - mask) * image  # Combine mask with original image
 
-#     return random_areas
+        return adversarial_image
 
-# def get_critical_centroids(critical_type, image_dim, patch_dim):
-#     image_H, image_W = image_dim
-#     patch_H, patch_W = patch_dim
 
-#     # print(f'patch dimension: {patch_dim}')
-#     # print(f'image dimension: {image_dim}')
+def get_random_critical_areas(critical_type, numOfPoints, image_dim, patch_dim):
+    all_areas = get_critical_centroids(critical_type, image_dim, patch_dim)
+    random_areas = random.sample(all_areas, min(numOfPoints, len(all_areas)))
 
-#     offset = 0
-#     if critical_type == 1:
-#         offset = patch_H
-#     if critical_type == 2:
-#         offset = 32
+    return random_areas
 
-#     # image_H -= offset
-#     # image_W -= offset
-#     centr_coordinates = []
-#     for x in range(offset, image_H, offset):
-#         for y in range(offset, image_W, offset):
-#             centr_coordinates.append((x, y))
-#     # print(f'critical areas: {centr_coordinates}')
+def get_critical_centroids(critical_type, image_dim, patch_dim):
+    image_H, image_W = image_dim
+    patch_H, patch_W = patch_dim
 
-#     return centr_coordinates
+    # print(f'patch dimension: {patch_dim}')
+    # print(f'image dimension: {image_dim}')
+
+    offset = 0
+    if critical_type == 1:
+        offset = patch_H
+    if critical_type == 2:
+        offset = 32
+
+    # image_H -= offset
+    # image_W -= offset
+    centr_coordinates = []
+    for x in range(offset, image_H, offset):
+        for y in range(offset, image_W, offset):
+            centr_coordinates.append((x, y))
+    # print(f'critical areas: {centr_coordinates}')
+
+    return centr_coordinates
 
 
 
@@ -104,91 +104,91 @@
 
 
 
-import torch
-import random
+# import torch
+# import random
 
-class DeployerMini:
-    def __init__(self, num_patches, critical_points=0, allow_overlap=False):
-        self.num_patches = num_patches
-        self.allow_overlap = allow_overlap
-        self.critical_points = critical_points
+# class DeployerMini:
+#     def __init__(self, num_patches, critical_points=0, allow_overlap=False):
+#         self.num_patches = num_patches
+#         self.allow_overlap = allow_overlap
+#         self.critical_points = critical_points
 
-    def deploy(self, patches, images):
-        """
-        Deploy patches onto a batch of images.
-        patches: (B, C, P_H, P_W)
-        images: (B, C, H, W)
-        returns: (B, C, H, W) adversarial images
-        """
-        B, C, H, W = images.shape
-        _, _, P_H, P_W = patches.shape
-        adv_images = torch.empty_like(images)
+#     def deploy(self, patches, images):
+#         """
+#         Deploy patches onto a batch of images.
+#         patches: (B, C, P_H, P_W)
+#         images: (B, C, H, W)
+#         returns: (B, C, H, W) adversarial images
+#         """
+#         B, C, H, W = images.shape
+#         _, _, P_H, P_W = patches.shape
+#         adv_images = torch.empty_like(images)
 
-        for i in range(B):
-            patch = patches[i]
-            image = images[i]
-            mask = torch.zeros_like(image)
+#         for i in range(B):
+#             patch = patches[i]
+#             image = images[i]
+#             mask = torch.zeros_like(image)
 
-            if self.critical_points == 0:
-                deployed_count = 0
-                occupied = torch.zeros(H, W, dtype=torch.bool, device=image.device)
+#             if self.critical_points == 0:
+#                 deployed_count = 0
+#                 occupied = torch.zeros(H, W, dtype=torch.bool, device=image.device)
 
-                while deployed_count < self.num_patches:
-                    if self.allow_overlap:
-                        k = torch.randint(0, H - P_H + 1, (1,)).item()
-                        l = torch.randint(0, W - P_W + 1, (1,)).item()
-                        mask[:, k:k + P_H, l:l + P_W] = patch
-                    else:
-                        placed = False
-                        while not placed:
-                            k = torch.randint(0, H - P_H + 1, (1,)).item()
-                            l = torch.randint(0, W - P_W + 1, (1,)).item()
+#                 while deployed_count < self.num_patches:
+#                     if self.allow_overlap:
+#                         k = torch.randint(0, H - P_H + 1, (1,)).item()
+#                         l = torch.randint(0, W - P_W + 1, (1,)).item()
+#                         mask[:, k:k + P_H, l:l + P_W] = patch
+#                     else:
+#                         placed = False
+#                         while not placed:
+#                             k = torch.randint(0, H - P_H + 1, (1,)).item()
+#                             l = torch.randint(0, W - P_W + 1, (1,)).item()
 
-                            if not occupied[k:k + P_H, l:l + P_W].any():
-                                occupied[k:k + P_H, l:l + P_W] = True
-                                mask[:, k:k + P_H, l:l + P_W] = patch
-                                placed = True
+#                             if not occupied[k:k + P_H, l:l + P_W].any():
+#                                 occupied[k:k + P_H, l:l + P_W] = True
+#                                 mask[:, k:k + P_H, l:l + P_W] = patch
+#                                 placed = True
 
-                    deployed_count += 1
+#                     deployed_count += 1
 
-            else: 
-                # Get critical areas and apply patches
-                critical_areas = get_random_critical_areas(self.critical_points, self.num_patches, (H, W), (P_H, P_W))
+#             else: 
+#                 # Get critical areas and apply patches
+#                 critical_areas = get_random_critical_areas(self.critical_points, self.num_patches, (H, W), (P_H, P_W))
 
-                for (center_x, center_y) in critical_areas:
-                    top_left_x = max(0, center_x - P_H // 2)
-                    top_left_y = max(0, center_y - P_W // 2)
-                    bottom_right_x = min(H, top_left_x + P_H)
-                    bottom_right_y = min(W, top_left_y + P_W)
+#                 for (center_x, center_y) in critical_areas:
+#                     top_left_x = max(0, center_x - P_H // 2)
+#                     top_left_y = max(0, center_y - P_W // 2)
+#                     bottom_right_x = min(H, top_left_x + P_H)
+#                     bottom_right_y = min(W, top_left_y + P_W)
 
-                    mask[:, top_left_x:bottom_right_x, top_left_y:bottom_right_y] = \
-                        patch[:, :bottom_right_x - top_left_x, :bottom_right_y - top_left_y]
+#                     mask[:, top_left_x:bottom_right_x, top_left_y:bottom_right_y] = \
+#                         patch[:, :bottom_right_x - top_left_x, :bottom_right_y - top_left_y]
 
-            # Combine patch with original image
-            adv_images[i] = mask + (1 - mask) * image
+#             # Combine patch with original image
+#             adv_images[i] = mask + (1 - mask) * image
 
-        return adv_images
-
-
-def get_random_critical_areas(critical_type, numOfPoints, image_dim, patch_dim):
-    all_areas = get_critical_centroids(critical_type, image_dim, patch_dim)
-    random_areas = random.sample(all_areas, min(numOfPoints, len(all_areas)))
-    return random_areas
+#         return adv_images
 
 
-def get_critical_centroids(critical_type, image_dim, patch_dim):
-    image_H, image_W = image_dim
-    patch_H, patch_W = patch_dim
+# def get_random_critical_areas(critical_type, numOfPoints, image_dim, patch_dim):
+#     all_areas = get_critical_centroids(critical_type, image_dim, patch_dim)
+#     random_areas = random.sample(all_areas, min(numOfPoints, len(all_areas)))
+#     return random_areas
 
-    offset = 0
-    if critical_type == 1:
-        offset = patch_H
-    elif critical_type == 2:
-        offset = 32
 
-    centr_coordinates = []
-    for x in range(offset, image_H, offset):
-        for y in range(offset, image_W, offset):
-            centr_coordinates.append((x, y))
+# def get_critical_centroids(critical_type, image_dim, patch_dim):
+#     image_H, image_W = image_dim
+#     patch_H, patch_W = patch_dim
 
-    return centr_coordinates
+#     offset = 0
+#     if critical_type == 1:
+#         offset = patch_H
+#     elif critical_type == 2:
+#         offset = 32
+
+#     centr_coordinates = []
+#     for x in range(offset, image_H, offset):
+#         for y in range(offset, image_W, offset):
+#             centr_coordinates.append((x, y))
+
+#     return centr_coordinates
