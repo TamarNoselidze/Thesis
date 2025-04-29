@@ -43,9 +43,13 @@ class DeployerMini:
                 top_left_x = max(0, center_x - P_H // 2)
                 top_left_y = max(0, center_y - P_W // 2)
 
+                print(f'top left coordinates: {top_left_x}, {top_left_y}')
+
                 # Ensure patch does not go beyond image boundaries
                 bottom_right_x = min(H, top_left_x + P_H)
                 bottom_right_y = min(W, top_left_y + P_W)
+
+                print(f'bottom right coordinates: {bottom_right_x}, {bottom_right_y}')
 
                 # Apply the patch
                 mask[:, top_left_x:bottom_right_x, top_left_y:bottom_right_y] = patch[:, :bottom_right_x - top_left_x, :bottom_right_y - top_left_y]
@@ -66,22 +70,16 @@ def get_critical_centroids(critical_type, image_dim, patch_dim):
     image_H, image_W = image_dim
     patch_H, patch_W = patch_dim
 
-    # print(f'patch dimension: {patch_dim}')
-    # print(f'image dimension: {image_dim}')
-
-    offset = 0
-    if critical_type == 1:
-        offset = patch_H
-    if critical_type == 2:
-        offset = 32
-
-    # image_H -= offset
-    # image_W -= offset
     centr_coordinates = []
-    for x in range(offset, image_H, offset):
-        for y in range(offset, image_W, offset):
-            centr_coordinates.append((x, y))
-    # print(f'critical areas: {centr_coordinates}')
+
+    if critical_type ==1:
+        pass
+    else:
+        for i in range(0, image_H, patch_H):
+            for j in range(0, image_W, patch_W):
+                center_x = i + patch_H // 2
+                center_y = j + patch_W // 2
+                centr_coordinates.append((center_x, center_y))
 
     return centr_coordinates
 
