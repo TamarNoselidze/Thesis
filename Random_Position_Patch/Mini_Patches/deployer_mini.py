@@ -72,8 +72,11 @@ def get_critical_centroids(critical_type, image_dim, patch_dim):
 
     centr_coordinates = []
 
-    if critical_type ==1:
-        pass
+    if critical_type == 1:
+        for x in range(0, image_H, patch_H):
+            for y in range(0, image_W, patch_W):
+                centr_coordinates.append((x, y))
+
     else:
         for i in range(0, image_H, patch_H):
             for j in range(0, image_W, patch_W):
