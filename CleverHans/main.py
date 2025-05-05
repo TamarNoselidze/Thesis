@@ -1,4 +1,4 @@
-import os, argparse, wandb
+import os, argparse
 import numpy as np
 
 from wandb_logger import WandbLogger
@@ -45,6 +45,7 @@ def get_attack_info(attack_name, epsilon, target_class=None):
     if target_class:
         targeted = True
 
+    print(f'==== in get_attack_info, attack name is: -{attack_name}-')
 
     if attack_name == 'FGSM':
         attack = fast_gradient_method
@@ -69,41 +70,6 @@ def get_attack_info(attack_name, epsilon, target_class=None):
             'targeted': targeted,
             'sanity_checks' : False
         }
-    elif attack_name == 'CWl2':
-        attack = carlini_wagner_l2
-        attack_params = {
-            'confidence': 0,
-            'y' : target_class if targeted else None,
-            'targeted': targeted,
-            'binary_search_steps': 9,
-            'max_iterations': 1000,
-            'clip_min': 0,
-            'clip_max': 1,
-            'n_classes': 1000
-        }
-    elif attack_name == 'HOP-SKIP':
-        attack = hop_skip_jump_attack
-        attack_params = {
-            'norm' : np.inf,   # 2 or np.inf
-            'y_target' : target_class if targeted else None,
-
-            'max_num_evals' : 2000,  # default is 10000
-            'constraint': 2,  # 'l2', 'l1', or 'linf'
-            'clip_min': 0,
-            'clip_max': 1
-        }
-    elif attack_name == 'Sl1D':
-        attack = sparse_l1_descent
-        attack_params = {
-            'eps': 4.0,
-            'nb_iter': 40,
-            'eps_iter': 0.08,
-            # 'q': 80,  # q controls sparsity
-            'clip_min': 0,
-            'clip_max': 1,
-            'y': target_class if targeted else None,
-            'targeted': targeted
-        }
     else:
         raise ValueError("Unsupported attack")
         
@@ -127,12 +93,12 @@ def start_attack(attack_name, attack_params, model, dataloader, logger, target_c
         mismatched = 0
 
         for image in images:
-            original_image = image.clone().detach().to(device)  # Capture original image
+            original_image = image.clone().detach().to(device)  
 
             if brightness_factor != None:
                 image = adjust_brightness(image.cpu(), brightness_factor).to(device)
 
-            image = image.unsqueeze(0)  # Add batch dimension
+            image = image.unsqueeze(0)  #
 
             adversarial_image = attack_name(model, image, **attack_params).detach().to(device)
             original_logits = model(image)
@@ -141,11 +107,13 @@ def start_attack(attack_name, attack_params, model, dataloader, logger, target_c
             _, adv_predicted_class = adversarial_logits.max(1)
 
             misclassified = False
+            label = orig_predicted_class.item()
             if target_class is None: 
                 if orig_predicted_class.item() != adv_predicted_class.item():
                     mismatched += 1  
                     total_mismatched += 1
                     misclassified = True
+                    label = adv_predicted_class.item()
             else:
                 if adv_predicted_class.item() == target_class.item():  # SUCCESS for targeted attack
                     mismatched += 1  
@@ -153,13 +121,15 @@ def start_attack(attack_name, attack_params, model, dataloader, logger, target_c
                     misclassified = True
 
 
-            if image_i % 200 == 0:
+                    label = adv_predicted_class.item()
 
-                adversarial_image = adversarial_image.squeeze(0)
-                original = denormalize(original_image.cpu())
-                modified = denormalize(adversarial_image.cpu())
+            # if image_i % 200 == 0:
 
-                logger.log_images(original, modified, misclassified)
+            adversarial_image = adversarial_image.squeeze(0)
+            original = (original_image.cpu())  # add denormalize
+            modified = (adversarial_image.cpu())
+
+            logger.log_images(original, modified, misclassified, label)
 
             adv_images.append(adversarial_image)
             image_i += 1
@@ -196,8 +166,8 @@ def get_model(model_name):
 if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(description='CleverHans Attacks')
-    parser.add_argument('--image_folder_path', help='Image dataset to perturb', default='../imgs')
-    parser.add_argument('--attack', choices=['FGSM', 'CWl2', 'HOP-SKIP', 'PGD', 'Sl1D'], help='The attack to perform.')
+    parser.add_argument('--image_folder_path', help='Image dataset to perturb', default='../ppp')
+    parser.add_argument('--attack', choices=['FGSM', 'PGD'], help='The attack to perform.')
     parser.add_argument('--model', choices=['resnet50', 'resnet152', 'vgg16_bn', 'vit_b_16', 'vit_l_32'], help='Model to attack')
     parser.add_argument('--target', help='The target class.')
     parser.add_argument('--epsilon', type=float, help='The perturbation budget, controlling the maximum amount of change allowed to the input. In the range [0,1]', default=0.05)
@@ -223,13 +193,13 @@ if __name__ == "__main__":
 
     model_name = args.model
     model = get_model(model_name).to(device)
+
+    print(f'---ATTACK: {args.attack}')
     
     epsilon=args.epsilon
     attack_name, attack_params = get_attack_info(attack_name=args.attack, epsilon=epsilon, target_class=target_class_tensor)
 
     brightness_factor = args.brightness if args.brightness != 0 else None
-    additional_comment = args.additional
-    num_of_images = 30
 
 
     project_name = (
