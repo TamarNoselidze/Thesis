@@ -1,26 +1,18 @@
 import os, argparse
 import numpy as np
 
-from wandb_logger import WandbLogger
 
 import torch
 from torchvision import datasets, transforms
 from torch.utils.data import DataLoader
 
 from torchvision.models.resnet import resnet50, ResNet50_Weights, resnet152, ResNet152_Weights
-from torchvision.models import vit_b_16, ViT_B_16_Weights, vit_l_32, ViT_L_32_Weights, vgg16_bn, VGG16_BN_Weights
+from torchvision.models import vit_b_16, ViT_B_16_Weights, vit_l_32, ViT_L_32_Weights
 
 from cleverhans.torch.attacks.fast_gradient_method import fast_gradient_method
 from cleverhans.torch.attacks.projected_gradient_descent import projected_gradient_descent
-from cleverhans.torch.attacks.carlini_wagner_l2 import carlini_wagner_l2
-from cleverhans.torch.attacks.hop_skip_jump_attack import hop_skip_jump_attack 
-from cleverhans.torch.attacks.sparse_l1_descent import sparse_l1_descent
 
-
-def adjust_brightness(image, brightness_factor):
-    brightness_transform = transforms.ColorJitter(brightness=brightness_factor, contrast=0.3)
-    adjusted_image = brightness_transform(image)
-    return adjusted_image
+from wandb_logger import WandbLogger
 
 
 def transform():
@@ -45,7 +37,6 @@ def get_attack_info(attack_name, epsilon, target_class=None):
     if target_class:
         targeted = True
 
-    print(f'==== in get_attack_info, attack name is: -{attack_name}-')
 
     if attack_name == 'FGSM':
         attack = fast_gradient_method
@@ -63,12 +54,9 @@ def get_attack_info(attack_name, epsilon, target_class=None):
             'eps': epsilon,
             'eps_iter': 0.01,
             'nb_iter': 15,
-            'norm': np.inf,  # Or 1, 2 for l1, l2 norms
-            'clip_min': 0,
-            'clip_max': 1,
+            'norm': np.inf,  
             'y' : target_class if targeted else None,
             'targeted': targeted,
-            'sanity_checks' : False
         }
     else:
         raise ValueError("Unsupported attack")
@@ -76,12 +64,11 @@ def get_attack_info(attack_name, epsilon, target_class=None):
     return attack, attack_params
 
 
-def start_attack(attack_name, attack_params, model, dataloader, logger, target_class, brightness_factor=None, device='cpu'):
+def start_attack(attack_name, attack_params, model, dataloader, logger, target_class, device='cpu'):
     adv_images = []
 
     total_mismatched = 0
 
-    print(brightness_factor)
 
     image_i = 0
     for i, batch in enumerate(dataloader):
@@ -94,10 +81,6 @@ def start_attack(attack_name, attack_params, model, dataloader, logger, target_c
 
         for image in images:
             original_image = image.clone().detach().to(device)  
-
-            if brightness_factor != None:
-                image = adjust_brightness(image.cpu(), brightness_factor).to(device)
-
             image = image.unsqueeze(0)  #
 
             adversarial_image = attack_name(model, image, **attack_params).detach().to(device)
@@ -126,8 +109,8 @@ def start_attack(attack_name, attack_params, model, dataloader, logger, target_c
             # if image_i % 200 == 0:
 
             adversarial_image = adversarial_image.squeeze(0)
-            original = (original_image.cpu())  # add denormalize
-            modified = (adversarial_image.cpu())
+            original = denormalize(original_image.cpu())  # add denormalize
+            modified = adversarial_image.cpu()
 
             logger.log_images(original, modified, misclassified, label)
 
@@ -151,8 +134,6 @@ def get_model(model_name):
         model = resnet50(weights=ResNet50_Weights.DEFAULT)
     elif model_name == 'resnet152':
         model = resnet152(weights=ResNet152_Weights.DEFAULT)
-    elif model_name == 'vgg16_bn':
-        model = vgg16_bn(weights=VGG16_BN_Weights.DEFAULT)
     elif model_name == 'vit_b_16':
         model = vit_b_16(weights=ViT_B_16_Weights.DEFAULT)
     elif model_name == 'vit_l_32':
@@ -166,13 +147,11 @@ def get_model(model_name):
 if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(description='CleverHans Attacks')
-    parser.add_argument('--image_folder_path', help='Image dataset to perturb', default='../ppp')
+    parser.add_argument('--image_folder_path', help='Image dataset to perturb', default='../imagenetv2-top-images/imagenetv2-top-images-format-val')
     parser.add_argument('--attack', choices=['FGSM', 'PGD'], help='The attack to perform.')
-    parser.add_argument('--model', choices=['resnet50', 'resnet152', 'vgg16_bn', 'vit_b_16', 'vit_l_32'], help='Model to attack')
+    parser.add_argument('--model', choices=['resnet50', 'resnet152', 'vit_b_16', 'vit_l_32'], help='Model to attack')
     parser.add_argument('--target', help='The target class.')
     parser.add_argument('--epsilon', type=float, help='The perturbation budget, controlling the maximum amount of change allowed to the input. In the range [0,1]', default=0.05)
-    parser.add_argument('--brightness', type=float, help='Brightness value, between 0 (black image) and 2', default=0)
-    parser.add_argument('--additional', help='Any additional comment that will be added to the project name for logging in wandb')
     args = parser.parse_args()
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -194,32 +173,25 @@ if __name__ == "__main__":
     model_name = args.model
     model = get_model(model_name).to(device)
 
-    print(f'---ATTACK: {args.attack}')
     
     epsilon=args.epsilon
     attack_name, attack_params = get_attack_info(attack_name=args.attack, epsilon=epsilon, target_class=target_class_tensor)
-
-    brightness_factor = args.brightness if args.brightness != 0 else None
 
 
     project_name = (
         f'Cleverhans {args.attack} '
     )
 
-
-    print(f'project name: {project_name}')
-
     config = {
         'model_name': model_name,
         'attack_name': args.attack,
         'epsilon': epsilon,
-        # **attack_params
     }
 
 
     logger = WandbLogger(project_name, config)
 
-    asr = start_attack(attack_name, attack_params, model, dataloader, logger, target_class_tensor, brightness_factor, device)
+    asr = start_attack(attack_name, attack_params, model, dataloader, logger, target_class_tensor, device)
 
 
     print(f'Success rate of {args.attack} attack on {model_name} model: {asr*100 :.2f}%\n{"="*60}\n')
