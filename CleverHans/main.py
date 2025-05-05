@@ -65,12 +65,10 @@ def get_attack_info(attack_name, epsilon, target_class=None):
 
 
 def start_attack(attack_name, attack_params, model, dataloader, logger, target_class, device='cpu'):
-    adv_images = []
 
     total_mismatched = 0
-
-
     image_i = 0
+
     for i, batch in enumerate(dataloader):
         images, _ = batch
         images = images.to(device)
@@ -106,15 +104,14 @@ def start_attack(attack_name, attack_params, model, dataloader, logger, target_c
 
                     label = adv_predicted_class.item()
 
-            # if image_i % 200 == 0:
+            if image_i % 500 == 0:
 
-            adversarial_image = adversarial_image.squeeze(0)
-            original = denormalize(original_image.cpu())  # add denormalize
-            modified = adversarial_image.cpu()
+                adversarial_image = adversarial_image.squeeze(0)
+                original = denormalize(original_image.cpu())  # add denormalize
+                modified = adversarial_image.cpu()
 
-            logger.log_images(original, modified, misclassified, label)
+                logger.log_images(original, modified, misclassified, label)
 
-            adv_images.append(adversarial_image)
             image_i += 1
 
         batch_asr = mismatched / batch_size * 100
