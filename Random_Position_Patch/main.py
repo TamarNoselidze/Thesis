@@ -48,8 +48,6 @@ def get_models(model_names, device):
 
         
 def test_best_patch(training_model_names, patch, patch_i, dataloader, target_class, deployer, target_model, target_model_name, device, logger):
-    # print(f'---------------------------- tc: {target_class}')
-    # print(type(target_class))
     misclassified_counts = 0
     image_i = 0
     total_valid_images = 0  # Keep track of valid images (not skipped)
@@ -70,11 +68,7 @@ def test_best_patch(training_model_names, patch, patch_i, dataloader, target_cla
 
             batch_size = images.shape[0]
             total_valid_images += batch_size
-            # print(f'plus {batch_size}')
-            # print(f'so total is: {total_valid_images}')
 
-            # patches = patch.unsqueeze(0).repeat(images.size(0), 1, 1, 1)
-            # modified_images = deployer.deploy(patches, images)
 
             for i in range(batch_size):
                 misclassified = False
@@ -92,15 +86,15 @@ def test_best_patch(training_model_names, patch, patch_i, dataloader, target_cla
 
                 image_i +=1
 
-                del image, modified_image, output, predicted
+                if device=='cuda':
+                    del image, modified_image, output, predicted
+                    torch.cuda.empty_cache()
+
+            if device=='cuda':
+                del images, true_labels
                 torch.cuda.empty_cache()
 
-
-            del images, true_labels
-            torch.cuda.empty_cache()
-
   
-        # print(f'Target class: "{get_class_name(target_class)}" ({target_class})')
         print(f'The generated adversarial patch on target model had {misclassified_counts} misclassifications')    
         asr = misclassified_counts / total_valid_images
         print(f'ASR for target model: {asr * 100:.2f}%')    
@@ -142,10 +136,6 @@ def evaluate_patch(patch, dataloader, target_class, deployer, discriminators, de
             adv_images = torch.stack(adv_images).to(device)
 
 
-            # patches = patch.unsqueeze(0).repeat(images.size(0), 1, 1, 1)  # Repeat same patch for the batch
-            # adv_images = deployer.deploy(patches, images)
-
-
             # === Majority Voting ===
             # outputs = []
             # for discriminator in discriminators:
@@ -180,9 +170,9 @@ def evaluate_patch(patch, dataloader, target_class, deployer, discriminators, de
             correct = (ensemble_predicted == target_class).sum().item()
             total_correct_count += correct
 
-
-            del adv_images, images
-            torch.cuda.empty_cache()
+            if device=='cuda':
+                del adv_images, images
+                torch.cuda.empty_cache()
 
         total_asr = total_correct_count / total_valid_images
 
@@ -355,9 +345,9 @@ def gan_attack(device, generator, optimizer, deployer, discriminators, dataloade
             batch_i+=1
             epoch_correct_count += correct
 
-
-            del images, true_labels, noise, adv_patches, modified_images, outputs, sum_probs, ensemble_predicted, target_class_y_prime, loss
-            torch.cuda.empty_cache()
+            if device=='cuda':
+                del images, true_labels, noise, adv_patches, modified_images, outputs, sum_probs, ensemble_predicted, target_class_y_prime, loss
+                torch.cuda.empty_cache()
 
         avg_epoch_asr = epoch_correct_count / epoch_valid_images
         avg_epoch_loss = batch_loss / (batch_i - 1) if batch_i > 1 else 0
@@ -454,7 +444,6 @@ if __name__ == "__main__":
     project_name = (
         f'F {run_mode} ' +
         att +
-        # f'{num_of_patches}_patches ' + 
         f'={target_class}= ' +  
         f' {",".join(training_model_names)} ' + 
         (f' > {",".join(target_model_names)}' if target_model_names else '')
@@ -474,13 +463,9 @@ if __name__ == "__main__":
 
     discriminators = get_models(training_model_names, device)
 
-    # dataset = datasets.ImageFolder(image_folder, transform=transform())
-    # dataloader = DataLoader(dataset, batch_size=32, shuffle=True)
     dataloader = load_classes(args.image_folder_path, args.num_of_train_classes)
-    # num_of_classes = len(classes)
 
     print(f'PROJECT: {project_name}')
-    # print(f'CLASSES: {classes}')
     if run_mode == 'train':
         start_training(device, attack_mode, patch_size, discriminators, dataloader, target_class, checkpoint_dir, num_of_epochs, num_of_patches, logger)
     else:
@@ -488,7 +473,6 @@ if __name__ == "__main__":
         print(f'train project name: {train_project_name}')
         target_models = get_models(target_model_names, device)
 
-        # generators = fetch_generators_from_wandb(lambda: Generator(patch_size), train_project_name, patch_size=patch_size)
         generators = fetch_generators_from_wandb(Generator, train_project_name, patch_size=patch_size)
         start_testing(args.training_models, device, dataloader, target_class, num_of_patches, generators, target_models, target_model_names, attack_mode, logger)
         
