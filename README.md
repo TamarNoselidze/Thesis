@@ -36,7 +36,21 @@ This module evaluates the robustness of modern vision models against common whit
 
 
 ### Running The Experiments
-To run experiments in this framework, make sure you are in the root, `Thesis` directory and run:
+
+To run experiments in this framework, first, install the required Python libraries:
+
+- torch  ≥ 1.12
+- torchvision
+- numpy
+- cleverhans
+- wandb
+
+You can install them with:
+
+```bash
+pip install torch torchvision numpy cleverhans wandb
+```
+Then, navigate to the root (`Thesis`) directory and run:
 
 `python -m CleverHans.main --image_folder_path <path to image dataset> --attack <attack name> --model <victim model> --target <target class> --epsilon <perturbation magnitude>`
 
@@ -155,7 +169,20 @@ In both, G-Patch and Mini-Patch experiments, we evaluate our generators using th
 
 ## Running The Experiments
 
-To run the experiments, navigate to the root (`Thesis`) directory and run:
+To run experiments in this framework, first, install the required Python libraries:
+
+- torch  ≥ 1.12
+- torchvision
+- wandb
+
+You can install them with:
+
+```bash
+pip install torch torchvision wandb
+```
+
+
+Then, navigate to the root (`Thesis`) directory and run:
 ```bash
 python -m Random_Position_Patch.main \
   --image_folder_path <path to image dataset> \
