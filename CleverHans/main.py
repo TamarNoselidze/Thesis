@@ -12,7 +12,7 @@ from torchvision.models import vit_b_16, ViT_B_16_Weights, vit_l_32, ViT_L_32_We
 from cleverhans.torch.attacks.fast_gradient_method import fast_gradient_method
 from cleverhans.torch.attacks.projected_gradient_descent import projected_gradient_descent
 
-from wandb_logger import WandbLogger
+from CleverHans.wandb_logger import WandbLogger
 
 
 def transform():
@@ -180,7 +180,7 @@ def get_model(model_name):
 if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(description='CleverHans Attacks')
-    parser.add_argument('--image_folder_path', help='Path to the image dataset.', default='../imagenetv2-top-images/imagenetv2-top-images-format-val')
+    parser.add_argument('--image_folder_path', help='Path to the image dataset.', default='./imagenetv2-top-images/imagenetv2-top-images-format-val')
     parser.add_argument('--attack', choices=['FGSM', 'PGD'], help='The attack method to perform')
     parser.add_argument('--model', choices=['resnet50', 'resnet152', 'vit_b_16', 'vit_l_32'], help='Victim model')
     parser.add_argument('--target', help='The target class')

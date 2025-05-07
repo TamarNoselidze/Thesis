@@ -20,9 +20,7 @@ class WandbLogger:
 
 
     def log_images(self, original, adversarial, misclassified, label):
-        """
-        Log the original and adversarial images.
-        """
+        """ Log the original and adversarial images. """
       
         wandb.log({
             "original": wandb.Image(original),
@@ -31,24 +29,19 @@ class WandbLogger:
 
 
     def log_metrics(self, victim_model, target_class, epsilon, asr):
-        """
-        Log a row of metrics into the results table.
-        """
+        """ Log a row of metrics into the results table. """
 
         self.results_table.add_data(
             victim_model, target_class, epsilon, f'{asr * 100:.2f}%'
         )
 
+
     def log_asr(self, asr):
-        """
-        Log the overall attack success rate as a scalar metric.
-        """
+        """ Log the overall attack success rate as a scalar metric. """
         wandb.log({f'total ASR' : asr * 100})
         
 
     def finalize(self):
-        """
-        Log the results table and finish the session.
-        """
+        """ Log the results table and finish the session. """
         wandb.log({"results": self.results_table})
         wandb.finish()
