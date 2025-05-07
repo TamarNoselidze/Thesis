@@ -36,9 +36,9 @@ This module evaluates the robustness of modern vision models against common whit
 
 
 ### Running The Experiments
-To run experiments in this framework, move to the `CleverHans` directory and run:
+To run experiments in this framework, make sure you are in the root, `Thesis` directory and run:
 
-`python main.py --image_folder_path <path to image dataset> --attack <attack name> --model <victim model> --target <target class> --epsilon <perturbation magnitude>`
+`python -m CleverHans.main --image_folder_path <path to image dataset> --attack <attack name> --model <victim model> --target <target class> --epsilon <perturbation magnitude>`
 
 #### Parameters:
 
@@ -88,114 +88,133 @@ WANDB_API_KEY=your_api_key_here
 
 
 
-~ Note, that ImageNetV2 dataset is not included in the repository due to storage limits. The script expects it to be in the same directory as `CleverHans` by default.
+
+### Developer Documentation
+
+
+For more detailed documentation of the source code, please, open `CleverHans/docs/build/html/index.html` in your browser.   
 
 
 ---
 
 # Random Position Patch Experiments
 
-This module implements several patch-based adversarial attacks. We differentiate between **G-Patch** (proposed in the paper ["Designing Physical-World Universal Attacks on Vision Transformers"](https://openreview.net/forum?id=DqBPk7887N)) and **Mini-Patch** attacks.
+This module implements several patch-based adversarial attacks. The two main types of attacks we explore are **G-Patch** (proposed in the paper ["Designing Physical-World Universal Attacks on Vision Transformers"](https://openreview.net/forum?id=DqBPk7887N)) and **Mini-Patch** attacks.
 
-In both settings, we essentially leverage a GAN-like architecture, where we train a **Generator** that crafts adversarial patches, which is then followed by a **Deployer** that simulates random placement of patches.
+In both attack types, we essentially leverage a GAN-like architecture, where we train a **Generator** that crafts adversarial patches, and then a **Deployer** applies the patches at random positions within the images.
 
-Generator training is same for both settings, with the only difference in patch sizes. Deployment, on the other hand, is a bit different. We explore these in details below.
+The Generator training is similar for both settings, with the primary difference in patch sizes. The Deployment, on the other hand, is a bit different. We explore these in detail below.
 
 ## G-Patch Attacks
 
-In this setting, a single universal patch is trained and applied to all images in a batch — but at different random positions per image. The patch is optimized to generalize across locations and samples.
+In this attack type, a single universal patch is trained and applied to all images in a batch, but each image receives the patch at a different random location.
 
 ### Patch Sizes
-- `64×64` patches, that cover about 8% of the original image
+- `64×64` patches, that cover about 8% of the original image;
 - `80×80` patches, that cover about 13% of the original image.
 
 ### Deployment
 
-Deployer completely randomizes patch deployment for every input image in the dataset. It essentially replaces a specific region of image with the adversarial patch.
+The Deployer completely randomizes patch deployment for every input image in the dataset. It essentially replaces a specific region of the image with the adversarial patch.
 
-
---
 
 
 ## Mini-Patch Attacks
 
-In this setting, we train a generator that creates much smaller patches, that are deployed at **several** points in the input image. Note, that the patches are the same across the image, which maintains consistency.
+In Mini-Patch attacks, we train a generator that creates much smaller patches, which are then deployed at **several** points in the input image. Note, that the patches are the same across the image.
 
 We further differentiate between 3 types of Mini-Patch attacks:
 
-- **Random Placement Patches**: here, we imitate G-Patch implementation, only instead of a single large patch we deploy a much smaller patch at several **random** places.
-- **Corner-Point Patches**: in this setting patches are centered at "intersection points" aligned with the internal tokenization of Vision Transformers.
-- **Token-Replacement Patches**: here we place the patches *within* the tokens of ViTs, essentially replacing them.
+- **Random Placement Patches**: here, we imitate G-Patch implementation, only instead of a single large patch, we deploy a much smaller patch at several **random** places.
 
-In each setting, we have:
+- **Corner-Point Patches**: in this setting patches are centered at "intersection points" aligned with the internal tokenization of Vision Transformers. This is illustrated in the figure below:
+![Corner-Point](./images/mini_1.png)
+Adversarial patch of size 32×32 centered at a corner point of the image (red lines do not represent the exact tokenization of ViT models, for the sake of better visualization, tokens here are of size 56×56). This results in attacking 4 tokens with 8×8 size adversarial patches
+
+- **Token-Replacement Patches**: here we place the patches *within* the tokens of ViTs, essentially replacing them. This is illustrated in the figure below:
+
+![Token-Replacement](./images/mini_2.png)
+Adversarial patch is placed entirely inside the token. For the sake of better visualization, tokens here are of size 56×56(and so is the example adversarial patch). This results in replacing 1 token entirely.
+
+
+### Patch Sizes
 - `16×16` patches, which are the main focus of our experiments. These patches are deployed at **8** different places in the image.
 - `32×32` patches, which are used for ViT models that use the same dimensions for image tokenization. These patches are deployed at **4** different places in the input image.
 
-Overall, for both patch sizes, adversarial regions are about 8% of the original image, i.e. same coverage as of 64×64 G-Patch. The placement and how the patches affect tokens of ViT models are illustrated in the figures below:
+For both patch sizes, the adversarial patches cover around 8% of the original image, which is similar to the coverage of a 64×64 G-Patch.
 
-
-![Adversarial patch of size 32×32 px. centered at a corner point of the image (red lines do not represent the exact tokenization of ViT models, for the sake of better visualization, tokens here are of size 56×56). This results in attacking 4 tokens with 8×8 size adversarial patches.](./images/mini_1.png)
-
-![Adversarial patch placed entirely inside the token. For the sake of better visualization, tokens here are of size 56×56(and so is the example adversarial patch). This results in replacing 1 token entirely](./images/mini_2.png)
 
 
 ## Evaluated Models
 
-In both, G-Patch and Mini-Patch configurations, we evaluate our generators against:
+In both, G-Patch and Mini-Patch experiments, we evaluate our generators using the following models:
 
 - ViT-B/16, ViT-B/32, ViT-L/16 and Swin-B from the ViT family;
-- ResNet50, ResNet152 and VGG16-BN from the CNN family (these are omitted in **Token-Replacement Patch** setting)
+- ResNet50, ResNet152 and VGG16-BN from the CNN family (Note: CNN models are excluded from the **Token-Replacement** Patch attack).
 
 
 ## Running The Experiments
 
-To run the experiments, move to the `Random_Position_Patch` directory.
-
+To run the experiments, navigate to the root (`Thesis`) directory and run:
+```bash
+python -m Random_Position_Patch.main \
+  --image_folder_path <path to image dataset> \
+  --checkpoint_folder_path <path to checkpoint dir> \
+  --run_mode <experiment mode> \
+  --attack_mode <attack type> \
+  --training_models <list of training models> \
+  --test_models <list of target models> \  (only when testing)
+  --target_class <target class> \
+  --patch_size <patch size> \
+  --num_of_patches <number of patches to deploy> \
+  --local_generator <path to the pre-trained generator> (only when testing)
+```
 
 
 ### Parameters:
 
-- `--image_folder_path`: path to the ImageNetV2 dataset
-- `--run_mode`: experiment mode - training(`train`) or testing(`test`)
-- `--attack_mode`: attack type 
-    For G-Patch: `gpatch`
+- `--image_folder_path`: path to the ImageNetV2 dataset.
+- `--checkpoint_folder_path`: path to a folder where generators from each epoch will be saved. By default `./Random_Position_Patch/checkpoints`.
+- `--run_mode`: experiment mode, either raining(`train`) or testing(`test`).
+- `--attack_mode`: the type of attack: 
+    For G-Patch: `gpatch`;
     For Mini-Patches: *Random Placement* - `mini_0`;
                       *Corner-Point* `mini_1`;
                       *Token-Replacement* `mini_2`.
-- `--training_models`: list of training model names (in testing experiments, list of source models)
-    Possible values:`resnet50`, `resnet152`, `vgg16_bn`, `vit_b_16`, `vit_b_32`, `vit_l_16`, `swin_b`
-- `--test_models`: list of target model names, necessary only in testing experiments
-- `--target_class`: target class for the generator train on
-- `--patch_size`: patch size for the generator
-    For G-patches: `64`, `80`
-    For Mini-Patches: `16`, `32`
-- `--num_of_patches`: number of patches to be deployed on input images
-    For G-patches: `1`
-    For Mini-Patches: `4`, `8`, depending on the patch size
-- `--epochs` *(optional)* number of epochs for training, by default 40
-- `--num_of_train_classes`: *(optional)* number of training classes to load from the dataset, by default 1000
-- `--wandb_entity`: *(optional)* WANDB entity for logging
+- `--training_models`: list of training model names (in testing experiments, list of source models).
+    Possible values:`resnet50`, `resnet152`, `vgg16_bn`, `vit_b_16`, `vit_b_32`, `vit_l_16`, `swin_b`.
+- `--test_models`: list of target model names, necessary only in testing experiments.
+- `--target_class`: target class for the generator train on.
+- `--patch_size`: patch size for the generator:
+    For G-patches: `64`, `80`;
+    For Mini-Patches: `16`, `32`.
+- `--num_of_patches`: number of patches to be deployed on input images.
+    For G-patches: `1`;
+    For Mini-Patches: `4`, `8`, depending on the patch size.
+- `--epochs`: number of epochs for training. By default 40.
+- `--wandb_entity`: *(optional)* W&B entity for logging. In the test mode, generators are downloaded from W&B.
+- `--local_generator` : *(optional)* path to the locally saved pre-trained generators, for the test mode. 
 
 
-We provide example commands for different configurations of our experiments:
+### Example Commands
 
 **Training a G-Patch generator against ViT-B/16**
 ```bash
-python main.py \
-  --image_folder_path '../imagenetv2-top-images/imagenet-imagenetv2-top-images-format-val' \
+python -m Random_Position_Patch.main \
+  --image_folder_path './imagenetv2-top-images/imagenet-imagenetv2-top-images-format-val' \
   --run_mode train \
   --attack_mode gpatch \
   --training_models vit_b_16 \
   --target_class 153 \
   --patch_size 80 \
-  --num_of_patches 1
+  --num_of_patches 1 \
 ```
 
 
-**Training a Corner-Point patch generator against ensemble of models**
+**Training a Corner-Point patch generator against an ensemble of models**
 ```bash
-python main.py \
-  --image_folder_path '../imagenetv2-top-images/imagenet-imagenetv2-top-images-format-val' \
+python -m Random_Position_Patch.main \
+  --image_folder_path './imagenetv2-top-images/imagenet-imagenetv2-top-images-format-val' \
   --run_mode train \
   --attack_mode mini_1 \
   --training_models vit_b_16 vit_l_16 swin_b \
@@ -205,10 +224,9 @@ python main.py \
 ```
 
 
-
 **Testing the generators trained using ResNet50, on ResNet152**
 ```bash
-python main.py \
+python -m Random_Position_Patch.main \
   --image_folder_path '../imagenetv2-top-images/imagenet-imagenetv2-top-images-format-val' \
   --run_mode test \
   --attack_mode gpatch \
@@ -216,8 +234,57 @@ python main.py \
   --test_models resnet152 \
   --target_class 153 \
   --patch_size 64 \
-  --num_of_patches 1
+  --num_of_patches 1 \
+  --wandb_entity <wandb_entity>
+```
+~ Note that here we don't specify path to the generator, therefore we need to provide W&B entity argument. The script will try to find the training project (corresponding to the provided source models) and download the generators from there.
+
+If you want to load locally saved generators:
+
+**Testing Mini-Patch generators trained using Swin-B, on ViT-B/16**
+```bash
+python -m Random_Position_Patch.main \
+  --image_folder_path '../imagenetv2-top-images/imagenet-imagenetv2-top-images-format-val' \
+  --run_mode test \
+  --attack_mode mini_1 \
+  --training_models swin_b \
+  --test_models vit_b_16 \
+  --target_class 746 \
+  --patch_size 16 \
+  --num_of_patches 8 \
+  --local_generator './Generators/mini1_swinb_746.pth'
 ```
 
+* We note here that 4 different pre-trained generators are provided in the `Thesis/Generators` directory.
+
+## Outputs
+
+Detailed results of the experiments are printed out to the standard output with the following metricsL
+
+- **Training:**
+  - Per-batch success rates
+  - Per-epoch success rates
+  - Final succes rate over the entire dataset
+
+- **Evaluation**
+  - Evaluation results for each generator on 5 random noise vectors
+
+For more detailed logging, enable W&B logging to visualize the training process for each epoch, track the evolution of ASRs and loss, and log modified images and adversarial patches.
+
+Ensure:
+- you have a `.env` file outside the `CleverHans` directory containing:
+```
+WANDB_API_KEY=your_api_key_here
+```
+- and you use the optional `--wandb_entity` argument when running the experiments.
 
 
+## Developer Documentation
+
+
+
+For more detailed documentation of the source code, please, open `Random_Position_Patch/docs/build/html/index.html` in your browser.
+
+
+
+~ Note, that ImageNetV2 dataset is not included in the repository due to storage limits. The script expects it to be in the same directory as `CleverHans` by default (i.e. root directory).
