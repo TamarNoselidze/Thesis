@@ -1,0 +1,21 @@
+G_Patches Package
+===================
+
+.. automodule:: G_Patches
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Modules
+-------
+
+.. toctree::
+   :maxdepth: 1
+
+   g_patches/deployer
+   g_patches/generator
+   g_patches/helper
+   g_patches/loss
+   g_patches/main
+   g_patches/parse_class_mappings
+   g_patches/wandb_logger

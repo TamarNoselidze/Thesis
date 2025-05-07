@@ -1,0 +1,7 @@
+Deployer Module
+===============
+
+.. automodule:: Mini_Patches.deployer_mini
+   :members:
+   :undoc-members:
+   :show-inheritance:

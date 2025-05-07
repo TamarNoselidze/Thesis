@@ -1,0 +1,15 @@
+Mini_Patches_Package
+====================
+
+.. automodule:: Mini_Patches
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Modules
+-------
+
+.. toctree::
+   :maxdepth: 1
+
+   mini_patches/deployer_mini

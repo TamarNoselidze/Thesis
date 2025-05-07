@@ -1,0 +1,15 @@
+API Reference
+=============
+
+.. automodule:: Random_Position_Patch
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 2
+
+   api/mini_patches

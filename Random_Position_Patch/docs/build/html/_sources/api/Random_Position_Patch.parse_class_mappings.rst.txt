@@ -1,0 +1,7 @@
+Random\_Position\_Patch.parse\_class\_mappings module
+=====================================================
+
+.. automodule:: Random_Position_Patch.parse_class_mappings
+   :members:
+   :show-inheritance:
+   :undoc-members:

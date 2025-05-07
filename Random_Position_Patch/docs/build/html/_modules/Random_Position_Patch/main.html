@@ -1,0 +1,660 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Random_Position_Patch.main &mdash; Random_Position_Patch  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Random_Position_Patch
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../api/Random_Position_Patch.generator.html">Random_Position_Patch.generator module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/Random_Position_Patch.helper.html">Random_Position_Patch.helper module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/Random_Position_Patch.main.html">Random_Position_Patch.main module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/Random_Position_Patch.loss.html">Random_Position_Patch.loss module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/Random_Position_Patch.wandb_logger.html">Random_Position_Patch.wandb_logger module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/Random_Position_Patch.Mini_Patches.html">Random_Position_Patch.Mini_Patches package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/mini_patches/deployer_mini.html">Deployer Module</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Random_Position_Patch</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">Random_Position_Patch.main</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for Random_Position_Patch.main</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">os</span><span class="o">,</span> <span class="nn">argparse</span>
+
+<span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">import</span> <span class="nn">torch.optim</span> <span class="k">as</span> <span class="nn">optim</span>
+<span class="n">torch</span><span class="o">.</span><span class="n">autograd</span><span class="o">.</span><span class="n">set_detect_anomaly</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># from loss import AdversarialLoss</span>
+<span class="kn">from</span> <span class="nn">Random_Position_Patch.loss</span> <span class="kn">import</span> <span class="n">AdversarialLoss</span>
+<span class="kn">from</span> <span class="nn">Random_Position_Patch.Mini_Patches.deployer_mini</span> <span class="kn">import</span> <span class="n">DeployerMini</span>
+<span class="kn">from</span> <span class="nn">Random_Position_Patch.deployer</span> <span class="kn">import</span> <span class="n">Deployer</span>
+<span class="kn">from</span> <span class="nn">Random_Position_Patch.generator</span> <span class="kn">import</span> <span class="n">Generator</span>
+<span class="kn">from</span> <span class="nn">Random_Position_Patch.helper</span> <span class="kn">import</span> <span class="n">save_generator</span><span class="p">,</span> <span class="n">load_generator</span><span class="p">,</span> <span class="n">load_checkpoints</span><span class="p">,</span> <span class="n">load_classes</span><span class="p">,</span> <span class="n">get_class_name</span><span class="p">,</span> <span class="n">fetch_generators_from_wandb</span>
+<span class="kn">from</span> <span class="nn">Random_Position_Patch.wandb_logger</span> <span class="kn">import</span> <span class="n">WandbLogger</span>
+
+<span class="c1"># from deployer import Deployer</span>
+<span class="c1"># from Mini_Patches.deployer_mini import DeployerMini</span>
+<span class="c1"># from generator import Generator</span>
+<span class="c1"># from helper import save_generator, load_generator, load_checkpoints, load_classes, get_class_name, fetch_generators_from_wandb</span>
+<span class="c1"># from wandb_logger import WandbLogger</span>
+
+<span class="kn">from</span> <span class="nn">torchvision.models.resnet</span> <span class="kn">import</span> <span class="n">resnet50</span><span class="p">,</span> <span class="n">ResNet50_Weights</span><span class="p">,</span> <span class="n">resnet152</span><span class="p">,</span> <span class="n">ResNet152_Weights</span><span class="p">,</span> <span class="n">resnet101</span><span class="p">,</span> <span class="n">ResNet101_Weights</span>
+<span class="kn">from</span> <span class="nn">torchvision.models</span> <span class="kn">import</span> <span class="n">vit_b_16</span><span class="p">,</span> <span class="n">ViT_B_16_Weights</span><span class="p">,</span> <span class="n">vit_l_16</span><span class="p">,</span> <span class="n">ViT_L_16_Weights</span><span class="p">,</span> <span class="n">vit_b_32</span><span class="p">,</span> <span class="n">ViT_B_32_Weights</span><span class="p">,</span> <span class="n">vgg16_bn</span><span class="p">,</span> <span class="n">VGG16_BN_Weights</span><span class="p">,</span> <span class="n">swin_b</span><span class="p">,</span> <span class="n">Swin_B_Weights</span>
+
+<span class="c1"># === Load W&amp;B API key from environment ===</span>
+<span class="n">api_key</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;WANDB_API_KEY&#39;</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="get_models">
+<a class="viewcode-back" href="../../api/Random_Position_Patch.main.html#Random_Position_Patch.main.get_models">[docs]</a>
+<span class="k">def</span> <span class="nf">get_models</span><span class="p">(</span><span class="n">model_names</span><span class="p">,</span> <span class="n">device</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; Given a list of model names, load pretrained models and set them to eval mode. &quot;&quot;&quot;</span>
+
+    <span class="n">models</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">model_name</span> <span class="ow">in</span> <span class="n">model_names</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">model_name</span> <span class="o">==</span> <span class="s1">&#39;resnet50&#39;</span><span class="p">:</span>
+            <span class="n">model</span> <span class="o">=</span> <span class="n">resnet50</span><span class="p">(</span><span class="n">weights</span><span class="o">=</span><span class="n">ResNet50_Weights</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">model_name</span> <span class="o">==</span> <span class="s1">&#39;resnet101&#39;</span><span class="p">:</span>
+            <span class="n">model</span> <span class="o">=</span> <span class="n">resnet101</span><span class="p">(</span><span class="n">weights</span><span class="o">=</span><span class="n">ResNet101_Weights</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">model_name</span> <span class="o">==</span> <span class="s1">&#39;resnet152&#39;</span><span class="p">:</span>
+            <span class="n">model</span> <span class="o">=</span> <span class="n">resnet152</span><span class="p">(</span><span class="n">weights</span><span class="o">=</span><span class="n">ResNet152_Weights</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">model_name</span> <span class="o">==</span> <span class="s1">&#39;vgg16_bn&#39;</span><span class="p">:</span>
+            <span class="n">model</span> <span class="o">=</span> <span class="n">vgg16_bn</span><span class="p">(</span><span class="n">weights</span><span class="o">=</span><span class="n">VGG16_BN_Weights</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">model_name</span> <span class="o">==</span> <span class="s1">&#39;vit_b_16&#39;</span><span class="p">:</span>
+            <span class="n">model</span> <span class="o">=</span> <span class="n">vit_b_16</span><span class="p">(</span><span class="n">weights</span><span class="o">=</span><span class="n">ViT_B_16_Weights</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">model_name</span> <span class="o">==</span> <span class="s1">&#39;vit_b_32&#39;</span><span class="p">:</span>
+            <span class="n">model</span> <span class="o">=</span> <span class="n">vit_b_32</span><span class="p">(</span><span class="n">weights</span><span class="o">=</span><span class="n">ViT_B_32_Weights</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">model_name</span> <span class="o">==</span> <span class="s1">&#39;vit_l_16&#39;</span><span class="p">:</span>
+            <span class="n">model</span> <span class="o">=</span> <span class="n">vit_l_16</span><span class="p">(</span><span class="n">weights</span><span class="o">=</span><span class="n">ViT_L_16_Weights</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">model_name</span> <span class="o">==</span> <span class="s1">&#39;swin_b&#39;</span><span class="p">:</span>
+            <span class="n">model</span> <span class="o">=</span> <span class="n">swin_b</span><span class="p">(</span><span class="n">weights</span><span class="o">=</span><span class="n">Swin_B_Weights</span><span class="p">)</span>
+    
+        <span class="n">model</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
+        <span class="n">models</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">models</span></div>
+
+
+
+
+        
+<div class="viewcode-block" id="test_best_patch">
+<a class="viewcode-back" href="../../api/Random_Position_Patch.main.html#Random_Position_Patch.main.test_best_patch">[docs]</a>
+<span class="k">def</span> <span class="nf">test_best_patch</span><span class="p">(</span><span class="n">training_model_names</span><span class="p">,</span> <span class="n">patch</span><span class="p">,</span> <span class="n">patch_i</span><span class="p">,</span> <span class="n">dataloader</span><span class="p">,</span> <span class="n">target_class</span><span class="p">,</span> <span class="n">deployer</span><span class="p">,</span> <span class="n">target_model</span><span class="p">,</span> <span class="n">target_model_name</span><span class="p">,</span> <span class="n">device</span><span class="p">,</span> <span class="n">logger</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Evaluate a single adversarial patch on a target model not used during training.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        training_model_names: names of models used in training.</span>
+<span class="sd">        patch: adversarial patch to evaluate.</span>
+<span class="sd">        patch_i: patch index (for logging).</span>
+<span class="sd">        dataloader: dataset for evaluation.</span>
+<span class="sd">        target_class: numerical label of the taarget class.</span>
+<span class="sd">        deployer: patch deployment strategy.</span>
+<span class="sd">        target_model: target model (with weights) for evaluation.</span>
+<span class="sd">        target_model_name: name of the target model.</span>
+<span class="sd">        device: &#39;cuda&#39; or &#39;cpu&#39;.</span>
+<span class="sd">        logger: optional W&amp;B logger.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">misclassified_counts</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">image_i</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">total_valid_images</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># Keep track of valid images (not skipped)</span>
+
+    <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>  <span class="c1"># Disable gradients for evaluation</span>
+        <span class="k">for</span> <span class="n">batch</span> <span class="ow">in</span> <span class="n">dataloader</span><span class="p">:</span>
+            <span class="n">images</span><span class="p">,</span> <span class="n">true_labels</span> <span class="o">=</span> <span class="n">batch</span>
+            <span class="n">images</span> <span class="o">=</span> <span class="n">images</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+            <span class="n">true_labels</span> <span class="o">=</span> <span class="n">true_labels</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+            
+            <span class="c1"># Filter out images with true_label == target_class</span>
+            <span class="n">valid_indices</span> <span class="o">=</span> <span class="n">true_labels</span> <span class="o">!=</span> <span class="n">target_class</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">valid_indices</span><span class="o">.</span><span class="n">any</span><span class="p">():</span>
+                <span class="k">continue</span>  <span class="c1"># skip this batch if all images should be excluded</span>
+
+            <span class="n">images</span> <span class="o">=</span> <span class="n">images</span><span class="p">[</span><span class="n">valid_indices</span><span class="p">]</span>
+            <span class="n">true_labels</span> <span class="o">=</span> <span class="n">true_labels</span><span class="p">[</span><span class="n">valid_indices</span><span class="p">]</span>
+
+            <span class="n">batch_size</span> <span class="o">=</span> <span class="n">images</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>       <span class="c1"># Update batch size</span>
+            <span class="n">total_valid_images</span> <span class="o">+=</span> <span class="n">batch_size</span>   <span class="c1"># Update the number of valid images</span>
+
+            <span class="c1"># Deploying and evaluating patch success</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">batch_size</span><span class="p">):</span>
+                <span class="n">misclassified</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="n">modified_image</span> <span class="o">=</span> <span class="n">deployer</span><span class="o">.</span><span class="n">deploy</span><span class="p">(</span><span class="n">patch</span><span class="p">,</span> <span class="n">images</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+
+                <span class="n">output</span> <span class="o">=</span> <span class="n">target_model</span><span class="p">(</span><span class="n">modified_image</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">))</span>
+                <span class="n">_</span><span class="p">,</span> <span class="n">predicted</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">output</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>       
+                <span class="k">if</span> <span class="n">predicted</span><span class="o">.</span><span class="n">item</span><span class="p">()</span> <span class="o">==</span> <span class="n">target_class</span><span class="p">:</span>
+                    <span class="n">misclassified_counts</span> <span class="o">+=</span> <span class="mi">1</span>
+                    <span class="n">misclassified</span> <span class="o">=</span> <span class="kc">True</span>
+
+                <span class="k">if</span> <span class="n">logger</span> <span class="ow">and</span> <span class="n">image_i</span> <span class="o">%</span> <span class="mi">500</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>   <span class="c1"># displaying one in every 500 modified images</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">log_modified_image</span><span class="p">(</span><span class="n">patch_i</span><span class="p">,</span> <span class="n">image_i</span><span class="p">,</span> <span class="n">modified_image</span><span class="p">,</span> <span class="n">misclassified</span><span class="p">,</span> <span class="n">target_model_name</span><span class="p">)</span>
+
+                <span class="n">image_i</span> <span class="o">+=</span><span class="mi">1</span>
+
+                <span class="k">if</span> <span class="n">device</span><span class="o">==</span><span class="s1">&#39;cuda&#39;</span><span class="p">:</span>
+                    <span class="k">del</span> <span class="n">image</span><span class="p">,</span> <span class="n">modified_image</span><span class="p">,</span> <span class="n">output</span><span class="p">,</span> <span class="n">predicted</span>
+                    <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">empty_cache</span><span class="p">()</span>
+
+            <span class="k">if</span> <span class="n">device</span><span class="o">==</span><span class="s1">&#39;cuda&#39;</span><span class="p">:</span>
+                <span class="k">del</span> <span class="n">images</span><span class="p">,</span> <span class="n">true_labels</span>
+                <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">empty_cache</span><span class="p">()</span>
+
+  
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;The generated adversarial patch on target model had </span><span class="si">{</span><span class="n">misclassified_counts</span><span class="si">}</span><span class="s1"> misclassifications&#39;</span><span class="p">)</span>    
+        <span class="n">asr</span> <span class="o">=</span> <span class="n">misclassified_counts</span> <span class="o">/</span> <span class="n">total_valid_images</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;ASR for target model: </span><span class="si">{</span><span class="n">asr</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">100</span><span class="si">:</span><span class="s1">.2f</span><span class="si">}</span><span class="s1">%&#39;</span><span class="p">)</span>    
+
+       
+        <span class="k">if</span> <span class="n">logger</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">log_target_model_results</span><span class="p">(</span>
+                <span class="n">training_model_names</span><span class="p">,</span> <span class="n">patch_i</span><span class="p">,</span> <span class="n">target_model_name</span><span class="p">,</span> <span class="n">misclassified_counts</span><span class="p">,</span> <span class="n">total_valid_images</span><span class="p">,</span> <span class="n">asr</span>
+            <span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">misclassified_counts</span></div>
+
+
+
+<div class="viewcode-block" id="evaluate_patch">
+<a class="viewcode-back" href="../../api/Random_Position_Patch.main.html#Random_Position_Patch.main.evaluate_patch">[docs]</a>
+<span class="k">def</span> <span class="nf">evaluate_patch</span><span class="p">(</span><span class="n">patch</span><span class="p">,</span> <span class="n">dataloader</span><span class="p">,</span> <span class="n">target_class</span><span class="p">,</span> <span class="n">deployer</span><span class="p">,</span> <span class="n">discriminators</span><span class="p">,</span> <span class="n">device</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Evaluate the performance (ASR) of a given adversarial patch on a dataset.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">total_correct_count</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">total_valid_images</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>  
+        <span class="k">for</span> <span class="n">batch</span> <span class="ow">in</span> <span class="n">dataloader</span><span class="p">:</span>
+            <span class="n">images</span><span class="p">,</span> <span class="n">true_labels</span> <span class="o">=</span> <span class="n">batch</span>
+            <span class="n">images</span> <span class="o">=</span> <span class="n">images</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+            <span class="n">true_labels</span> <span class="o">=</span> <span class="n">true_labels</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+                    
+            <span class="c1"># Filter out images with true_label == target_class</span>
+            <span class="n">valid_indices</span> <span class="o">=</span> <span class="n">true_labels</span> <span class="o">!=</span> <span class="n">target_class</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">valid_indices</span><span class="o">.</span><span class="n">any</span><span class="p">():</span>
+                <span class="k">continue</span>  
+            <span class="n">images</span> <span class="o">=</span> <span class="n">images</span><span class="p">[</span><span class="n">valid_indices</span><span class="p">]</span>
+            <span class="n">true_labels</span> <span class="o">=</span> <span class="n">true_labels</span><span class="p">[</span><span class="n">valid_indices</span><span class="p">]</span>
+
+            <span class="n">batch_size</span> <span class="o">=</span> <span class="n">images</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>      <span class="c1"># Update batch size</span>
+            <span class="n">total_valid_images</span> <span class="o">+=</span> <span class="n">batch_size</span>  <span class="c1"># Update the number of valid images</span>
+            
+            <span class="c1"># Deploying patches</span>
+            <span class="n">adv_images</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">image</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">images</span><span class="p">):</span>
+                <span class="n">adv_image</span> <span class="o">=</span> <span class="n">deployer</span><span class="o">.</span><span class="n">deploy</span><span class="p">(</span><span class="n">patch</span><span class="p">,</span> <span class="n">image</span><span class="p">)</span>
+                <span class="n">adv_images</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">adv_image</span><span class="p">)</span>
+
+            <span class="n">adv_images</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">adv_images</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+
+
+            <span class="c1"># === Soft Voting ===</span>
+            <span class="n">sum_probs</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="k">for</span> <span class="n">discriminator</span> <span class="ow">in</span> <span class="n">discriminators</span><span class="p">:</span>
+                <span class="n">output</span> <span class="o">=</span> <span class="n">discriminator</span><span class="p">(</span><span class="n">adv_images</span><span class="p">)</span>
+                <span class="n">probs</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">softmax</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>  
+                <span class="k">if</span> <span class="n">sum_probs</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">sum_probs</span> <span class="o">=</span> <span class="n">probs</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">sum_probs</span> <span class="o">+=</span> <span class="n">probs</span>
+
+            <span class="n">ensemble_predicted</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">sum_probs</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># Final prediction via soft-voting</span>
+
+            <span class="n">correct</span> <span class="o">=</span> <span class="p">(</span><span class="n">ensemble_predicted</span> <span class="o">==</span> <span class="n">target_class</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>  <span class="c1"># Number of &quot;correctly misclassified&quot; images</span>
+            <span class="n">total_correct_count</span> <span class="o">+=</span> <span class="n">correct</span>   
+
+            <span class="k">if</span> <span class="n">device</span><span class="o">==</span><span class="s1">&#39;cuda&#39;</span><span class="p">:</span>
+                <span class="k">del</span> <span class="n">adv_images</span><span class="p">,</span> <span class="n">images</span>
+                <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">empty_cache</span><span class="p">()</span>
+
+        <span class="n">total_asr</span> <span class="o">=</span> <span class="n">total_correct_count</span> <span class="o">/</span> <span class="n">total_valid_images</span>
+
+    <span class="k">return</span> <span class="n">total_asr</span></div>
+
+
+
+
+<div class="viewcode-block" id="evaluate_saved_generators">
+<a class="viewcode-back" href="../../api/Random_Position_Patch.main.html#Random_Position_Patch.main.evaluate_saved_generators">[docs]</a>
+<span class="k">def</span> <span class="nf">evaluate_saved_generators</span><span class="p">(</span><span class="n">target_class</span><span class="p">,</span> <span class="n">checkpoint_dir</span><span class="p">,</span> <span class="n">fixed_noises</span><span class="p">,</span> <span class="n">patch_size</span><span class="p">,</span> <span class="n">dataloader</span><span class="p">,</span> <span class="n">deployer</span><span class="p">,</span> <span class="n">discriminators</span><span class="p">,</span> <span class="n">device</span><span class="p">,</span> <span class="n">logger</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; </span>
+<span class="sd">    Load saved generators of each training epoch (in the checkpoint folder). </span>
+<span class="sd">    Identify the best-performing generator and save it as a separate file.       </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">best_avg_asr</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">best_epoch</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+    <span class="n">best_patches</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">best_generator</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="n">last_checkpoint</span>  <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># Track the checked generators</span>
+
+    <span class="c1"># iterate over subfolders in the checkpoints directory</span>
+    <span class="n">checkpoint_files</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">([</span><span class="n">f</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">checkpoint_dir</span><span class="p">)</span> <span class="k">if</span> <span class="n">f</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;.pth&#39;</span><span class="p">)])</span>
+    <span class="n">checkpoints</span> <span class="o">=</span> <span class="n">load_checkpoints</span><span class="p">(</span><span class="n">checkpoint_files</span><span class="p">)</span>
+    
+    <span class="n">results</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="se">\n</span><span class="si">{</span><span class="s2">&quot;=&quot;</span><span class="o">*</span><span class="mi">30</span><span class="si">}</span><span class="s1"> Evaluating generators </span><span class="si">{</span><span class="s2">&quot;=&quot;</span><span class="o">*</span><span class="mi">30</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">epoch</span><span class="p">,</span> <span class="n">checkpoint_file</span> <span class="ow">in</span> <span class="n">checkpoints</span><span class="p">:</span>
+            
+        <span class="n">gen</span> <span class="o">=</span> <span class="n">Generator</span><span class="p">(</span><span class="n">patch_size</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+        <span class="n">generator</span> <span class="o">=</span> <span class="n">load_generator</span><span class="p">(</span><span class="n">gen</span><span class="p">,</span> <span class="n">checkpoint_file</span><span class="p">)</span>
+
+        <span class="n">total_asr</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">patches</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">fixed_noise</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">fixed_noises</span><span class="p">):</span>
+            <span class="n">noise_i</span> <span class="o">=</span> <span class="n">j</span><span class="o">+</span><span class="mi">1</span>
+            <span class="c1"># Generate a patch and evaluate its performance</span>
+            <span class="n">patch</span> <span class="o">=</span> <span class="n">generator</span><span class="p">(</span><span class="n">fixed_noise</span><span class="p">)</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+            <span class="n">asr</span> <span class="o">=</span> <span class="n">evaluate_patch</span><span class="p">(</span><span class="n">patch</span><span class="p">,</span> <span class="n">dataloader</span><span class="p">,</span> <span class="n">target_class</span><span class="p">,</span> <span class="n">deployer</span><span class="p">,</span> <span class="n">discriminators</span><span class="p">,</span> <span class="n">device</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;    -&gt;  Epoch </span><span class="si">{</span><span class="n">epoch</span><span class="si">}</span><span class="s2">, Noise #</span><span class="si">{</span><span class="n">noise_i</span><span class="si">}</span><span class="s2">  -&lt;&gt;- Patch ASR: </span><span class="si">{</span><span class="n">asr</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">100</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">%&quot;</span><span class="p">)</span>
+
+            <span class="n">total_asr</span> <span class="o">+=</span> <span class="n">asr</span>
+            <span class="n">patches</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">patch</span><span class="p">)</span>  <span class="c1"># Save the patch generated from a corresponding fixed random noise vector</span>
+            <span class="k">if</span> <span class="n">logger</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">log_generator_evaluation</span><span class="p">(</span><span class="n">noise_i</span><span class="p">,</span> <span class="n">epoch</span><span class="p">,</span> <span class="n">asr</span><span class="p">)</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">log_patch_image</span><span class="p">(</span><span class="n">noise_i</span><span class="p">,</span> <span class="n">epoch</span><span class="p">,</span> <span class="n">patch</span><span class="p">)</span>
+
+        <span class="n">avg_asr</span> <span class="o">=</span> <span class="n">total_asr</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">fixed_noises</span><span class="p">)</span>
+        <span class="n">last_checkpoint</span> <span class="o">=</span> <span class="n">checkpoint_file</span>   <span class="c1"># Update the last checked generator</span>
+
+        <span class="k">if</span> <span class="n">avg_asr</span> <span class="o">&gt;</span> <span class="n">best_avg_asr</span><span class="p">:</span>  <span class="c1"># Update the best-performing generator, with its patches and ASR</span>
+            <span class="n">best_avg_asr</span> <span class="o">=</span> <span class="n">avg_asr</span>
+            <span class="n">best_epoch</span> <span class="o">=</span> <span class="n">epoch</span>
+            <span class="n">best_patches</span> <span class="o">=</span> <span class="n">patches</span>
+            <span class="n">best_generator</span> <span class="o">=</span> <span class="n">generator</span>
+
+        
+    <span class="k">if</span> <span class="n">best_epoch</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>   <span class="c1"># Every generator had 0 ASR, so we save the last checked generator. This is simply to not have an empty model.</span>
+        <span class="n">generator</span> <span class="o">=</span> <span class="n">Generator</span><span class="p">(</span><span class="n">patch_size</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+        <span class="n">generator</span> <span class="o">=</span> <span class="n">load_generator</span><span class="p">(</span><span class="n">generator</span><span class="p">,</span> <span class="n">last_checkpoint</span><span class="p">)</span>
+        <span class="n">save_generator</span><span class="p">(</span><span class="s2">&quot;best_-1&quot;</span><span class="p">,</span> <span class="n">generator</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">checkpoint_dir</span><span class="si">}</span><span class="s1">/best_generators&#39;</span><span class="p">)</span> <span class="c1"># Name convention to easily identify a generator with 0 ASR</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">generator_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;best&quot;</span>
+        <span class="n">save_generator</span><span class="p">(</span><span class="n">generator_name</span><span class="p">,</span> <span class="n">best_generator</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">checkpoint_dir</span><span class="si">}</span><span class="s1">/best_generators&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">logger</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">log_best_generator</span><span class="p">(</span><span class="n">generator_name</span><span class="p">,</span> <span class="n">best_epoch</span><span class="p">,</span> <span class="n">best_avg_asr</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">noise_i</span><span class="p">,</span> <span class="n">patch</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">best_patches</span><span class="p">):</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">log_best_patch</span><span class="p">(</span><span class="n">noise_i</span><span class="p">,</span> <span class="n">patch</span><span class="p">)</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Best generator found at epoch </span><span class="si">{</span><span class="n">best_epoch</span><span class="si">}</span><span class="s2"> with avg ASR: </span><span class="si">{</span><span class="n">best_avg_asr</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">100</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">%&quot;</span><span class="p">)</span>
+
+    <span class="n">results</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;best_avg_asr&#39;</span><span class="p">:</span> <span class="n">best_avg_asr</span><span class="p">,</span>
+        <span class="s1">&#39;best_epoch&#39;</span><span class="p">:</span> <span class="n">best_epoch</span><span class="p">,</span>
+        <span class="s1">&#39;best_patches&#39;</span><span class="p">:</span> <span class="n">best_patches</span><span class="p">,</span>
+    <span class="p">}</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;=&quot;</span><span class="o">*</span><span class="mi">100</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">results</span></div>
+
+
+
+
+<div class="viewcode-block" id="gan_attack">
+<a class="viewcode-back" href="../../api/Random_Position_Patch.main.html#Random_Position_Patch.main.gan_attack">[docs]</a>
+<span class="k">def</span> <span class="nf">gan_attack</span><span class="p">(</span><span class="n">device</span><span class="p">,</span> <span class="n">generator</span><span class="p">,</span> <span class="n">optimizer</span><span class="p">,</span> <span class="n">deployer</span><span class="p">,</span> <span class="n">discriminators</span><span class="p">,</span> <span class="n">dataloader</span><span class="p">,</span> <span class="n">target_class</span><span class="p">,</span> <span class="n">num_of_epochs</span><span class="p">,</span> <span class="n">checkpoint_dir</span><span class="p">,</span> <span class="n">logger</span><span class="p">,</span> <span class="n">input_dim</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Begin the training of a generator to produce adversarial patches.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        device: computation device, e.g., &#39;cuda&#39; or &#39;cpu&#39;.</span>
+<span class="sd">        generator: generator model that produces adversarial patches from noise.</span>
+<span class="sd">        optimizer: optimizer used to update generator weights.</span>
+<span class="sd">        deployer: mechanism responsible for applying patches to input images.</span>
+<span class="sd">        discriminators: victim model(s) (discriminators) to be fooled by adversarial patches.</span>
+<span class="sd">        dataloader: Dataloader providing batches of (image, true_label) pairs.</span>
+<span class="sd">        target_class: numerical label of the target class the attack aims to force the model to predict.</span>
+<span class="sd">        num_of_epochs: number of epochs for training.</span>
+<span class="sd">        checkpoint_dir: directory to save generator checkpoints after each epoch.</span>
+<span class="sd">        logger (optional): W&amp;B logger for tracking training metrics.</span>
+<span class="sd">    &quot;&quot;&quot;</span>    
+    
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="s2">&quot;-&quot;</span><span class="o">*</span><span class="mi">30</span><span class="si">}</span><span class="s1"> Training Generator </span><span class="si">{</span><span class="s2">&quot;-&quot;</span><span class="o">*</span><span class="mi">30</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+    
+    <span class="n">total_asr</span> <span class="o">=</span> <span class="mi">0</span>    <span class="c1"># Total ASR accumulated over all epochs</span>
+
+    <span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_of_epochs</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;@ Epoch </span><span class="si">{</span><span class="n">epoch</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s1"> for a target class: </span><span class="si">{</span><span class="n">target_class</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">epoch_correct_count</span> <span class="o">=</span> <span class="mi">0</span>   <span class="c1"># Number of successful target class predictions in the epoch</span>
+        <span class="n">epoch_valid_images</span> <span class="o">=</span> <span class="mi">0</span>    <span class="c1"># Number of images excluding those with the same label as the target class</span>
+
+        <span class="n">batch_i</span><span class="o">=</span><span class="mi">1</span>
+        <span class="n">batch_loss</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="k">for</span> <span class="n">batch</span> <span class="ow">in</span> <span class="n">dataloader</span><span class="p">:</span>
+            <span class="n">images</span><span class="p">,</span> <span class="n">true_labels</span> <span class="o">=</span> <span class="n">batch</span>
+            <span class="n">images</span> <span class="o">=</span> <span class="n">images</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+            <span class="n">true_labels</span> <span class="o">=</span> <span class="n">true_labels</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+
+            <span class="c1"># Filter out images with true_label == target_class</span>
+            <span class="n">valid_indices</span> <span class="o">=</span> <span class="n">true_labels</span> <span class="o">!=</span> <span class="n">target_class</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">valid_indices</span><span class="o">.</span><span class="n">any</span><span class="p">():</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;     Batch </span><span class="si">{</span><span class="n">batch_i</span><span class="si">}</span><span class="s2"> skipped: all images have true label == target class.&quot;</span><span class="p">)</span>
+                <span class="n">batch_i</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="k">continue</span>  
+
+            <span class="n">images</span> <span class="o">=</span> <span class="n">images</span><span class="p">[</span><span class="n">valid_indices</span><span class="p">]</span>
+            <span class="n">true_labels</span> <span class="o">=</span> <span class="n">true_labels</span><span class="p">[</span><span class="n">valid_indices</span><span class="p">]</span>
+            <span class="n">batch_size</span> <span class="o">=</span> <span class="n">images</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">epoch_valid_images</span> <span class="o">+=</span> <span class="n">batch_size</span>    
+
+            <span class="c1"># Generate random noise for the generator</span>
+            <span class="n">noise</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">input_dim</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>  <span class="c1"># Every batch has its own unique random noise vector</span>
+
+
+            <span class="c1"># === Deploying ===</span>
+
+            <span class="n">modified_images</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">adv_patches</span> <span class="o">=</span> <span class="n">generator</span><span class="p">(</span><span class="n">noise</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">batch_size</span><span class="p">):</span>
+                <span class="n">patch</span> <span class="o">=</span> <span class="n">adv_patches</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+                <span class="n">modified_image</span> <span class="o">=</span> <span class="n">deployer</span><span class="o">.</span><span class="n">deploy</span><span class="p">(</span><span class="n">patch</span><span class="p">,</span> <span class="n">images</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+                <span class="n">modified_images</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">modified_image</span><span class="p">)</span>
+            <span class="n">modified_images</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">modified_images</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+
+            <span class="c1"># === Evaluate modified images using all discriminators ===</span>
+            <span class="n">outputs</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">discriminator</span> <span class="ow">in</span> <span class="n">discriminators</span><span class="p">:</span>
+                <span class="n">output</span> <span class="o">=</span> <span class="n">discriminator</span><span class="p">(</span><span class="n">modified_images</span><span class="p">)</span>
+                <span class="n">outputs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">output</span><span class="p">)</span>
+
+            <span class="n">target_class_y_prime</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">full</span><span class="p">((</span><span class="n">batch_size</span><span class="p">,),</span> <span class="n">target_class</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">long</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+            
+
+            <span class="n">criterion</span> <span class="o">=</span> <span class="n">AdversarialLoss</span><span class="p">(</span><span class="n">target_class</span><span class="o">=</span><span class="n">target_class_y_prime</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>  <span class="c1"># Compute adversarial loss </span>
+            <span class="c1"># Weighted loss for all the discriminators</span>
+            <span class="n">total_loss</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">([</span><span class="n">criterion</span><span class="p">(</span><span class="n">out</span><span class="p">)</span> <span class="k">for</span> <span class="n">out</span> <span class="ow">in</span> <span class="n">outputs</span><span class="p">])</span>
+            <span class="n">loss</span> <span class="o">=</span> <span class="n">total_loss</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">discriminators</span><span class="p">)</span>  
+            
+            <span class="n">optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
+            <span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+            <span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+
+            <span class="c1"># === Compute ASR via ensemble soft-voting ===</span>
+            <span class="n">sum_probs</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="k">for</span> <span class="n">out</span> <span class="ow">in</span> <span class="n">outputs</span><span class="p">:</span>
+                <span class="n">probs</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">softmax</span><span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> 
+                <span class="k">if</span> <span class="n">sum_probs</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">sum_probs</span> <span class="o">=</span> <span class="n">probs</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">sum_probs</span> <span class="o">+=</span> <span class="n">probs</span>
+            <span class="n">ensemble_predicted</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">sum_probs</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+            <span class="n">correct</span> <span class="o">=</span> <span class="p">(</span><span class="n">ensemble_predicted</span> <span class="o">==</span> <span class="n">target_class</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+
+            <span class="n">batch_asr</span> <span class="o">=</span> <span class="n">correct</span> <span class="o">/</span> <span class="n">batch_size</span>
+            <span class="n">batch_loss</span> <span class="o">+=</span> <span class="n">loss</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+
+            <span class="k">if</span> <span class="n">logger</span><span class="p">:</span> 
+                <span class="c1"># Log batch-level metrics</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">log_batch_metrics</span><span class="p">(</span><span class="n">epoch</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">loss</span><span class="o">.</span><span class="n">item</span><span class="p">(),</span> <span class="n">batch_asr</span><span class="p">,</span> <span class="n">batch_i</span><span class="p">)</span>
+            
+
+            <span class="k">if</span> <span class="n">device</span><span class="o">==</span><span class="s1">&#39;cuda&#39;</span><span class="p">:</span>
+                <span class="k">del</span> <span class="n">images</span><span class="p">,</span> <span class="n">true_labels</span><span class="p">,</span> <span class="n">noise</span><span class="p">,</span> <span class="n">adv_patches</span><span class="p">,</span> <span class="n">modified_images</span><span class="p">,</span> <span class="n">outputs</span><span class="p">,</span> <span class="n">sum_probs</span><span class="p">,</span> <span class="n">ensemble_predicted</span><span class="p">,</span> <span class="n">target_class_y_prime</span><span class="p">,</span> <span class="n">loss</span>
+                <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">empty_cache</span><span class="p">()</span>
+            <span class="n">batch_i</span><span class="o">+=</span><span class="mi">1</span>
+            <span class="n">epoch_correct_count</span> <span class="o">+=</span> <span class="n">correct</span>
+
+        <span class="n">avg_epoch_asr</span> <span class="o">=</span> <span class="n">epoch_correct_count</span> <span class="o">/</span> <span class="n">epoch_valid_images</span>
+        <span class="n">avg_epoch_loss</span> <span class="o">=</span> <span class="n">batch_loss</span> <span class="o">/</span> <span class="p">(</span><span class="n">batch_i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="k">if</span> <span class="n">batch_i</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="k">else</span> <span class="mi">0</span>
+        <span class="n">total_asr</span> <span class="o">+=</span> <span class="n">avg_epoch_asr</span>
+
+        <span class="k">if</span> <span class="n">logger</span><span class="p">:</span>
+            <span class="c1"># log epoch-level metrics to wandb</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">log_epoch_metrics</span><span class="p">(</span><span class="n">avg_epoch_loss</span><span class="p">,</span> <span class="n">avg_epoch_asr</span><span class="p">,</span> <span class="n">epoch</span><span class="p">)</span>
+      
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Epoch [</span><span class="si">{</span><span class="n">epoch</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">num_of_epochs</span><span class="si">}</span><span class="s2">], Avg loss: </span><span class="si">{</span><span class="n">avg_epoch_loss</span><span class="si">}</span><span class="s2">, Avg ASR: </span><span class="si">{</span><span class="n">avg_epoch_asr</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">100</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">%&quot;</span><span class="p">)</span>
+
+        <span class="n">generator_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;generator_epoch_</span><span class="si">{</span><span class="n">epoch</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="si">}</span><span class="s1">&#39;</span>
+        <span class="n">save_generator</span><span class="p">(</span><span class="n">generator_name</span><span class="p">,</span> <span class="n">generator</span><span class="p">,</span> <span class="n">checkpoint_dir</span><span class="p">)</span>
+        
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="se">\n\n</span><span class="s1">Average ASR over all </span><span class="si">{</span><span class="n">num_of_epochs</span><span class="si">}</span><span class="s1"> epochs: </span><span class="si">{</span><span class="n">total_asr</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">num_of_epochs</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">100</span><span class="si">:</span><span class="s1">.2f</span><span class="si">}</span><span class="s1">% </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="s2">&quot;-&quot;</span><span class="o">*</span><span class="mi">26</span><span class="si">}</span><span class="s1"> Finished Training Generator </span><span class="si">{</span><span class="s2">&quot;-&quot;</span><span class="o">*</span><span class="mi">26</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span></div>
+
+
+
+
+
+<div class="viewcode-block" id="start_training">
+<a class="viewcode-back" href="../../api/Random_Position_Patch.main.html#Random_Position_Patch.main.start_training">[docs]</a>
+<span class="k">def</span> <span class="nf">start_training</span><span class="p">(</span><span class="n">device</span><span class="p">,</span> <span class="n">attack_mode</span><span class="p">,</span> <span class="n">patch_size</span><span class="p">,</span> <span class="n">discriminators</span><span class="p">,</span> <span class="n">dataloader</span><span class="p">,</span> <span class="n">target_class</span><span class="p">,</span> <span class="n">checkpoint_dir</span><span class="p">,</span> <span class="n">num_of_epochs</span><span class="p">,</span> <span class="n">num_of_patches</span><span class="p">,</span> <span class="n">logger</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Initialize the training process.</span>
+<span class="sd">    This function initializes the generator and correct deployer (for G-Patches and Mini-Patches)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="n">attack_type</span> <span class="o">=</span> <span class="n">attack_mode</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">attack_type</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;gpatch&#39;</span><span class="p">:</span>
+        <span class="n">deployer</span> <span class="o">=</span> <span class="n">Deployer</span><span class="p">()</span>
+    <span class="k">else</span><span class="p">:</span>  <span class="c1"># Mini-Patch </span>
+        <span class="n">deployer</span> <span class="o">=</span> <span class="n">DeployerMini</span><span class="p">(</span><span class="n">num_of_patches</span><span class="p">,</span> <span class="n">critical_points</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">attack_type</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+
+
+    <span class="n">generator</span> <span class="o">=</span> <span class="n">Generator</span><span class="p">(</span><span class="n">patch_size</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+    <span class="n">generator</span><span class="o">.</span><span class="n">train</span><span class="p">()</span>
+
+    <span class="n">optimizer</span> <span class="o">=</span> <span class="n">optim</span><span class="o">.</span><span class="n">Adam</span><span class="p">(</span><span class="n">generator</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="mf">0.001</span><span class="p">,</span> <span class="n">betas</span><span class="o">=</span><span class="p">(</span><span class="mf">0.9</span><span class="p">,</span> <span class="mf">0.999</span><span class="p">))</span>  
+    <span class="n">target_class</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">target_class</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">)</span>
+    <span class="c1"># Start the actual training, and save generators after each epoch</span>
+    <span class="n">gan_attack</span><span class="p">(</span><span class="n">device</span><span class="p">,</span> <span class="n">generator</span><span class="p">,</span> <span class="n">optimizer</span><span class="p">,</span> <span class="n">deployer</span><span class="p">,</span> <span class="n">discriminators</span><span class="p">,</span> <span class="n">dataloader</span><span class="p">,</span> <span class="n">target_class</span><span class="p">,</span> <span class="n">num_of_epochs</span><span class="p">,</span> <span class="n">checkpoint_dir</span><span class="p">,</span> <span class="n">logger</span><span class="p">)</span>
+
+    <span class="c1"># Load the fixed random noise vectors for evaluation</span>
+    <span class="n">fixed_noises</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;fixed_noises.pt&quot;</span><span class="p">)</span>
+    <span class="n">fixed_noises</span> <span class="o">=</span> <span class="p">[</span><span class="n">noise</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span> <span class="k">for</span> <span class="n">noise</span> <span class="ow">in</span> <span class="n">fixed_noises</span><span class="p">]</span>
+    <span class="c1"># Evaluate each generator using these noises</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="n">evaluate_saved_generators</span><span class="p">(</span><span class="n">target_class</span><span class="p">,</span> <span class="n">checkpoint_dir</span><span class="p">,</span> <span class="n">fixed_noises</span><span class="p">,</span> <span class="n">patch_size</span><span class="p">,</span> <span class="n">dataloader</span><span class="p">,</span> <span class="n">deployer</span><span class="p">,</span> <span class="n">discriminators</span><span class="p">,</span> <span class="n">device</span><span class="p">,</span> <span class="n">logger</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">results</span></div>
+
+
+
+
+<div class="viewcode-block" id="start_testing">
+<a class="viewcode-back" href="../../api/Random_Position_Patch.main.html#Random_Position_Patch.main.start_testing">[docs]</a>
+<span class="k">def</span> <span class="nf">start_testing</span><span class="p">(</span><span class="n">train_model_names</span><span class="p">,</span> <span class="n">device</span><span class="p">,</span> <span class="n">dataloader</span><span class="p">,</span> <span class="n">target_class</span><span class="p">,</span> <span class="n">num_of_patches</span><span class="p">,</span> <span class="n">patches</span><span class="p">,</span> <span class="n">target_models</span><span class="p">,</span> <span class="n">target_model_names</span><span class="p">,</span> <span class="n">attack_mode</span><span class="p">,</span> <span class="n">logger</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Initialize the testing process.</span>
+<span class="sd">    This function initializes the generator and correct deployer (for G-Patches and Mini-Patches)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="n">attack_type</span> <span class="o">=</span> <span class="n">attack_mode</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">attack_type</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">attack_type</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;gpatch&#39;</span><span class="p">:</span>
+        <span class="n">deployer</span> <span class="o">=</span> <span class="n">Deployer</span><span class="p">()</span>
+    <span class="k">else</span><span class="p">:</span> <span class="c1"># Mini-Patch</span>
+        <span class="n">deployer</span> <span class="o">=</span> <span class="n">DeployerMini</span><span class="p">(</span><span class="n">num_of_patches</span><span class="p">,</span> <span class="n">critical_points</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">attack_type</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+
+
+    <span class="c1"># Test each generator on a new random noise vector (not using the fixed vectors used during evaluation)</span>
+    <span class="k">for</span> <span class="nb">iter</span><span class="p">,</span> <span class="n">generator</span> <span class="ow">in</span> <span class="n">patches</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">noise</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+        <span class="n">patch</span> <span class="o">=</span> <span class="n">generator</span><span class="p">(</span><span class="n">noise</span><span class="p">)</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        
+        <span class="k">if</span> <span class="n">logger</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">log_best_patch</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">train_model_names</span><span class="si">}</span><span class="s1">/iter </span><span class="si">{</span><span class="nb">iter</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">patch</span><span class="p">,</span> <span class="n">testing</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">target_model</span><span class="p">,</span> <span class="n">target_model_name</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">target_models</span><span class="p">,</span> <span class="n">target_model_names</span><span class="p">):</span>
+            <span class="n">test_best_patch</span><span class="p">(</span><span class="n">train_model_names</span><span class="p">,</span> <span class="n">patch</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;iter </span><span class="si">{</span><span class="nb">iter</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">dataloader</span><span class="p">,</span> <span class="n">target_class</span><span class="p">,</span> <span class="n">deployer</span><span class="p">,</span> <span class="n">target_model</span><span class="p">,</span> <span class="n">target_model_name</span><span class="p">,</span> <span class="n">device</span><span class="p">,</span> <span class="n">logger</span><span class="p">)</span></div>
+
+           
+    
+
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Random Position Patch Attack&#39;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--image_folder_path&#39;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Image dataset to perturb&#39;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s1">&#39;../imagenetv2-top-images/imagenetv2-top-images-format-val&#39;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--checkpoint_folder_path&#39;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Path to a folder where generators will be saved.&#39;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s1">&#39;./checkpoints&#39;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--run_mode&#39;</span><span class="p">,</span> <span class="n">choices</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;train&#39;</span><span class="p">,</span> <span class="s1">&#39;test&#39;</span><span class="p">])</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--attack_mode&#39;</span><span class="p">,</span> <span class="n">choices</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;gpatch&#39;</span><span class="p">,</span> <span class="s1">&#39;mini_0&#39;</span><span class="p">,</span> <span class="s1">&#39;mini_1&#39;</span><span class="p">,</span> <span class="s1">&#39;mini_2&#39;</span><span class="p">],</span> <span class="n">default</span><span class="o">=</span><span class="s1">&#39;gpatch&#39;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--training_models&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Name(s) of the models the generator will be trained on.&#39;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--target_models&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--target_class&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Target class to misclassify images as&#39;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">932</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--patch_size&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Size of the adversarial patch&#39;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">64</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--num_of_patches&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Number of patches. 1 for G-patch attack, and more than 1 for mini-patch attack&#39;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--epochs&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Number of epochs&#39;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">40</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--wandb_entity&#39;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Entity name of the users WANDB account&#39;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--local_generator&#39;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Path to the locally saved pre-trained generator, if not loading from W&amp;B&#39;</span><span class="p">)</span>
+    <span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
+
+    <span class="n">device</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s1">&#39;cuda&#39;</span> <span class="k">if</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">()</span> <span class="k">else</span> <span class="s1">&#39;cpu&#39;</span><span class="p">)</span>
+    <span class="n">checkpoint_dir</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">checkpoint_folder_path</span>
+    <span class="n">run_mode</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">run_mode</span>
+    <span class="n">attack_mode</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">attack_mode</span>
+    <span class="n">training_model_names</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">training_models</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">)</span> <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">training_models</span> <span class="k">else</span> <span class="kc">None</span>
+    <span class="n">target_model_names</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">target_models</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">)</span> <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">target_models</span> <span class="k">else</span> <span class="kc">None</span>
+    <span class="n">target_class</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">target_class</span> 
+    <span class="n">patch_size</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">patch_size</span>
+    <span class="n">num_of_patches</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">num_of_patches</span>
+    <span class="n">num_of_epochs</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">epochs</span>
+
+    <span class="n">discriminators</span> <span class="o">=</span> <span class="n">get_models</span><span class="p">(</span><span class="n">training_model_names</span><span class="p">,</span> <span class="n">device</span><span class="p">)</span>
+
+    <span class="n">dataloader</span> <span class="o">=</span> <span class="n">load_classes</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">image_folder_path</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">attack_mode</span> <span class="o">==</span> <span class="s2">&quot;gpatch&quot;</span><span class="p">:</span>
+        <span class="n">attack_mode</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">args</span><span class="o">.</span><span class="n">attack_mode</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">patch_size</span><span class="si">}</span><span class="s1">&#39;</span>
+
+    <span class="n">logger</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">wandb_entity</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">wandb_entity</span>   <span class="c1"># Set up the W&amp;B project configuration, if the entity is given</span>
+    <span class="k">if</span> <span class="n">wandb_entity</span><span class="p">:</span>
+        <span class="n">project_name</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="sa">f</span><span class="s1">&#39;F </span><span class="si">{</span><span class="n">run_mode</span><span class="si">}</span><span class="s1"> &#39;</span> <span class="o">+</span>
+            <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">attack_mode</span><span class="si">}</span><span class="s1"> &#39;</span> <span class="o">+</span>
+            <span class="sa">f</span><span class="s1">&#39;=</span><span class="si">{</span><span class="n">target_class</span><span class="si">}</span><span class="s1">= &#39;</span> <span class="o">+</span>  
+            <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="s2">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">training_model_names</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span> <span class="o">+</span> 
+            <span class="p">(</span><span class="sa">f</span><span class="s1">&#39; &gt; </span><span class="si">{</span><span class="s2">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">target_model_names</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span> <span class="k">if</span> <span class="n">target_model_names</span> <span class="k">else</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+        <span class="p">)</span>
+
+        <span class="n">logger</span> <span class="o">=</span> <span class="n">WandbLogger</span><span class="p">(</span><span class="n">wandb_entity</span><span class="p">,</span> <span class="n">run_mode</span><span class="p">,</span> <span class="n">project_name</span><span class="p">,</span> <span class="n">target_class</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="p">{</span>
+            <span class="s1">&#39;run_mode&#39;</span> <span class="p">:</span> <span class="n">run_mode</span><span class="p">,</span>
+            <span class="s1">&#39;attack_mode&#39;</span><span class="p">:</span> <span class="n">attack_mode</span><span class="p">,</span>
+            <span class="s1">&#39;target_class&#39;</span><span class="p">:</span> <span class="n">target_class</span><span class="p">,</span>
+            <span class="s1">&#39;patch_size&#39;</span><span class="p">:</span> <span class="n">patch_size</span><span class="p">,</span>
+            <span class="s1">&#39;num_of_patches&#39;</span><span class="p">:</span> <span class="n">num_of_patches</span><span class="p">,</span>
+            <span class="s1">&#39;training_models&#39;</span><span class="p">:</span> <span class="n">training_model_names</span><span class="p">,</span>
+            <span class="s1">&#39;target_models&#39;</span><span class="p">:</span> <span class="n">target_model_names</span>
+        <span class="p">})</span>
+
+
+    <span class="k">if</span> <span class="n">run_mode</span> <span class="o">==</span> <span class="s1">&#39;train&#39;</span><span class="p">:</span>
+        <span class="n">start_training</span><span class="p">(</span><span class="n">device</span><span class="p">,</span> <span class="n">attack_mode</span><span class="p">,</span> <span class="n">patch_size</span><span class="p">,</span> <span class="n">discriminators</span><span class="p">,</span> <span class="n">dataloader</span><span class="p">,</span> <span class="n">target_class</span><span class="p">,</span> <span class="n">checkpoint_dir</span><span class="p">,</span> <span class="n">num_of_epochs</span><span class="p">,</span> <span class="n">num_of_patches</span><span class="p">,</span> <span class="n">logger</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">target_models</span> <span class="o">=</span> <span class="n">get_models</span><span class="p">(</span><span class="n">target_model_names</span><span class="p">,</span> <span class="n">device</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">local_generator</span><span class="p">:</span>    <span class="c1"># Loading generator from a locally saved file, so we don&#39;t need to download it from W&amp;B</span>
+            <span class="n">local_path</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">local_generator</span>
+            <span class="k">assert</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">local_path</span><span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;Could not locate the generator </span><span class="si">{</span><span class="n">local_path</span><span class="si">}</span><span class="s2">&quot;</span> 
+            <span class="n">generator</span> <span class="o">=</span> <span class="n">Generator</span><span class="p">(</span><span class="n">patch_size</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+            <span class="n">generator</span><span class="o">.</span><span class="n">load_state_dict</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">local_path</span><span class="p">,</span> <span class="n">map_location</span><span class="o">=</span><span class="n">device</span><span class="p">))</span>
+            <span class="n">generator</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
+
+            <span class="n">generators</span><span class="o">=</span><span class="p">{</span><span class="mi">0</span> <span class="p">:</span> <span class="n">generator</span><span class="p">}</span>
+
+        <span class="k">else</span><span class="p">:</span>     <span class="c1"># Local generator path wasn&#39;t provided, so we try to access the train project of corresponding configuration and download best performing generators(from each run)</span>
+            <span class="k">assert</span> <span class="n">logger</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;For testing either a path to local generator, or W&amp;B entity should be provided.&quot;</span> 
+            <span class="n">train_project_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;F train &#39;</span> <span class="o">+</span> <span class="n">attack_mode</span> <span class="o">+</span> <span class="sa">f</span><span class="s1">&#39; =</span><span class="si">{</span><span class="n">target_class</span><span class="si">}</span><span class="s1">= &#39;</span> <span class="o">+</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="s2">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">training_model_names</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span>
+            <span class="n">generators</span> <span class="o">=</span> <span class="n">fetch_generators_from_wandb</span><span class="p">(</span><span class="n">wandb_entity</span><span class="p">,</span> <span class="n">Generator</span><span class="p">,</span> <span class="n">train_project_name</span><span class="p">,</span> <span class="n">patch_size</span><span class="o">=</span><span class="n">patch_size</span><span class="p">)</span>
+
+        <span class="n">start_testing</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">training_models</span><span class="p">,</span> <span class="n">device</span><span class="p">,</span> <span class="n">dataloader</span><span class="p">,</span> <span class="n">target_class</span><span class="p">,</span> <span class="n">num_of_patches</span><span class="p">,</span> <span class="n">generators</span><span class="p">,</span> <span class="n">target_models</span><span class="p">,</span> <span class="n">target_model_names</span><span class="p">,</span> <span class="n">attack_mode</span><span class="p">,</span> <span class="n">logger</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="n">logger</span><span class="p">:</span> 
+        <span class="n">logger</span><span class="o">.</span><span class="n">finalize</span><span class="p">()</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Tamar Noselidze.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

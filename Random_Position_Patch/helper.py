@@ -1,11 +1,13 @@
-import torch, os, random, json, wandb, requests
-from PIL import Image
-from io import BytesIO
+import torch, os, json, wandb
 from torch.utils.data import DataLoader
 from torchvision import datasets, transforms
-from generator import Generator 
 
-def load_classes(image_folder_path, num_of_classes):
+
+
+def load_classes(image_folder_path):
+    """
+    Load images from a folder and returns a DataLoader with basic preprocessing
+    """
 
     transform = transforms.Compose([
         transforms.Resize((224, 224)),
@@ -21,15 +23,18 @@ def load_classes(image_folder_path, num_of_classes):
 
 
 def load_generator(generator, checkpoint_filename, output_dir='checkpoints'):
+    """
+    Load a generator model's weights from a .pth checkpoint. 
+    """
 
     checkpoint_path = os.path.join(output_dir, checkpoint_filename)
     
     if not os.path.exists(checkpoint_path):
-        raise FileNotFoundError(f"Checkpoint file not found: {checkpoint_path}")
+        raise FileNotFoundError(f"Generator not found at {checkpoint_path}")
 
-    # Load the generator state
-    generator.load_state_dict(torch.load(checkpoint_path))
-    generator.eval()  
+
+    generator.load_state_dict(torch.load(checkpoint_path)) # Load model weights
+    generator.eval()  # Set to evaluation mode
     
     print(f'  > Loaded generator from {checkpoint_path} ')
     return generator
@@ -37,9 +42,10 @@ def load_generator(generator, checkpoint_filename, output_dir='checkpoints'):
 
 
 def save_generator(generator_name, generator, output_dir='checkpoints'):
+    """ Save a generator's weights to a specified file. """
 
     if not os.path.exists(output_dir):
-        os.makedirs(output_dir)  # Create the target-specific directory if it doesn't exist
+        os.makedirs(output_dir)  # Create the directory if it doesn't exist
 
     save_path = os.path.join(output_dir, f'{generator_name}.pth')
     torch.save(generator.state_dict(), save_path)
@@ -48,12 +54,12 @@ def save_generator(generator_name, generator, output_dir='checkpoints'):
 
 
 def load_checkpoints(checkpoint_files):
-
+    """ Parse checkpoint filenames and extract epoch numbers"""
     checkpoints = []
 
     for checkpoint_file in checkpoint_files:
         parts = checkpoint_file.split('_')
-        epoch = int(parts[2].split('.')[0])
+        epoch = int(parts[2].split('.')[0]) # filename format includes "_epochNumber.pth"
         checkpoints.append((epoch, checkpoint_file))
 
     return checkpoints
@@ -61,6 +67,7 @@ def load_checkpoints(checkpoint_files):
 
 
 def get_class_name(number, json_file='class_mapping.json'):
+    """ Load a human-readable class name for a given numerical class label from a JSON file """
     try:
         with open(json_file, 'r') as file:
             class_mapping = json.load(file)
@@ -75,43 +82,20 @@ def get_class_name(number, json_file='class_mapping.json'):
 
 
 
-def load_best_patch(project_name):
 
-    api = wandb.Api()
-    entity_name = "takonoselidze-charles-university"
+def fetch_generators_from_wandb(entity, generator_class, project, patch_size, save_dir='downloads', max_runs=5):
+    """
+    For a given W&B project, load generator models from given number of runs. 
+    """
 
-    runs = api.runs(f"{entity_name}/{project_name}")  # Fetch all runs in the project
-    patches = {}
-    recent_runs = sorted(runs, key=lambda x: x.created_at, reverse=True)[:5]  # 5 most recent runs
-
-
-    for run in recent_runs:
-        run_id = run.id  # Get the unique run ID
-        artifact_name = f"patch_*"  # Wildcard to match all patch artifacts in the run
-
-        for artifact in run.logged_artifacts():
-            if artifact.type == "patch_tensor" and artifact.name.startswith("patch_"):
-                artifact_dir = artifact.download()
-                noise_i = artifact.name.split("_")[-1]  # Extract noise_i from name
-                tensor_path = os.path.join(artifact_dir, f"best_patch_{noise_i}.pt")
-
-                if os.path.exists(tensor_path):
-                    patches[f"{run_id}_noise_{noise_i}"] = torch.load(tensor_path)
-
-    return patches
-
-
-
-def fetch_generators_from_wandb(generator_class, project, patch_size, save_dir='downloads', max_runs=5):
     save_dir = f'{save_dir}/{project}'
 
     os.makedirs(save_dir, exist_ok=True)
-    entity = "takonoselidze-charles-university"
     api = wandb.Api()
     runs = api.runs(f'{entity}/{project}', order="-created_at")
     results_dict = {}
 
-
+    # Download and load generators from W&B
     for iter, run in enumerate(runs[:max_runs]):
         run_id = run.id
         gen = fetch_best_generator_from_run(generator_class, patch_size, entity, project, run_id)
@@ -120,6 +104,7 @@ def fetch_generators_from_wandb(generator_class, project, patch_size, save_dir='
 
 
 def fetch_best_generator_from_run(generator_class, patch_size, entity, project, run_id, save_dir="downloads"):
+    """ Helper to fetch a single generator model from a W&B run. """
     save_dir = f'{save_dir}/{project}'
     os.makedirs(save_dir, exist_ok=True)
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -136,7 +121,7 @@ def fetch_best_generator_from_run(generator_class, patch_size, entity, project, 
                 model_files = os.listdir(artifact_dir)
                 generator_path = os.path.join(artifact_dir, model_files[0])
                 
-                # Instantiate & load model on the right device
+                # Load generator model weights
                 generator = generator_class(patch_size).to(device)
                 generator.load_state_dict(torch.load(generator_path, map_location=device))
                 generator.eval()

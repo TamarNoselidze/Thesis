@@ -1,0 +1,7 @@
+Generator Module
+===============
+
+.. automodule:: Mini_Patches.generator
+   :members:
+   :undoc-members:
+   :show-inheritance:
