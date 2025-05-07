@@ -11,13 +11,6 @@ from Random_Position_Patch.generator import Generator
 from Random_Position_Patch.helper import save_generator, load_generator, load_checkpoints, load_classes, get_class_name, fetch_generators_from_wandb
 from Random_Position_Patch.wandb_logger import WandbLogger
 
-# from loss import AdversarialLoss
-# from deployer import Deployer
-# from Mini_Patches.deployer_mini import DeployerMini
-# from generator import Generator
-# from helper import save_generator, load_generator, load_checkpoints, load_classes, get_class_name, fetch_generators_from_wandb
-# from wandb_logger import WandbLogger
-
 from torchvision.models.resnet import resnet50, ResNet50_Weights, resnet152, ResNet152_Weights, resnet101, ResNet101_Weights
 from torchvision.models import vit_b_16, ViT_B_16_Weights, vit_l_16, ViT_L_16_Weights, vit_b_32, ViT_B_32_Weights, vgg16_bn, VGG16_BN_Weights, swin_b, Swin_B_Weights
 
@@ -453,40 +446,39 @@ def start_testing(train_model_names, device, dataloader, target_class, num_of_pa
     """
     
     attack_type = attack_mode.split('_')
-    print(attack_type)
     if attack_type[0] == 'gpatch':
         deployer = Deployer()
     else: # Mini-Patch
         deployer = DeployerMini(num_of_patches, critical_points=int(attack_type[1]))
 
-
     # Test each generator on a new random noise vector (not using the fixed vectors used during evaluation)
-    for iter, generator in patches.items():
-        noise = torch.randn(1, 100, 1, 1).to(device)
-        patch = generator(noise).detach().squeeze(0)
-        
-        if logger:
-            logger.log_best_patch(f'{train_model_names}/iter {iter+1}', patch, testing=True)
+    try:
+        for iter, generator in patches.items():
+            noise = torch.randn(1, 100, 1, 1).to(device)
+            patch = generator(noise).detach().squeeze(0)   # If there is no "best_generator" in the saved artifacts, we need to catch the exception (this is only for the generators being downloaded from W&B)
+            
+            if logger:
+                logger.log_best_patch(f'{train_model_names}/iter {iter+1}', patch, testing=True)
 
-        for target_model, target_model_name in zip(target_models, target_model_names):
-            test_best_patch(train_model_names, patch, f'iter {iter+1}', dataloader, target_class, deployer, target_model, target_model_name, device, logger)
-           
+            for target_model, target_model_name in zip(target_models, target_model_names):
+                test_best_patch(train_model_names, patch, f'iter {iter+1}', dataloader, target_class, deployer, target_model, target_model_name, device, logger)
+    except:
+        print('Failed to find a generator.')
     
-
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Random Position Patch Attack')
     parser.add_argument('--image_folder_path', help='Image dataset to perturb', default='../imagenetv2-top-images/imagenetv2-top-images-format-val')
-    parser.add_argument('--checkpoint_folder_path', help='Path to a folder where generators will be saved.', default='./checkpoints')
+    parser.add_argument('--checkpoint_folder_path', help='Path to a folder where generators will be saved.', default='./Random_Position_Patch/checkpoints')
     parser.add_argument('--run_mode', choices=['train', 'test'])
     parser.add_argument('--attack_mode', choices=['gpatch', 'mini_0', 'mini_1', 'mini_2'], default='gpatch')
-    parser.add_argument('--training_models', type=str, help='Name(s) of the models the generator will be trained on.')
-    parser.add_argument('--target_models', type=str)
+    parser.add_argument('--training_models', type=str, help='Name(s) of the models the generator will be trained on. Pass as a string, delimiter is a simple space.')
+    parser.add_argument('--target_models', type=str, help='Target model names for testing. Pass as a string, delimiter is a simple space.')
     parser.add_argument('--target_class', type=int, help='Target class to misclassify images as', default=932)
     parser.add_argument('--patch_size', type=int, help='Size of the adversarial patch', default=64)
     parser.add_argument('--num_of_patches', type=int, help='Number of patches. 1 for G-patch attack, and more than 1 for mini-patch attack', default=1)
-    parser.add_argument('--epochs', type=int, help='Number of epochs', default=40)
+    parser.add_argument('--epochs', type=int, help='Number of epochs for training', default=40)
     parser.add_argument('--wandb_entity', help='Entity name of the users WANDB account')
     parser.add_argument('--local_generator', help='Path to the locally saved pre-trained generator, if not loading from W&B')
     args = parser.parse_args()
