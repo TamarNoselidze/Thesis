@@ -3,11 +3,6 @@
 
 # Ign*.txt
 
-# Ignore datasets
-imagenetv2-top-images/
-Papers/
-5269680.pbs-m1.metacentrum.cz
-
 # Ignore Python cache files
 __pycache__/
 *.pyc
