@@ -1,5 +1,5 @@
 import wandb, os, torch
-from .helper import get_class_name
+from Random_Position_Patch.helper import get_class_name
 
 class WandbLogger:
     """
