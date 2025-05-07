@@ -1,9 +1,4 @@
-.. Random Position Patch documentation master file, created by
-   sphinx-quickstart on Wed May  7 14:16:56 2025.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
-
-Random_Position_Patch_documentation
+Random Position Patch Documentation
 ===================================
 
 
@@ -12,11 +7,11 @@ Random_Position_Patch_documentation
    :caption: API Documentation
 
    api/Random_Position_Patch.generator
+   api/Random_Position_Patch.deployer
    api/Random_Position_Patch.helper
    api/Random_Position_Patch.main
    api/Random_Position_Patch.loss
    api/Random_Position_Patch.wandb_logger
    api/Random_Position_Patch.Mini_Patches
-   api/mini_patches/deployer_mini
 
   

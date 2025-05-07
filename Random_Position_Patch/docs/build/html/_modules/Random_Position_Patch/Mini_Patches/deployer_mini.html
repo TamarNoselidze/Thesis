@@ -45,10 +45,12 @@
               <p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../api/Random_Position_Patch.generator.html">Random_Position_Patch.generator module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/Random_Position_Patch.deployer.html">Random_Position_Patch.deployer module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api/Random_Position_Patch.helper.html">Random_Position_Patch.helper module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api/Random_Position_Patch.main.html">Random_Position_Patch.main module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/Random_Position_Patch.loss.html">Random_Position_Patch.loss module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/Random_Position_Patch.wandb_logger.html">Random_Position_Patch.wandb_logger module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api/Random_Position_Patch.Mini_Patches.html">Random_Position_Patch.Mini_Patches package</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../api/mini_patches/deployer_mini.html">Deployer Module</a></li>
 </ul>
 
         </div>
@@ -103,8 +105,16 @@
 <div class="viewcode-block" id="DeployerMini.deploy">
 <a class="viewcode-back" href="../../../api/Random_Position_Patch.Mini_Patches.deployer_mini.html#Random_Position_Patch.Mini_Patches.deployer_mini.DeployerMini.deploy">[docs]</a>
     <span class="k">def</span> <span class="nf">deploy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">patch</span><span class="p">,</span> <span class="n">image</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot; Applies the mini-patches to the image. &quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Applies the mini-patches to the image.</span>
 
+<span class="sd">        Parameters:</span>
+<span class="sd">        - patch (Tensor): Patch of shape (C, P_H, P_W)</span>
+<span class="sd">        - image (Tensor): Image of shape (C, H, W)</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">        - adversarial_image (torch.Tensor): patched image of shape (C, H, W)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">_</span><span class="p">,</span> <span class="n">H</span><span class="p">,</span> <span class="n">W</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">shape</span>
         <span class="n">_</span><span class="p">,</span> <span class="n">P_H</span><span class="p">,</span> <span class="n">P_W</span> <span class="o">=</span> <span class="n">patch</span><span class="o">.</span><span class="n">shape</span>
         <span class="n">mask</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
@@ -172,7 +182,7 @@
 <a class="viewcode-back" href="../../../api/Random_Position_Patch.Mini_Patches.deployer_mini.html#Random_Position_Patch.Mini_Patches.deployer_mini.get_critical_centroids">[docs]</a>
 <span class="k">def</span> <span class="nf">get_critical_centroids</span><span class="p">(</span><span class="n">critical_type</span><span class="p">,</span> <span class="n">image_dim</span><span class="p">,</span> <span class="n">patch_dim</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot; </span>
-<span class="sd">    Return a list of critical positions based on the type.</span>
+<span class="sd">    Returns a list of critical positions based on the type.</span>
 
 <span class="sd">    critical_type:</span>
 <span class="sd">    - 1: corner-point method, i.e. patches are centered at exactly token intersection locations on the ViT token grid.</span>

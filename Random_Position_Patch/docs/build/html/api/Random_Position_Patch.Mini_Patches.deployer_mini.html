@@ -22,7 +22,6 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Deployer Module" href="mini_patches/deployer_mini.html" />
     <link rel="prev" title="Random_Position_Patch.Mini_Patches package" href="Random_Position_Patch.Mini_Patches.html" /> 
 </head>
 
@@ -48,8 +47,11 @@
               <p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="Random_Position_Patch.generator.html">Random_Position_Patch.generator module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Random_Position_Patch.deployer.html">Random_Position_Patch.deployer module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Random_Position_Patch.helper.html">Random_Position_Patch.helper module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Random_Position_Patch.main.html">Random_Position_Patch.main module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Random_Position_Patch.loss.html">Random_Position_Patch.loss module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Random_Position_Patch.wandb_logger.html">Random_Position_Patch.wandb_logger module</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="Random_Position_Patch.Mini_Patches.html">Random_Position_Patch.Mini_Patches package</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="Random_Position_Patch.Mini_Patches.html#submodules">Submodules</a><ul class="current">
 <li class="toctree-l3 current"><a class="current reference internal" href="#">Random_Position_Patch.Mini_Patches.deployer_mini module</a><ul>
@@ -63,7 +65,6 @@
 <li class="toctree-l2"><a class="reference internal" href="Random_Position_Patch.Mini_Patches.html#module-Random_Position_Patch.Mini_Patches">Module contents</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="mini_patches/deployer_mini.html">Deployer Module</a></li>
 </ul>
 
         </div>
@@ -109,6 +110,11 @@
 <dt class="sig sig-object py" id="Random_Position_Patch.Mini_Patches.deployer_mini.DeployerMini.deploy">
 <span class="sig-name descname"><span class="pre">deploy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">patch</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">image</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/Random_Position_Patch/Mini_Patches/deployer_mini.html#DeployerMini.deploy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Random_Position_Patch.Mini_Patches.deployer_mini.DeployerMini.deploy" title="Link to this definition"></a></dt>
 <dd><p>Applies the mini-patches to the image.</p>
+<p>Parameters:
+- patch (Tensor): Patch of shape (C, P_H, P_W)
+- image (Tensor): Image of shape (C, H, W)</p>
+<p>Returns:
+- adversarial_image (torch.Tensor): patched image of shape (C, H, W)</p>
 </dd></dl>
 
 </dd></dl>
@@ -122,7 +128,7 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="Random_Position_Patch.Mini_Patches.deployer_mini.get_critical_centroids">
 <span class="sig-prename descclassname"><span class="pre">Random_Position_Patch.Mini_Patches.deployer_mini.</span></span><span class="sig-name descname"><span class="pre">get_critical_centroids</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">critical_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">image_dim</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">patch_dim</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/Random_Position_Patch/Mini_Patches/deployer_mini.html#get_critical_centroids"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Random_Position_Patch.Mini_Patches.deployer_mini.get_critical_centroids" title="Link to this definition"></a></dt>
-<dd><p>Return a list of critical positions based on the type.</p>
+<dd><p>Returns a list of critical positions based on the type.</p>
 <p>critical_type:
 - 1: corner-point method, i.e. patches are centered at exactly token intersection locations on the ViT token grid.
 - 2: token-replacement method, i.e. patches are centered at exactly the center of each token (for directly replacing tokens).</p>
@@ -135,7 +141,6 @@
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="Random_Position_Patch.Mini_Patches.html" class="btn btn-neutral float-left" title="Random_Position_Patch.Mini_Patches package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="mini_patches/deployer_mini.html" class="btn btn-neutral float-right" title="Deployer Module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

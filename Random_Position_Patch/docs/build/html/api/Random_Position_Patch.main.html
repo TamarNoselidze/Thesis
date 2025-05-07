@@ -48,6 +48,7 @@
               <p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="Random_Position_Patch.generator.html">Random_Position_Patch.generator module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Random_Position_Patch.deployer.html">Random_Position_Patch.deployer module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Random_Position_Patch.helper.html">Random_Position_Patch.helper module</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Random_Position_Patch.main module</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#Random_Position_Patch.main.get_models"><code class="docutils literal notranslate"><span class="pre">get_models()</span></code></a></li>
@@ -62,7 +63,6 @@
 <li class="toctree-l1"><a class="reference internal" href="Random_Position_Patch.loss.html">Random_Position_Patch.loss module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Random_Position_Patch.wandb_logger.html">Random_Position_Patch.wandb_logger module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Random_Position_Patch.Mini_Patches.html">Random_Position_Patch.Mini_Patches package</a></li>
-<li class="toctree-l1"><a class="reference internal" href="mini_patches/deployer_mini.html">Deployer Module</a></li>
 </ul>
 
         </div>
@@ -95,6 +95,17 @@
 <dt class="sig sig-object py" id="Random_Position_Patch.main.get_models">
 <span class="sig-prename descclassname"><span class="pre">Random_Position_Patch.main.</span></span><span class="sig-name descname"><span class="pre">get_models</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model_names</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/Random_Position_Patch/main.html#get_models"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Random_Position_Patch.main.get_models" title="Link to this definition"></a></dt>
 <dd><p>Given a list of model names, load pretrained models and set them to eval mode.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>model_names</strong> – list of string model names.</p></li>
+<li><p><strong>device</strong> – ‘cuda’ or ‘cpu’.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>List of pretrained PyTorch models.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
@@ -122,7 +133,22 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="Random_Position_Patch.main.evaluate_patch">
 <span class="sig-prename descclassname"><span class="pre">Random_Position_Patch.main.</span></span><span class="sig-name descname"><span class="pre">evaluate_patch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">patch</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataloader</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_class</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">deployer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">discriminators</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/Random_Position_Patch/main.html#evaluate_patch"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Random_Position_Patch.main.evaluate_patch" title="Link to this definition"></a></dt>
-<dd><p>Evaluate the performance (ASR) of a given adversarial patch on a dataset.</p>
+<dd><p>Evaluates the performance (ASR) of a given adversarial patch on a dataset.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>patch</strong> – the adversarial patch to be applied to images.</p></li>
+<li><p><strong>dataloader</strong> – dataLoader providing input images.</p></li>
+<li><p><strong>model_list</strong> – list of models (ensemble) used for classification.</p></li>
+<li><p><strong>device</strong> – ‘cuda’ or ‘cpu’.</p></li>
+<li><p><strong>target_class_y_prime</strong> – The target class label the attack aims to induce.</p></li>
+<li><p><strong>logger</strong> (<em>optional</em>) – a W&amp;B  logger for logging metrics.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>the attack success rate over the dataset.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
@@ -130,6 +156,18 @@
 <span class="sig-prename descclassname"><span class="pre">Random_Position_Patch.main.</span></span><span class="sig-name descname"><span class="pre">evaluate_saved_generators</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target_class</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">checkpoint_dir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fixed_noises</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">patch_size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataloader</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">deployer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">discriminators</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logger</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/Random_Position_Patch/main.html#evaluate_saved_generators"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Random_Position_Patch.main.evaluate_saved_generators" title="Link to this definition"></a></dt>
 <dd><p>Load saved generators of each training epoch (in the checkpoint folder).
 Identify the best-performing generator and save it as a separate file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>generator_class</strong> – the generator class used to load the saved models.</p></li>
+<li><p><strong>generator_path_list</strong> – list of file paths to saved generator state_dicts.</p></li>
+<li><p><strong>dataloader</strong> – dataLoader providing input images.</p></li>
+<li><p><strong>model_list</strong> – llist of models used to classify patched images.</p></li>
+<li><p><strong>device</strong> – ‘cuda’ or ‘cpu’.</p></li>
+<li><p><strong>target_class_y_prime</strong> – target class that the generator aims to fool the models into predicting.</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">

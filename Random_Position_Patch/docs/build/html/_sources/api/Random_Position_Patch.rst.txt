@@ -20,7 +20,6 @@ Submodules
    Random_Position_Patch.helper
    Random_Position_Patch.loss
    Random_Position_Patch.main
-   Random_Position_Patch.parse_class_mappings
    Random_Position_Patch.wandb_logger
 
 Module contents

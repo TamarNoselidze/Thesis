@@ -45,10 +45,12 @@
               <p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../api/Random_Position_Patch.generator.html">Random_Position_Patch.generator module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/Random_Position_Patch.deployer.html">Random_Position_Patch.deployer module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../api/Random_Position_Patch.helper.html">Random_Position_Patch.helper module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../api/Random_Position_Patch.main.html">Random_Position_Patch.main module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/Random_Position_Patch.loss.html">Random_Position_Patch.loss module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/Random_Position_Patch.wandb_logger.html">Random_Position_Patch.wandb_logger module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../api/Random_Position_Patch.Mini_Patches.html">Random_Position_Patch.Mini_Patches package</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../api/mini_patches/deployer_mini.html">Deployer Module</a></li>
 </ul>
 
         </div>
@@ -85,9 +87,10 @@
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A simple generator network (consisting of five layers) for creating adversarial patches of different sizes.</span>
 
-<span class="sd">    Args:</span>
-<span class="sd">        patch_size: output patch size (16, 32, 64, 80).</span>
-<span class="sd">        k: scaling factor used in the final tanh-based thresholding.</span>
+<span class="sd">    Attributes:</span>
+<span class="sd">        patch_size (int): Desired output patch size (e.g., 16, 32, 64, 80).</span>
+<span class="sd">        k (float): Scaling factor used in the final tanh-based thresholding.</span>
+<span class="sd">        model (nn.Sequential): The sequential model composed of ConvTranspose2d layers.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">patch_size</span><span class="p">,</span> <span class="n">input_dim</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">output_dim</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mf">0.5</span><span class="p">):</span>
 
@@ -106,7 +109,7 @@
 <a class="viewcode-back" href="../../api/Random_Position_Patch.generator.html#Random_Position_Patch.generator.Generator.build_layers">[docs]</a>
     <span class="k">def</span> <span class="nf">build_layers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_dim</span><span class="p">,</span> <span class="n">output_dim</span><span class="p">,</span> <span class="n">patch_size</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Build a series of layers based on the patch size.</span>
+<span class="sd">        Builds a series of layers based on the patch size.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            input_dim: number of input channels.</span>
@@ -158,7 +161,7 @@
 <div class="viewcode-block" id="Generator.make_layer">
 <a class="viewcode-back" href="../../api/Random_Position_Patch.generator.html#Random_Position_Patch.generator.Generator.make_layer">[docs]</a>
     <span class="k">def</span> <span class="nf">make_layer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">in_channels</span><span class="p">,</span> <span class="n">out_channels</span><span class="p">,</span> <span class="n">kernel_size</span><span class="p">,</span> <span class="n">stride</span><span class="p">,</span> <span class="n">padding</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot; Create a ConvTranspose2d + BatchNorm + ReLU block. &quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; Creates a ConvTranspose2d + BatchNorm + ReLU block. &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span>
             <span class="n">nn</span><span class="o">.</span><span class="n">ConvTranspose2d</span><span class="p">(</span><span class="n">in_channels</span><span class="p">,</span> <span class="n">out_channels</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="n">kernel_size</span><span class="p">,</span> <span class="n">stride</span><span class="o">=</span><span class="n">stride</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="n">padding</span><span class="p">),</span>
             <span class="n">nn</span><span class="o">.</span><span class="n">BatchNorm2d</span><span class="p">(</span><span class="n">out_channels</span><span class="p">),</span>

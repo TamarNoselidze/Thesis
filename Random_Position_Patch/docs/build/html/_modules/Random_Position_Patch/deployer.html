@@ -45,10 +45,12 @@
               <p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../api/Random_Position_Patch.generator.html">Random_Position_Patch.generator module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/Random_Position_Patch.deployer.html">Random_Position_Patch.deployer module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../api/Random_Position_Patch.helper.html">Random_Position_Patch.helper module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../api/Random_Position_Patch.main.html">Random_Position_Patch.main module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/Random_Position_Patch.loss.html">Random_Position_Patch.loss module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/Random_Position_Patch.wandb_logger.html">Random_Position_Patch.wandb_logger module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../api/Random_Position_Patch.Mini_Patches.html">Random_Position_Patch.Mini_Patches package</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../api/mini_patches/deployer_mini.html">Deployer Module</a></li>
 </ul>
 
         </div>
@@ -87,6 +89,16 @@
 <div class="viewcode-block" id="Deployer.deploy">
 <a class="viewcode-back" href="../../api/Random_Position_Patch.deployer.html#Random_Position_Patch.deployer.Deployer.deploy">[docs]</a>
     <span class="k">def</span> <span class="nf">deploy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">patch</span><span class="p">,</span> <span class="n">image</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Applies a given adversarial patch to a random location on the input image.</span>
+
+<span class="sd">        Parameters:</span>
+<span class="sd">        - patch (torch.Tensor): The adversarial patch tensor of shape (C, P_H, P_W).</span>
+<span class="sd">        - image (torch.Tensor): The input image tensor of shape (C, H, W).</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">        - adversarial_image (torch.Tensor): patched image tensor of shape (C, H, W).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">_</span><span class="p">,</span> <span class="n">H</span><span class="p">,</span> <span class="n">W</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">shape</span>
         <span class="n">_</span><span class="p">,</span> <span class="n">P_H</span><span class="p">,</span> <span class="n">P_W</span> <span class="o">=</span> <span class="n">patch</span><span class="o">.</span><span class="n">shape</span>
         
