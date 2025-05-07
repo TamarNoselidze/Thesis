@@ -76,9 +76,24 @@
              
   <section id="cleverhans-experiments-documentation">
 <h1>CleverHans Experiments documentation<a class="headerlink" href="#cleverhans-experiments-documentation" title="Link to this heading"></a></h1>
-<p>Add your content using <code class="docutils literal notranslate"><span class="pre">reStructuredText</span></code> syntax. See the
-<a class="reference external" href="https://www.sphinx-doc.org/en/master/usage/restructuredtext/index.html">reStructuredText</a>
-documentation for details.</p>
+<p>Welcome to the documentation of our experiments with CleverHans attacks.</p>
+<p>This module evaluates the robustness of modern vision models against common white-box adversarial attacks using the <strong>CleverHans</strong> library.
+Attacks are applied to ImageNetV2 images, and the results can be optionally logged using <strong>Weights &amp; Biases</strong> (W&amp;B).</p>
+<p>In this framework, we provide implementations of the following attacks:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Fast Gradient Sign Method (FGSM);</p></li>
+<li><p>Projected Gradient Descent (PGD).</p></li>
+</ul>
+</div></blockquote>
+<p>In each setting, the scripts support both, targeted and untargeted attacks.</p>
+<p>Additionally, the experiments can be conducted on the following models:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>ResNet50 and ResNet152 from the CNN family;</p></li>
+<li><p>ViT-B/16 and ViT-L/32 from the ViT family.</p></li>
+</ul>
+</div></blockquote>
 <div class="toctree-wrapper compound">
 <p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
 <ul>

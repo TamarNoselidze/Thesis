@@ -81,6 +81,32 @@
              
   <section id="random-position-patch-documentation">
 <h1>Random Position Patch Documentation<a class="headerlink" href="#random-position-patch-documentation" title="Link to this heading"></a></h1>
+<p>Welcome to the documentation of Random Position Patch attacks.</p>
+<p>This module implements several patch-based adversarial methods:
+The two main types of attacks we explore are <strong>G-Patch</strong> (proposed in the paper <a class="reference external" href="https://openreview.net/forum?id=DqBPk7887N">https://openreview.net/forum?id=DqBPk7887N</a>) and <strong>Mini-Patch</strong> attacks.</p>
+<p>In both attack types, we leverage a GAN-like architecture, where we train a <strong>Generator</strong> that crafts adversarial patches, and then a <strong>Deployer</strong> applies the patches at random positions within the images.
+For G-Patches we provide the following:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><cite>main.py</cite>: Entry point for training and evaluation.</p></li>
+<li><p><cite>generator.py</cite>: Defines the patch generator network.</p></li>
+<li><p><cite>deployer.py</cite>: Handles applying the patch to input images.</p></li>
+<li><p><cite>helper.py</cite>: Utilities and support functions.</p></li>
+<li><p><cite>loss.py</cite>: Contains custom loss functions.</p></li>
+<li><p><cite>wandb_logger.py</cite>: Integrates Weights &amp; Biases logging.</p></li>
+</ul>
+</div></blockquote>
+<dl class="simple">
+<dt>For Mini-Patches, we only need a modified deployer mechanism, so we include:</dt><dd><ul class="simple">
+<li><p><cite>Mini_Patches/</cite> directory with <cite>deployer_mini.py</cite> to provide deployment logic for mini-patch variants.</p></li>
+</ul>
+</dd>
+</dl>
+<p>Additionally, the experiments can be conducted on the following models:</p>
+<ul class="simple">
+<li><p>ResNet50, ResNet152 and VGG16-BN from the CNN family;</p></li>
+<li><p>ViT-B/16, ViT-B/32, ViT-L/16 and Swin-B from the ViT family.</p></li>
+</ul>
 <div class="toctree-wrapper compound">
 <p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
 <ul>
