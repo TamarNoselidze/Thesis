@@ -62,7 +62,7 @@ python main.py \
   --epsilon 0.05
 ```
 
-- Targeted (class "Bee", with a numerical label 309) PGD on ResNet152, with a higher perturbation magnitude
+- Targeted (class "Bee", with a numerical label 309) PGD on ResNet152, with a higher perturbation magnitude:
 ```bash
 python main.py \
   --image_folder_path '../imagenetv2-top-images/imagenet-imagenetv2-top-images-format-val' \
@@ -129,12 +129,12 @@ We further differentiate between 3 types of Mini-Patch attacks:
 
 - **Corner-Point Patches**: in this setting patches are centered at "intersection points" aligned with the internal tokenization of Vision Transformers. This is illustrated in the figure below:
 ![Corner-Point](./images/mini_1.png)
-Adversarial patch of size 32×32 centered at a corner point of the image (red lines do not represent the exact tokenization of ViT models, for the sake of better visualization, tokens here are of size 56×56). This results in attacking 4 tokens with 8×8 size adversarial patches
+Adversarial patch of size 32×32 centered at a corner point of the image (red lines do not represent the exact tokenization of ViT models, for the sake of better visualization, tokens here are of size 56×56). This results in attacking 4 tokens with 8×8 size adversarial patches.
 
 - **Token-Replacement Patches**: here we place the patches *within* the tokens of ViTs, essentially replacing them. This is illustrated in the figure below:
 
 ![Token-Replacement](./images/mini_2.png)
-Adversarial patch is placed entirely inside the token. For the sake of better visualization, tokens here are of size 56×56(and so is the example adversarial patch). This results in replacing 1 token entirely.
+Adversarial patch is placed entirely inside the token. For the sake of better visualization, tokens here are of size 56×56 (and so is the example adversarial patch). This results in replacing 1 token entirely.
 
 
 ### Patch Sizes
@@ -175,7 +175,7 @@ python -m Random_Position_Patch.main \
 
 - `--image_folder_path`: path to the ImageNetV2 dataset.
 - `--checkpoint_folder_path`: path to a folder where generators from each epoch will be saved. By default `./Random_Position_Patch/checkpoints`.
-- `--run_mode`: experiment mode, either raining(`train`) or testing(`test`).
+- `--run_mode`: experiment mode, either training(`train`) or testing(`test`).
 - `--attack_mode`: the type of attack: 
     For G-Patch: `gpatch`;
     For Mini-Patches: *Random Placement* - `mini_0`;
@@ -207,7 +207,7 @@ python -m Random_Position_Patch.main \
   --training_models vit_b_16 \
   --target_class 153 \
   --patch_size 80 \
-  --num_of_patches 1 \
+  --num_of_patches 1 
 ```
 
 
